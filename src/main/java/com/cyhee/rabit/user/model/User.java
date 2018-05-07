@@ -12,7 +12,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity // This tells Hibernate to make a table out of this class
 @Table
@@ -37,9 +37,10 @@ public class User {
 	private Date birth;
 	
 	@CreationTimestamp
+	@Column(nullable=false, updatable=false)
 	private Date createDate;
 	
-	@LastModifiedDate
+	@UpdateTimestamp
 	private Date lastUpdated;
 	
 	@Column(nullable=false)

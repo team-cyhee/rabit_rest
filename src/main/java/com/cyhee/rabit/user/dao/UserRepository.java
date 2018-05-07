@@ -1,5 +1,7 @@
 package com.cyhee.rabit.user.dao;
 
+import java.util.Optional;
+
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.cyhee.rabit.user.model.User;
@@ -8,5 +10,5 @@ import com.cyhee.rabit.user.model.User;
 // CRUD refers Create, Read, Update, Delete
 
 public interface UserRepository extends PagingAndSortingRepository<User, Integer> {
-
+	Optional<User> findByEmail(String email);
 }
