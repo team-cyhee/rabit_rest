@@ -1,4 +1,4 @@
-package com.cyhee.rabit.user;
+package com.cyhee.rabit.user.model;
 
 public enum UserStatus {
 	ACTIVE,
