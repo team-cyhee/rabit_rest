@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("rest/v1/users")
 public class UserController {
 	@Autowired
 	private UserRepository userRepository;
@@ -24,14 +24,13 @@ public class UserController {
     }
     
     @RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity<Void> addUser(@RequestBody User user) {    	
+    public ResponseEntity<UserApiErrorType> addUser(@RequestBody User user) {    	
         try {
 			userRepository.save(user);
 		} catch (DataIntegrityViolationException e) {
-			e.printStackTrace();
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(UserApiErrorType.DUPLICATE_USER_EMAIL, HttpStatus.BAD_REQUEST);
 		}
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
@@ -43,19 +42,18 @@ public class UserController {
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
-    public ResponseEntity<Void> updateUser(@PathVariable int id, @RequestBody User user) {
+    public ResponseEntity<UserApiErrorType> updateUser(@PathVariable int id, @RequestBody User user) {
     	Optional<User> userOpt = userRepository.findById(id);
     	if(!userOpt.isPresent())
-    		return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+    		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     	
     	user.setId(id);
         try {
 			userRepository.save(user);
 		} catch (DataIntegrityViolationException e) {
-			e.printStackTrace();
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(UserApiErrorType.INVALID_DATA_FORM, HttpStatus.BAD_REQUEST);
 		}
-        return new ResponseEntity<Void>(HttpStatus.CREATED); 
+        return new ResponseEntity<>(HttpStatus.CREATED); 
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
