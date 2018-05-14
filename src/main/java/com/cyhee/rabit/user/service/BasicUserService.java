@@ -18,6 +18,9 @@ public class BasicUserService implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
 	public Iterable<User> getAllUsers() {
 		return userRepository.findAll();
 	}
@@ -27,7 +30,7 @@ public class BasicUserService implements UserService {
     	if(userOpt.isPresent())
     		throw new DuplicateUserException();
     	
-    	user.setPassword(encryptPassword(user.getPassword()));
+    	user.setPassword(passwordEncoder.encode((user.getPassword())));
 		try {
 			userRepository.save(user);
 		} catch (DataIntegrityViolationException e) {
@@ -50,7 +53,7 @@ public class BasicUserService implements UserService {
     	User user = userOpt.get();
     	user.setBirth(userForm.getBirth());
     	user.setName(userForm.getName());
-    	user.setPassword(encryptPassword(userForm.getPassword()));
+    	user.setPassword(passwordEncoder.encode((userForm.getPassword())));
     	user.setPhone(userForm.getPhone());
     	user.setStatus(userForm.getStatus());
     	
@@ -67,10 +70,5 @@ public class BasicUserService implements UserService {
     		throw new NoSuchUserException();
     	
         userRepository.deleteById(id);
-	}
-	
-	private String encryptPassword(String password) {
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		return passwordEncoder.encode(password);
 	}
 }
