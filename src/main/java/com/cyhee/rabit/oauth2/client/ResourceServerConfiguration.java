@@ -30,7 +30,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	public void configure(HttpSecurity http) throws Exception {
 		http.headers().frameOptions().disable();
 		http.authorizeRequests()
-				.antMatchers("/rest/v1/users").access("#oauth2.hasScope('read')")
+				//.antMatchers("/rest/v1/users").access("#oauth2.hasScope('read')")
 				.anyRequest().permitAll();
 	}
 	

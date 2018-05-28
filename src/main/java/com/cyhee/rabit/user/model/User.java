@@ -14,18 +14,21 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Entity // This tells Hibernate to make a table out of this class
+@Entity
 @Table
 public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 	
 	@Column(nullable=false, unique=true, length=50, updatable=false)
 	private String email;
 	
 	@Column(nullable=false, length=255)
 	private String password;
+	
+	@Column(nullable=false, length=20)
+	private String username;
 	
 	@Column(nullable=false, length=30)
 	private String name;
@@ -46,11 +49,11 @@ public class User {
 	@Column(nullable=false)
 	private UserStatus status = UserStatus.PENDING;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -68,6 +71,14 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getName() {
@@ -116,5 +127,15 @@ public class User {
 
 	public void setStatus(UserStatus status) {
 		this.status = status;
+	}
+
+	public User(String email, String password, String username, String name, String phone, Date birth) {
+		super();
+		this.email = email;
+		this.password = password;
+		this.username = username;
+		this.name = name;
+		this.phone = phone;
+		this.birth = birth;
 	}
 }
