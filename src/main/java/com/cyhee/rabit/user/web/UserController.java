@@ -33,18 +33,18 @@ public class UserController {
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
-    public ApiResponseEntity<User> getUser(@PathVariable int id) {
+    public ApiResponseEntity<User> getUser(@PathVariable long id) {
     	return new ApiResponseEntity<>(userService.getUser(id), HttpStatus.OK);
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
-    public ApiResponseEntity<Void> updateUser(@PathVariable int id, @RequestBody User userForm) {
+    public ApiResponseEntity<Void> updateUser(@PathVariable long id, @RequestBody User userForm) {
     	userService.updateUser(id, userForm);
         return new ApiResponseEntity<>(HttpStatus.CREATED); 
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
-    public ApiResponseEntity<Void> deleteUser(@PathVariable int id) {
+    public ApiResponseEntity<Void> deleteUser(@PathVariable long id) {
     	userService.deleteUser(id);
         return new ApiResponseEntity<Void>(HttpStatus.ACCEPTED);
     }

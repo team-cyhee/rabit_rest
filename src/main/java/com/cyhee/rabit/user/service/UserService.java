@@ -9,9 +9,9 @@ public interface UserService {
 	
 	void addUser(User user) throws MalformedUserException;
 	
-	User getUser(int id) throws NoSuchUserException;
+	User getUser(Long id) throws NoSuchUserException;
 	
-	void updateUser(int id, User userForm) throws NoSuchUserException;
+	void updateUser(Long id, User userForm) throws NoSuchUserException;
 	
-	void deleteUser(int id) throws NoSuchUserException;
+	void deleteUser(Long id) throws NoSuchUserException;
 }

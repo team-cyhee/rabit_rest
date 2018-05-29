@@ -38,14 +38,14 @@ public class BasicUserService implements UserService {
 		}
 	}
 	
-	public User getUser(int id) throws NoSuchUserException {
+	public User getUser(Long id) throws NoSuchUserException {
 		Optional<User> userOpt = userRepository.findById(id);
     	if(userOpt.isPresent())
     		return userOpt.get();
     	throw new NoSuchUserException();
 	}
 	
-	public void updateUser(int id, User userForm) throws NoSuchUserException {
+	public void updateUser(Long id, User userForm) throws NoSuchUserException {
 		Optional<User> userOpt = userRepository.findById(id);
     	if(!userOpt.isPresent())
     		throw new NoSuchUserException();
@@ -64,7 +64,7 @@ public class BasicUserService implements UserService {
 		} 
 	}
 	
-	public void deleteUser(int id) {
+	public void deleteUser(Long id) {
 		Optional<User> userOpt = userRepository.findById(id);
     	if(!userOpt.isPresent())
     		throw new NoSuchUserException();
