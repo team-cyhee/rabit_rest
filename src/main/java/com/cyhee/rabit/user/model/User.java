@@ -1,33 +1,18 @@
 package com.cyhee.rabit.user.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import com.cyhee.rabit.goal.model.Goal;
+import com.cyhee.rabit.cmm.model.TimestampEntity;
 
 @Entity
 @Table
-public class User {
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+public class User extends TimestampEntity{
 	
 	@Column(nullable=false, unique=true, length=50, updatable=false)
 	private String email;
@@ -47,23 +32,8 @@ public class User {
 	@Temporal(TemporalType.DATE) 
 	private Date birth;
 	
-	@CreationTimestamp
-	@Column(nullable=false, updatable=false)
-	private Date createDate;
-	
-	@UpdateTimestamp
-	private Date lastUpdated;
-	
 	@Column(nullable=false)
 	private UserStatus status = UserStatus.PENDING;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getEmail() {
 		return email;
@@ -113,7 +83,7 @@ public class User {
 		this.birth = birth;
 	}
 
-	public Date getCreateDate() {
+	/*public Date getCreateDate() {
 		return createDate;
 	}
 
@@ -127,7 +97,7 @@ public class User {
 
 	public void setLastUpdated(Date lastUpdated) {
 		this.lastUpdated = lastUpdated;
-	}
+	}*/
 
 	public UserStatus getStatus() {
 		return status;
