@@ -63,8 +63,6 @@ public class UserTests {
 		Optional<User> userOpt = repository.findByEmail("email1");
 		
 		User user = userOpt.get();
-		System.out.println(user.getCreateDate());
-		System.out.println(user.getLastUpdated());
 		assertThat(user)
 			.isEqualTo(user1)
 			.extracting(User::getId, User::getCreateDate, User::getLastUpdated, User::getStatus)
@@ -113,21 +111,24 @@ public class UserTests {
 			.containsExactly(user3);
 	}
 	
-	/*@Test
+	@Test
 	public void update() {
 		userService.addUser(user1);
-		userService.addUser(user2);	
-		user1.setEmail("email2");
-		user1.setName("updatedName");	
+		userService.addUser(user2);
 		
-		Optional<User> userOpt = repository.findByEmail("email1");
+		entityManger.flush();
+		entityManger.clear();
+		
+		user1.setName("updatedName");
+		userService.updateUser(user1.getId(), user1);
+		
+		entityManger.flush();
+		entityManger.clear();
+		
+		Optional<User> userOpt = repository.findByEmail("email1");		
 		User user = userOpt.get();
-		assertThat(user.getName())
-			.isNotEqualTo("name1")
-			.isEqualTo("updatedName");
 		
-		user1.setEmail("email2");
-		user1.setUsername("username2");
-		entityManger.persist(user1);
-	}*/
+		assertThat(user.getName())
+			.isEqualTo("updatedName");
+	}
 }

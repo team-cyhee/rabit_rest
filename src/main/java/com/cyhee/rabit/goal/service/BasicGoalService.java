@@ -25,7 +25,7 @@ public class BasicGoalService implements GoalService {
 
 	public void updateGoal(long id, Goal goalForm) {
 		Goal goal = goalRepository.findById(id).get();
-		goal = goalForm;
+		goal.setContent(goalForm.getContent());
 		goalRepository.save(goal);
 	}
 

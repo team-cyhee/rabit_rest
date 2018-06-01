@@ -27,7 +27,6 @@ import com.cyhee.rabit.goal.service.BasicGoalService;
 import com.cyhee.rabit.goal.service.GoalService;
 import com.cyhee.rabit.user.dao.UserRepository;
 import com.cyhee.rabit.user.model.User;
-import com.cyhee.rabit.user.model.UserStatus;
 import com.cyhee.rabit.user.service.BasicUserService;
 import com.cyhee.rabit.user.service.UserService;
 
@@ -55,6 +54,7 @@ public class GoalTests {
 	Goal goal1;
 	Goal goal2;
 	Goal goal3;
+	Goal goal4;
 		
 	@Before
 	public void setup() {
@@ -65,6 +65,7 @@ public class GoalTests {
 		goal1 = new Goal(user1, null, "content1", now, now);
 		goal2 = new Goal(user2, goal1, "content2", now, now);
 		goal3 = new Goal(user2, null, "content3", now, now);
+		goal4 = new Goal(user1, null, "content4", now, now);
 	}
 
 	@Test
@@ -126,5 +127,28 @@ public class GoalTests {
 		assertThat(goalPage)
 			.hasSize(1)
 			.containsExactly(goal3);
+	}
+	
+	@Test
+	public void update() {
+		userService.addUser(user1);
+		userService.addUser(user2);
+		goalService.addGoal(goal1);
+		
+		
+		now = new Date();
+		goalService.updateGoal(goal1.getId(), goal4);
+		after = new Date(now.getTime() + 1000);
+
+		entityManger.flush();
+		entityManger.clear();
+		
+		Goal goal = goalService.getGoal(goal1.getId());
+		
+		assertThat(goal)
+			.extracting(Goal::getId, Goal::getContent)
+			.containsExactly(goal1.getId(), goal4.getContent());
+		assertThat(goal.getAuthor().getId())
+			.isEqualTo(user1.getId());
 	}
 }
