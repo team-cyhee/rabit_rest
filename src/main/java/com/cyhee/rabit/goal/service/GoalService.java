@@ -7,9 +7,9 @@ public interface GoalService {
 	
 	void addGoal(Goal user);
 	
-	Goal getGoal(int id);
+	Goal getGoal(long id);
 	
-	void updateGoal(int id, Goal goalForm);
+	void updateGoal(long id, Goal goalForm);
 	
-	void deleteGoal(int id);
+	void deleteGoal(long id);
 }

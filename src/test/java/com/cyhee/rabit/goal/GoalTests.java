@@ -1,4 +1,4 @@
-package com.cyhee.rabit.user;
+package com.cyhee.rabit.goal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,6 +21,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.cyhee.rabit.goal.dao.GoalRepository;
+import com.cyhee.rabit.goal.model.Goal;
+import com.cyhee.rabit.goal.service.BasicGoalService;
+import com.cyhee.rabit.goal.service.GoalService;
 import com.cyhee.rabit.user.dao.UserRepository;
 import com.cyhee.rabit.user.model.User;
 import com.cyhee.rabit.user.model.UserStatus;
@@ -31,67 +35,76 @@ import com.cyhee.rabit.user.service.UserService;
 @SpringBootTest
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-@Import({BasicUserService.class, BCryptPasswordEncoder.class})
-public class UserTests {
+@Import({BasicUserService.class, BCryptPasswordEncoder.class, BasicGoalService.class})
+public class GoalTests {
 	@Autowired
 	private TestEntityManager entityManger;
 	@Autowired
-	private UserRepository repository;	
+	private UserRepository userRepository;	
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private GoalRepository goalRepository;
+	@Autowired
+	private GoalService goalService;
 	
 	User user1;
 	User user2;
-	User user3;
 	Date now;
 	Date after;
-	
+	Goal goal1;
+	Goal goal2;
+	Goal goal3;
+		
 	@Before
 	public void setup() {
 		now = new Date();
 		user1 = new User("email1","password1","user1","name1","010-1234-1234", now);
 		user2 = new User("email2","password2","user2","name2","010-1234-1234", now);
-		user3 = new User("email3","password3","user3","name3","010-1234-1234", now);
+		
+		goal1 = new Goal(user1, null, "content1", now, now);
+		goal2 = new Goal(user2, goal1, "content2", now, now);
+		goal3 = new Goal(user2, null, "content3", now, now);
 	}
 
 	@Test
 	public void createAndGet() throws InterruptedException {
 		now = new Date();
 		userService.addUser(user1);
+		goalService.addGoal(goal1);
 		after = new Date(now.getTime() + 1000);
+
+		entityManger.flush();
+		entityManger.clear();
 		
-		Optional<User> userOpt = repository.findByEmail("email1");
+		Optional<Goal> goalOpt = goalRepository.findById(goal1.getId());
 		
-		User user = userOpt.get();
-		System.out.println(user.getCreateDate());
-		System.out.println(user.getLastUpdated());
-		assertThat(user)
-			.isEqualTo(user1)
-			.extracting(User::getId, User::getCreateDate, User::getLastUpdated, User::getStatus)
-				.doesNotContainNull()
-				.contains(UserStatus.PENDING);
-		assertThat(user)
-			.extracting(User::getCreateDate, User::getLastUpdated)
+		Goal goal = goalOpt.get();
+				
+		assertThat(goal)
+			.extracting(Goal::getId, Goal::getContent)
+			.doesNotContainNull()
+			.contains(goal1.getContent());
+		assertThat(goal.getAuthor().getId())
+			.isEqualTo(user1.getId());
+		assertThat(goal)
+			.extracting(Goal::getCreateDate, Goal::getLastUpdated)
 			.allSatisfy(date -> {
-                assertThat(now.compareTo((Date) date)).isNotPositive();
-                assertThat(after.compareTo((Date) date)).isPositive();
+                assertThat(now.compareTo((Date) date)).isLessThan(0);
+                assertThat(after.compareTo((Date) date)).isGreaterThan(0);
               });
-		assertThat(user.getPassword())
-			.isNotEqualTo("password1");
 	}
 	
 	
 	@Test
 	public void deleteAndGet() {
-		userService.addUser(user1);		
+		userService.addUser(user1);
+		goalService.addGoal(goal1);
 		
-		Optional<User> userOpt = repository.findByEmail("email1");
-		
-		User user = userOpt.get();
-		userService.deleteUser(user.getId());
-		
-		userOpt = repository.findByEmail("email1");
-		assertThat(userOpt.isPresent())
+		userRepository.findByEmail("email1");		
+		goalService.deleteGoal(goal1.getId());
+		Optional<Goal> goalOpt = goalRepository.findById(goal1.getId());
+		assertThat(goalOpt.isPresent())
 			.isEqualTo(false);
 	}
 	
@@ -100,34 +113,18 @@ public class UserTests {
 	public void createAndGetAll() {
 		userService.addUser(user1);
 		userService.addUser(user2);
-		userService.addUser(user3);
+		goalService.addGoal(goal1);
+		goalService.addGoal(goal2);
+		goalService.addGoal(goal3);
 		
-		Iterable<User> userList = repository.findAll();
-		assertThat(userList)
+		Iterable<Goal> goalList = goalRepository.findAll();
+		assertThat(goalList)
 			.hasSize(3);
 
 		Pageable pageable = new PageRequest(1, 2);
-		Page<User> userPage = repository.findAll(pageable);
-		assertThat(userPage)
+		Page<Goal> goalPage = goalRepository.findAll(pageable);
+		assertThat(goalPage)
 			.hasSize(1)
-			.containsExactly(user3);
+			.containsExactly(goal3);
 	}
-	
-	/*@Test
-	public void update() {
-		userService.addUser(user1);
-		userService.addUser(user2);	
-		user1.setEmail("email2");
-		user1.setName("updatedName");	
-		
-		Optional<User> userOpt = repository.findByEmail("email1");
-		User user = userOpt.get();
-		assertThat(user.getName())
-			.isNotEqualTo("name1")
-			.isEqualTo("updatedName");
-		
-		user1.setEmail("email2");
-		user1.setUsername("username2");
-		entityManger.persist(user1);
-	}*/
 }

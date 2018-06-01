@@ -19,17 +19,17 @@ public class BasicGoalService implements GoalService {
 		goalRepository.save(goal);
 	}
 
-	public Goal getGoal(int id) {
+	public Goal getGoal(long id) {
 		return goalRepository.findById(id).get();
 	}
 
-	public void updateGoal(int id, Goal goalForm) {
+	public void updateGoal(long id, Goal goalForm) {
 		Goal goal = goalRepository.findById(id).get();
 		goal = goalForm;
 		goalRepository.save(goal);
 	}
 
-	public void deleteGoal(int id) {
+	public void deleteGoal(long id) {
 		goalRepository.deleteById(id);
 	}
 	

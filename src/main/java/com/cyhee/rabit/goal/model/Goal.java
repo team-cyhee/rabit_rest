@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +16,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.cyhee.rabit.user.model.User;
@@ -27,14 +29,15 @@ public class Goal {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
-	@ManyToOne(cascade=CascadeType.REMOVE, fetch=FetchType.LAZY)
-	@JoinColumn(name="user_id")
-	private User user;
+	@ManyToOne(optional=false)
+	@JoinColumn(name="author_id", foreignKey = @ForeignKey(name = "FK_USER_GOAL"))
+	@OnDelete(action=OnDeleteAction.CASCADE)
+	private User author;
 	
-	@ManyToOne(cascade=CascadeType.REMOVE, fetch=FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.REMOVE, optional=true)
 	@JoinColumn(name="parent_id")
 	private Goal parent;
-	
+
 	@Column(columnDefinition = "TEXT")
 	private String content;
 	
@@ -59,12 +62,12 @@ public class Goal {
 		this.id = id;
 	}
 
-	public User getUser() {
-		return user;
+	public User getAuthor() {
+		return author;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setAuthor(User author) {
+		this.author = author;
 	}
 
 	public Goal getParent() {
@@ -113,5 +116,17 @@ public class Goal {
 
 	public void setLastUpdated(Date lastUpdated) {
 		this.lastUpdated = lastUpdated;
+	}
+	
+	public Goal() {		
+	}
+	
+	public Goal(User author, Goal parent, String content, Date startDate, Date endDate) {
+		super();
+		this.author = author;
+		this.parent = parent;
+		this.content = content;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 }
