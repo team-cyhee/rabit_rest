@@ -35,7 +35,7 @@ import com.cyhee.rabit.user.service.UserService;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Import({BasicUserService.class, BCryptPasswordEncoder.class, BasicGoalService.class})
-public class GoalTests {
+public class GoalServiceTest {
 	@Autowired
 	private TestEntityManager entityManger;
 	@Autowired

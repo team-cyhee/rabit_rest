@@ -40,7 +40,7 @@ public class UserController {
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
     public ApiResponseEntity<Void> updateUser(@PathVariable long id, @RequestBody User userForm) {
     	userService.updateUser(id, userForm);
-        return new ApiResponseEntity<>(HttpStatus.CREATED); 
+        return new ApiResponseEntity<>(HttpStatus.OK); 
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)

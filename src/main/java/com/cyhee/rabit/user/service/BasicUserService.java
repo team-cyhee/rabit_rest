@@ -64,7 +64,7 @@ public class BasicUserService implements UserService {
 		} 
 	}
 	
-	public void deleteUser(Long id) {
+	public void deleteUser(Long id) throws NoSuchUserException {
 		Optional<User> userOpt = userRepository.findById(id);
     	if(!userOpt.isPresent())
     		throw new NoSuchUserException();

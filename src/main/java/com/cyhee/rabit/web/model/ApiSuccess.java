@@ -5,12 +5,10 @@ public class ApiSuccess<T> extends ApiResult<T> {
 	
 	public ApiSuccess(T data) {
 		this.data = data;
-		this.success = true;
 	}
 	
 	public ApiSuccess(T data, String message) {
 		this.data = data;
-		this.success = true;
 		this.message = message;
 	}
 

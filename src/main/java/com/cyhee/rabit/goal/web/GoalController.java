@@ -38,7 +38,7 @@ public class GoalController {
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
     public ApiResponseEntity<Void> updateGoal(@PathVariable int id, @RequestBody Goal goalForm) {
     	goalService.updateGoal(id, goalForm);
-        return new ApiResponseEntity<>(HttpStatus.CREATED); 
+        return new ApiResponseEntity<>(HttpStatus.OK); 
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
