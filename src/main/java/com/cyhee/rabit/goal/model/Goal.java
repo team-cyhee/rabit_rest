@@ -40,6 +40,9 @@ public class Goal extends TimestampEntity {
 	@Temporal(TemporalType.TIMESTAMP) 
 	private Date endDate;
 	
+	@Column(nullable=false)
+	private GoalStatus status = GoalStatus.PENDING;
+	
 	public User getAuthor() {
 		return author;
 	}
@@ -80,6 +83,14 @@ public class Goal extends TimestampEntity {
 		this.endDate = endDate;
 	}
 	
+	public GoalStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(GoalStatus status) {
+		this.status = status;
+	}
+
 	public Goal() {		
 	}
 	

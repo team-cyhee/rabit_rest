@@ -83,22 +83,6 @@ public class User extends TimestampEntity{
 		this.birth = birth;
 	}
 
-	/*public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
-	public Date getLastUpdated() {
-		return lastUpdated;
-	}
-
-	public void setLastUpdated(Date lastUpdated) {
-		this.lastUpdated = lastUpdated;
-	}*/
-
 	public UserStatus getStatus() {
 		return status;
 	}

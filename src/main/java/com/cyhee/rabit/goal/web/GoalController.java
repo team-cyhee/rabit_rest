@@ -31,18 +31,18 @@ public class GoalController {
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
-    public ApiResponseEntity<Goal> getGoal(@PathVariable int id) {
+    public ApiResponseEntity<Goal> getGoal(@PathVariable long id) {
     	return new ApiResponseEntity<>(goalService.getGoal(id), HttpStatus.OK);
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
-    public ApiResponseEntity<Void> updateGoal(@PathVariable int id, @RequestBody Goal goalForm) {
+    public ApiResponseEntity<Void> updateGoal(@PathVariable long id, @RequestBody Goal goalForm) {
     	goalService.updateGoal(id, goalForm);
         return new ApiResponseEntity<>(HttpStatus.OK); 
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
-    public ApiResponseEntity<Void> deleteGoal(@PathVariable int id) {
+    public ApiResponseEntity<Void> deleteGoal(@PathVariable long id) {
     	goalService.deleteGoal(id);
         return new ApiResponseEntity<Void>(HttpStatus.ACCEPTED);
     }
