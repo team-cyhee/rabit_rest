@@ -14,4 +14,8 @@ public interface UserService {
 	void updateUser(Long id, User userForm) throws NoSuchUserException;
 	
 	void deleteUser(Long id) throws NoSuchUserException;
+	
+	User getUserByUsername(String username) throws NoSuchUserException;
+	
+	User getUserByEmail(String email) throws NoSuchUserException;
 }

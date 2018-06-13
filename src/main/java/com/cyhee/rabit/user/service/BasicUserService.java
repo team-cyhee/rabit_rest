@@ -30,7 +30,7 @@ public class BasicUserService implements UserService {
     	if(userOpt.isPresent())
     		throw new DuplicateUserException();
     	
-    	user.setPassword(passwordEncoder.encode((user.getPassword())));
+    	user.setPassword(passwordEncoder.encode(user.getPassword()));
 		try {
 			userRepository.save(user);
 		} catch (DataIntegrityViolationException e) {
@@ -70,5 +70,19 @@ public class BasicUserService implements UserService {
     		throw new NoSuchUserException();
     	
         userRepository.deleteById(id);
+	}
+	
+	public User getUserByUsername(String username) throws NoSuchUserException {
+		Optional<User> userOpt = userRepository.findByUsername(username);
+    	if(userOpt.isPresent())
+    		return userOpt.get();
+    	throw new NoSuchUserException();
+	}
+	
+	public User getUserByEmail(String email) throws NoSuchUserException {
+		Optional<User> userOpt = userRepository.findByEmail(email);
+    	if(userOpt.isPresent())
+    		return userOpt.get();
+    	throw new NoSuchUserException();
 	}
 }

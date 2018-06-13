@@ -11,4 +11,6 @@ import com.cyhee.rabit.user.model.User;
 
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 	Optional<User> findByEmail(String email);
+	
+	Optional<User> findByUsername(String username);
 }
