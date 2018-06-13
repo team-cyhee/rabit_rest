@@ -18,8 +18,15 @@ import org.hibernate.annotations.OnDeleteAction;
 import com.cyhee.rabit.cmm.model.TimestampEntity;
 import com.cyhee.rabit.user.model.User;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
 @Table
+@Setter @Getter @ToString
+@NoArgsConstructor
 public class Goal extends TimestampEntity {
 	
 	@ManyToOne(optional=false)
@@ -42,57 +49,6 @@ public class Goal extends TimestampEntity {
 	
 	@Column(nullable=false)
 	private GoalStatus status = GoalStatus.PENDING;
-	
-	public User getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(User author) {
-		this.author = author;
-	}
-
-	public Goal getParent() {
-		return parent;
-	}
-
-	public void setParent(Goal parent) {
-		this.parent = parent;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-	
-	public GoalStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(GoalStatus status) {
-		this.status = status;
-	}
-
-	public Goal() {		
-	}
 	
 	public Goal(User author, Goal parent, String content, Date startDate, Date endDate) {
 		super();

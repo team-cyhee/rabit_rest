@@ -35,6 +35,7 @@ dependencies {
 	compile('org.springframework.security:spring-security-jwt:1.0.8.RELEASE')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-websocket')
+	compile('org.projectlombok:lombok:1.18.0')
 	//compile('org.springframework.session:spring-session-jdbc')
 	runtime('mysql:mysql-connector-java')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
