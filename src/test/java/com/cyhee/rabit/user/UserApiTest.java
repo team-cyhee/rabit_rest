@@ -5,7 +5,9 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.Charset;
@@ -60,7 +62,7 @@ public class UserApiTest {
 	
 	@Test
 	public void CRUD() throws Exception {
-		User user = new User("email1","password1","user1","name1","010-1234-1234", null);
+		User user = new User("email@rabit.com","password@$12","user1","name1","010-1234-1234", null);
 		
 		given(userService.getUser(1L)).willReturn(user);
 		given(userService.getUser(2L)).willThrow(NoSuchUserException.class);
@@ -73,7 +75,7 @@ public class UserApiTest {
 		
 		ApiTestUtil testUtil = new ApiTestUtil(mvc, url);
 		testUtil.simpleCRUDTest(1L, user);
-		testUtil.getDetailTest(1L, "email", "email1");
+		testUtil.getDetailTest(1L, "email", "email@rabit.com");
 		
 		mvc.perform(get(getUrl(2L)))
 			.andExpect(status().isNotFound());		
@@ -83,5 +85,6 @@ public class UserApiTest {
 		
 		mvc.perform(put(getUrl(2L)).contentType(contentType).content(mapper.writeValueAsString(user)))
 			.andExpect(status().isNotFound());
+		
 	}
 }

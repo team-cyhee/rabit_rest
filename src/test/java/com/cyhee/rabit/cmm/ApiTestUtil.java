@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -46,12 +45,11 @@ public class ApiTestUtil {
 		mvc.perform(get(getUrl(id)))
 			.andExpect(status().isOk());
 		
+		mvc.perform(put(getUrl(id)).contentType(contentType).content(mapper.writeValueAsString(target)))
+			.andExpect(status().isOk());
+		
 		mvc.perform(delete(getUrl(id)))
 			.andExpect(status().isAccepted());
-		
-		mvc.perform(put(getUrl(id)).contentType(contentType).content(mapper.writeValueAsString(target)))
-			.andDo(print())
-			.andExpect(status().isOk());
 	}
 	
 	public void getDetailTest(Object id, String type, Object target) throws Exception {

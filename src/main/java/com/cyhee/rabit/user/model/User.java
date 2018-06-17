@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 import com.cyhee.rabit.cmm.model.TimestampEntity;
 
@@ -20,15 +22,18 @@ import lombok.ToString;
 public class User extends TimestampEntity{
 	
 	@Column(nullable=false, unique=true, length=50, updatable=false)
+	@Email
 	private String email;
 	
 	@Column(nullable=false, length=255)
 	private String password;
 	
 	@Column(nullable=false, unique=true, length=20)
+	@NotNull
 	private String username;
 	
 	@Column(nullable=false, length=30)
+	@NotNull
 	private String name;
 		
 	@Column(length=20)

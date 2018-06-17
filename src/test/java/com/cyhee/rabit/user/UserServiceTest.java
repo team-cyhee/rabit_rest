@@ -9,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,7 +28,6 @@ import com.cyhee.rabit.user.service.UserService;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
 @Import({BasicUserService.class, BCryptPasswordEncoder.class})
 public class UserServiceTest {
 	@Autowired
@@ -49,9 +46,9 @@ public class UserServiceTest {
 	@Before
 	public void setup() {
 		now = new Date();
-		user1 = new User("email1","password1","user1","name1","010-1234-1234", now);
-		user2 = new User("email2","password2","user2","name2","010-1234-1234", now);
-		user3 = new User("email3","password3","user3","name3","010-1234-1234", now);
+		user1 = new User("email1@a","password1@","user1","name1","010-1234-1234", now);
+		user2 = new User("email2@a","password2@","user2","name2","010-1234-1234", now);
+		user3 = new User("email3@a","password3@","user3","name3","010-1234-1234", now);
 	}
 
 	@Test
@@ -60,7 +57,7 @@ public class UserServiceTest {
 		userService.addUser(user1);
 		after = new Date(now.getTime() + 1000);
 		
-		Optional<User> userOpt = repository.findByEmail("email1");
+		Optional<User> userOpt = repository.findByEmail("email1@a");
 		
 		User user = userOpt.get();
 		assertThat(user)
@@ -83,7 +80,7 @@ public class UserServiceTest {
 	public void deleteAndGet() {
 		userService.addUser(user1);		
 		
-		Optional<User> userOpt = repository.findByEmail("email1");
+		Optional<User> userOpt = repository.findByEmail("email1@a");
 		
 		User user = userOpt.get();
 		userService.deleteUser(user.getId());
@@ -125,7 +122,7 @@ public class UserServiceTest {
 		entityManger.flush();
 		entityManger.clear();
 		
-		Optional<User> userOpt = repository.findByEmail("email1");		
+		Optional<User> userOpt = repository.findByEmail("email1@a");		
 		User user = userOpt.get();
 		
 		assertThat(user.getName())
