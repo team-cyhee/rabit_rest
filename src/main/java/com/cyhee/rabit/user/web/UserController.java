@@ -1,5 +1,7 @@
 package com.cyhee.rabit.user.web;
 
+import java.security.Principal;
+
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cyhee.rabit.user.exception.UserException;
 import com.cyhee.rabit.user.model.User;
 import com.cyhee.rabit.user.service.UserService;
+import com.cyhee.rabit.web.model.ApiError;
 import com.cyhee.rabit.web.model.ApiErrorCode;
 import com.cyhee.rabit.web.model.ApiResponseEntity;
 
@@ -39,7 +42,12 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ApiResponseEntity<User> getUser(@PathVariable long id) {
+	public ApiResponseEntity<User> getUser(@PathVariable long id, Principal principal) {
+		if(principal == null)
+			return new ApiResponseEntity<>(ApiErrorCode.FORBIDDEN, "No principal information", HttpStatus.FORBIDDEN);		
+		User user = userService.getUser(id);
+		if(!user.getUsername().equals(principal.getName()))
+			return new ApiResponseEntity<>(ApiErrorCode.FORBIDDEN, "Incorrect principal information", HttpStatus.FORBIDDEN);
 		return new ApiResponseEntity<>(userService.getUser(id), HttpStatus.OK);
 	}
 
@@ -47,8 +55,7 @@ public class UserController {
 	public ApiResponseEntity<Void> updateUser(@PathVariable long id, @RequestBody @Valid User userForm,
 			BindingResult bindingResult) {
 		if (bindingResult.hasErrors())
-			return new ApiResponseEntity<>(ApiErrorCode.INVALID_INPUT_TYPE, "Invalid user object",
-					HttpStatus.BAD_REQUEST);
+			return new ApiResponseEntity<>(ApiErrorCode.INVALID_INPUT_TYPE, "Invalid user object", HttpStatus.BAD_REQUEST);
 		userService.updateUser(id, userForm);
 		return new ApiResponseEntity<>(HttpStatus.OK);
 	}

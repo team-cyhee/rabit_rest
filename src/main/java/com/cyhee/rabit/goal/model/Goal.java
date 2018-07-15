@@ -1,5 +1,6 @@
 package com.cyhee.rabit.goal.model;
 
+import java.sql.Time;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
