@@ -25,4 +25,9 @@ public class AuthController {
     	else
     		return new ApiResponseEntity<>(HttpStatus.FORBIDDEN);
     }
+    
+    @RequestMapping(method=RequestMethod.POST)
+    public ApiResponseEntity<String> getToken(@RequestParam String username, @RequestParam String password) {    	
+    	return new ApiResponseEntity<>(authService.getToken(username, password), HttpStatus.OK);
+    }
 }
