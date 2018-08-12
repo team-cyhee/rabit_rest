@@ -13,10 +13,10 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
     	String regex;
 		// at least one letter, one number
     	if(!needSpecial && !needUpper)
-    		regex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]";
+    		regex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*#?&]";
 		// at least one letter, one number, one upper case
     	else if(!needSpecial && needUpper)
-    		regex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)[A-Za-z\\d]";
+    		regex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)[A-Za-z\\d@$!%*#?&]";
 		// at least one letter, one number, one special
     	else if(needSpecial && !needUpper)
     		regex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]";

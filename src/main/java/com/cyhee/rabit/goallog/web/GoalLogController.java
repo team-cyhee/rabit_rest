@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cyhee.rabit.cmm.web.model.ApiResponseEntity;
 import com.cyhee.rabit.goallog.model.GoalLog;
 import com.cyhee.rabit.goallog.service.GoalLogService;
-import com.cyhee.rabit.web.model.ApiResponseEntity;
 
 @RestController
 @RequestMapping("rest/v1/goallogs")
@@ -20,7 +20,7 @@ public class GoalLogController {
 	@Resource(name="basicGoalLogService")
 	private GoalLogService goallogService;
 	
-	@RequestMapping(method=RequestMethod.GET)
+	/*@RequestMapping(method=RequestMethod.GET)
 	public ApiResponseEntity<Iterable<GoalLog>> getAllGoalLogs() {
         return new ApiResponseEntity<Iterable<GoalLog>>(goallogService.getAllGoalLogs(), HttpStatus.OK);
     }
@@ -46,5 +46,5 @@ public class GoalLogController {
     public ApiResponseEntity<Void> deleteGoalLog(@PathVariable long id) {
     	goallogService.deleteGoalLog(id);
         return new ApiResponseEntity<Void>(HttpStatus.ACCEPTED);
-    }
+    }*/
 }

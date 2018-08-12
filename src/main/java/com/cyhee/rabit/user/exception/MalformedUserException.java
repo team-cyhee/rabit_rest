@@ -2,12 +2,16 @@ package com.cyhee.rabit.user.exception;
 
 import org.springframework.http.HttpStatus;
 
-import com.cyhee.rabit.web.model.ApiErrorCode;
+import com.cyhee.rabit.cmm.web.model.ApiErrorCode;
 
 @SuppressWarnings("serial")
-public class MalformedUserException extends UserException{
+public class MalformedUserException extends UserException {
 	public MalformedUserException() {
 		super("Invalid User input type!");
+	}
+	
+	public MalformedUserException(String msg) {
+		super(msg);
 	}
 
 	public ApiErrorCode getApiErrorCode() {

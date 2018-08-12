@@ -25,64 +25,77 @@ public class BasicUserService implements UserService {
 		return userRepository.findAll();
 	}
 	
-	public void addUser(User user) throws MalformedUserException{
-		Optional<User> userOpt = userRepository.findByEmail(user.getEmail());
+	public void addUser(User user) throws DuplicateUserException{
+		/*Optional<User> userOpt = userRepository.findByEmail(user.getEmail());
     	if(userOpt.isPresent())
-    		throw new DuplicateUserException();
-    	
+    		throw new DuplicateUserException();*/    	
     	user.setPassword(passwordEncoder.encode(user.getPassword()));
 		try {
 			userRepository.save(user);
 		} catch (DataIntegrityViolationException e) {
-			throw new MalformedUserException();
+			throw new DuplicateUserException();
 		}
 	}
 	
 	public User getUser(Long id) throws NoSuchUserException {
-		Optional<User> userOpt = userRepository.findById(id);
-    	if(userOpt.isPresent())
-    		return userOpt.get();
-    	throw new NoSuchUserException();
+		return findUser(id);
 	}
 	
-	public void updateUser(Long id, User userForm) throws NoSuchUserException {
+	public User getUserByUsername(String username) throws NoSuchUserException {
+		return findUser(username);
+	}
+
+	public User getUserByEmail(String email) throws NoSuchUserException {
+		Optional<User> userOpt = userRepository.findByEmail(email);
+    	if(!userOpt.isPresent())
+    		throw new NoSuchUserException(email);    	
+    	return userOpt.get();
+	}
+	
+	public void updateUser(Long id, User userForm) throws NoSuchUserException {    	
+    	updateUser(findUser(id), userForm);
+	}
+	
+	public void updateUserByUsername(String username, User userForm) throws NoSuchUserException {
+		updateUser(findUser(username), userForm);
+	}
+	
+	public void deleteUser(Long id) throws NoSuchUserException {
+        userRepository.delete(findUser(id));
+	}
+	
+	public void deleteUserByUsername(String username) throws NoSuchUserException {    	
+        userRepository.delete(findUser(username));
+	}
+	
+	private User findUser(Long id) throws NoSuchUserException {
 		Optional<User> userOpt = userRepository.findById(id);
     	if(!userOpt.isPresent())
-    		throw new NoSuchUserException();
-    	
-    	User user = userOpt.get();
-    	user.setBirth(userForm.getBirth());
-    	user.setName(userForm.getName());
-    	user.setPassword(passwordEncoder.encode((userForm.getPassword())));
-    	user.setPhone(userForm.getPhone());
-    	user.setStatus(userForm.getStatus());
+    		throw new NoSuchUserException(id);    	
+    	return userOpt.get();
+	}
+	
+	private User findUser(String username) throws NoSuchUserException {
+		Optional<User> userOpt = userRepository.findByUsername(username);
+    	if(!userOpt.isPresent())
+    		throw new NoSuchUserException(username);    	
+    	return userOpt.get();
+	}
+	
+	private void updateUser(User user, User userForm) {
+		setUserProps(user, userForm);
     	
         try {
 			userRepository.save(user);
 		} catch (DataIntegrityViolationException e) {
-			throw new MalformedUserException();
+			throw new MalformedUserException(e.getMessage());
 		} 
 	}
 	
-	public void deleteUser(Long id) throws NoSuchUserException {
-		Optional<User> userOpt = userRepository.findById(id);
-    	if(!userOpt.isPresent())
-    		throw new NoSuchUserException();
-    	
-        userRepository.deleteById(id);
-	}
-	
-	public User getUserByUsername(String username) throws NoSuchUserException {
-		Optional<User> userOpt = userRepository.findByUsername(username);
-    	if(userOpt.isPresent())
-    		return userOpt.get();
-    	throw new NoSuchUserException();
-	}
-	
-	public User getUserByEmail(String email) throws NoSuchUserException {
-		Optional<User> userOpt = userRepository.findByEmail(email);
-    	if(userOpt.isPresent())
-    		return userOpt.get();
-    	throw new NoSuchUserException();
+	private void setUserProps(User user, User userForm) {
+		user.setBirth(userForm.getBirth());
+		user.setName(userForm.getName());
+		user.setPhone(userForm.getPhone());
+		user.setStatus(userForm.getStatus());
 	}
 }

@@ -1,25 +1,25 @@
 package com.cyhee.rabit.user.web;
 
-import java.security.Principal;
-
 import javax.annotation.Resource;
-import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cyhee.rabit.user.exception.UserException;
 import com.cyhee.rabit.user.model.User;
+import com.cyhee.rabit.user.model.UserView;
 import com.cyhee.rabit.user.service.UserService;
-import com.cyhee.rabit.web.model.ApiError;
-import com.cyhee.rabit.web.model.ApiErrorCode;
-import com.cyhee.rabit.web.model.ApiResponseEntity;
+import com.cyhee.rabit.validation.SetPasswordGroup;
+import com.cyhee.rabit.validation.exception.ValidationFailException;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping("rest/v1/users")
@@ -28,46 +28,63 @@ public class UserController {
 	private UserService userService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ApiResponseEntity<Iterable<User>> getAllUsers() {
-		return new ApiResponseEntity<Iterable<User>>(userService.getAllUsers(), HttpStatus.OK);
+	public ResponseEntity<Iterable<User>> getAllUsers() {
+		return new ResponseEntity<Iterable<User>>(userService.getAllUsers(), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	public ApiResponseEntity<Void> addUser(@RequestBody @Valid User user, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return new ApiResponseEntity<>(bindingResult.getAllErrors());
-		}
+	@JsonView(UserView.UserPost.class)
+	@PostMapping
+	public ResponseEntity<Void> addUser(@RequestBody @Validated({SetPasswordGroup.class}) User user, BindingResult bindingResult) {
+		if (bindingResult.hasErrors())
+			throw new ValidationFailException(bindingResult.getAllErrors());
+	
 		userService.addUser(user);
-		return new ApiResponseEntity<>(HttpStatus.CREATED);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ApiResponseEntity<User> getUser(@PathVariable long id, Principal principal) {
-		if(principal == null)
-			return new ApiResponseEntity<>(ApiErrorCode.FORBIDDEN, "No principal information", HttpStatus.FORBIDDEN);		
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<User> getUser(@PathVariable long id/*, Principal principal*/) {
+		/*if(principal == null)
+			return new ApiResponseEntity<>(ApiErrorCode.FORBIDDEN, "No principal information", HttpStatus.FORBIDDEN);*/		
 		User user = userService.getUser(id);
-		if(!user.getUsername().equals(principal.getName()))
-			return new ApiResponseEntity<>(ApiErrorCode.FORBIDDEN, "Incorrect principal information", HttpStatus.FORBIDDEN);
-		return new ApiResponseEntity<>(userService.getUser(id), HttpStatus.OK);
+		/*if(!user.getUsername().equals(principal.getName()))
+			return new ApiResponseEntity<>(ApiErrorCode.FORBIDDEN, "Incorrect principal information", HttpStatus.FORBIDDEN);*/
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/{username}")
+	public ResponseEntity<User> getUserByUsername(@PathVariable String username) {		
+		User user = userService.getUserByUsername(username);
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ApiResponseEntity<Void> updateUser(@PathVariable long id, @RequestBody @Valid User userForm,
-			BindingResult bindingResult) {
+	public ResponseEntity<Void> updateUser(@PathVariable long id, @RequestBody User userForm, BindingResult bindingResult) {
 		if (bindingResult.hasErrors())
-			return new ApiResponseEntity<>(ApiErrorCode.INVALID_INPUT_TYPE, "Invalid user object", HttpStatus.BAD_REQUEST);
+			throw new ValidationFailException(bindingResult.getAllErrors());
+		
 		userService.updateUser(id, userForm);
-		return new ApiResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{username}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> updateUserByUsername(@PathVariable String username, @RequestBody User user, BindingResult bindingResult) {
+		if (bindingResult.hasErrors())
+			throw new ValidationFailException(bindingResult.getAllErrors());
+		
+		userService.updateUserByUsername(username, user);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ApiResponseEntity<Void> deleteUser(@PathVariable long id) {
+	public ResponseEntity<Void> deleteUser(@PathVariable long id) {
 		userService.deleteUser(id);
-		return new ApiResponseEntity<Void>(HttpStatus.ACCEPTED);
+		return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
 	}
-
-	@ExceptionHandler(value = UserException.class)
-	public ApiResponseEntity<Void> userExceptionHandler(UserException e) {
-		return new ApiResponseEntity<>(e.getApiErrorCode(), e, e.getStatus());
+	
+	@RequestMapping(value = "/{username}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deleteUserByUsername(@PathVariable String username) {
+		userService.deleteUserByUsername(username);
+		return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
 	}
 }

@@ -2,10 +2,12 @@ package com.cyhee.rabit;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import com.cyhee.rabit.user.exception.NoSuchUserException;
 import com.cyhee.rabit.user.model.User;
@@ -13,6 +15,7 @@ import com.cyhee.rabit.user.service.BasicUserService;
 import com.cyhee.rabit.user.service.UserService;
 
 @SpringBootApplication
+@EnableAspectJAutoProxy
 public class RabitApplication {
 
 	public static void main(String[] args) {
@@ -21,6 +24,13 @@ public class RabitApplication {
 		List<User> users = new ArrayList<>();
 		users.add(userGenerator("user1"));
 		users.add(userGenerator("user2"));
+		
+		User me = new User();
+		me.setEmail("whgksdyd112@naver.com");
+		me.setUsername("chy");
+		me.setName("Á¶ÇÑ¿ë");
+		me.setPassword(UUID.randomUUID().toString());
+		users.add(me);
 
 		UserService userService = (UserService)context.getBean(BasicUserService.class);
 		

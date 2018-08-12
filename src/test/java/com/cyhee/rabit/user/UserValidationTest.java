@@ -1,4 +1,4 @@
-package com.cyhee.rabit.validation;
+package com.cyhee.rabit.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,16 +15,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.cyhee.rabit.validation.Password;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @RunWith(SpringRunner.class)
-public class ValidTest {
+public class UserValidationTest {
 	private Validator validator;
 	
 	@Getter @Setter
-	private static class PasswordSample {
-		@Password(needSpecial=true)
+	private static class UserSample {
+		@Password
 		String password;
 	}
 	
@@ -42,22 +44,31 @@ public class ValidTest {
 	
 	@Test
 	public void PasswordValid() {
-		PasswordSample sample = new PasswordSample();
+		UserSample user = new UserSample();
+		Set<ConstraintViolation<UserSample>> violations;
 
-		Set<ConstraintViolation<PasswordSample>> violations = validator.validate(sample);
-		assertThat(violations.size()).isPositive();
+		// null
+		violations = validator.validate(user);
+		assertThat(violations.isEmpty()).isFalse();
 		
-		sample.setPassword("password1");
-		violations = validator.validate(sample);
-		assertThat(violations.size()).isPositive();
+		// need special
+		user.setPassword("nospecialchar1");
+		violations = validator.validate(user);
+		assertThat(violations.isEmpty()).isTrue();
 		
-		sample.setPassword("#pa3123asd");
-		violations = validator.validate(sample);
-		assertThat(violations.size()).isZero();
+		// less than 8
+		user.setPassword("!1short");
+		violations = validator.validate(user);
+		assertThat(violations.isEmpty()).isFalse();
 		
-		sample.setPassword("#pa31");
-		violations = validator.validate(sample);
-		assertThat(violations.size()).isPositive();
+		// over 20
+		user.setPassword("@@toolongpasswordfail22");
+		violations = validator.validate(user);
+		assertThat(violations.isEmpty()).isFalse();
+		
+		user.setPassword("itwillpass2@");
+		violations = validator.validate(user);
+		assertThat(violations.isEmpty()).isTrue();
 	}
 	
 	@Test

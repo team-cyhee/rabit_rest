@@ -2,12 +2,16 @@ package com.cyhee.rabit.user.exception;
 
 import org.springframework.http.HttpStatus;
 
-import com.cyhee.rabit.web.model.ApiErrorCode;
+import com.cyhee.rabit.cmm.web.model.ApiErrorCode;
 
 @SuppressWarnings("serial")
 public class NoSuchUserException extends UserException{
-	public NoSuchUserException() {
-		super("No such user id!");
+	public NoSuchUserException(long id) {
+		super(String.format("No such user with id '%d'",id));
+	}
+	
+	public NoSuchUserException(String username) {
+		super(String.format("No such user with username '%s'", username));
 	}
 
 	public ApiErrorCode getApiErrorCode() {

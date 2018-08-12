@@ -20,6 +20,6 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.cyhee.rabit"))
                 .paths(PathSelectors.any())
                 .build();
-
     }
+    
 }

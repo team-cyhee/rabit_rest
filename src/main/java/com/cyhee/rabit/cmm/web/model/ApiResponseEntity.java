@@ -1,4 +1,4 @@
-package com.cyhee.rabit.web.model;
+package com.cyhee.rabit.cmm.web.model;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.ObjectError;
 
-public class ApiResponseEntity<T> extends ResponseEntity<ApiResult<T>>{
+public class ApiResponseEntity<T> {/*extends ResponseEntity<ApiResult<T>>{
 
 	public ApiResponseEntity(HttpStatus status) {
 		super(new ApiSuccess<>(null), status);
@@ -25,7 +25,7 @@ public class ApiResponseEntity<T> extends ResponseEntity<ApiResult<T>>{
 	}
 	
 	public ApiResponseEntity(ApiErrorCode code, Throwable e, HttpStatus status) {
-		super(new ApiError<>(code, e), status);
+		super(new ApiError(code, e), status);
 	}
 	
 	public ApiResponseEntity(ApiErrorCode code, String message, HttpStatus status) {
@@ -42,5 +42,5 @@ public class ApiResponseEntity<T> extends ResponseEntity<ApiResult<T>>{
 
 	public ApiResponseEntity(@Nullable T body, @Nullable MultiValueMap<String, String> headers, HttpStatus status) {
 		super(new ApiSuccess<T>(body), headers, status);
-	}
+	}*/
 }

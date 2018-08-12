@@ -1,12 +1,17 @@
-package com.cyhee.rabit.web.model;
+package com.cyhee.rabit.cmm.web.model;
 
 import java.util.List;
 
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
-public class ApiError<T> extends ApiResult<T>{
+import com.cyhee.rabit.cmm.web.exception.ApiException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class ApiError {
 	private ApiErrorCode error;
+	@JsonProperty
+	private String message;
 	
 	public ApiError() {
 		this.error = ApiErrorCode.UNKNOWN;
@@ -32,6 +37,10 @@ public class ApiError<T> extends ApiResult<T>{
 				this.message += fieldError.getField() + " : " + fieldError.getDefaultMessage() + "\n";
 			}
 		});
+	}
+	
+	public ApiError(ApiException e) {
+		this(e.getApiErrorCode(), e.getMessage());
 	}
 
 	public ApiErrorCode getError() {

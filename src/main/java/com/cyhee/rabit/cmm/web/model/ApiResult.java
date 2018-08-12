@@ -1,4 +1,4 @@
-package com.cyhee.rabit.web.model;
+package com.cyhee.rabit.cmm.web.model;
 
 public abstract class ApiResult<T> {
 	protected String message;

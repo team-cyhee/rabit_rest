@@ -11,6 +11,11 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import com.cyhee.rabit.cmm.model.TimestampEntity;
+import com.cyhee.rabit.validation.Password;
+import com.cyhee.rabit.validation.SetPasswordGroup;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,17 +28,19 @@ public class User extends TimestampEntity{
 	
 	@Column(nullable=false, unique=true, length=50, updatable=false)
 	@Email
+	@NotNull
 	private String email;
 	
 	@Column(nullable=false, length=255)
+	@Password(groups=SetPasswordGroup.class)
+	@JsonView(UserView.UserPost.class)
 	private String password;
 	
 	@Column(nullable=false, unique=true, length=20)
 	@NotNull
 	private String username;
 	
-	@Column(nullable=false, length=30)
-	@NotNull
+	@Column(length=30)
 	private String name;
 		
 	@Column(length=20)

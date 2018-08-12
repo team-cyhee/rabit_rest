@@ -1,0 +1,34 @@
+package com.cyhee.rabit.user.web;
+
+import javax.annotation.Resource;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.cyhee.rabit.user.model.User;
+import com.cyhee.rabit.user.service.UserService;
+import com.cyhee.rabit.validation.SetPasswordGroup;
+import com.cyhee.rabit.validation.exception.ValidationFailException;
+
+@RestController
+@RequestMapping("rest/v1/signup")
+@Deprecated
+public class SignUpController {
+	@Resource(name = "basicUserService")
+	private UserService userService;
+	
+	@PostMapping
+	public ResponseEntity<Void> signUp(@RequestBody @Validated({SetPasswordGroup.class}) User user, BindingResult bindingResult) {
+		if (bindingResult.hasErrors())
+			throw new ValidationFailException(bindingResult.getAllErrors());
+	
+		userService.addUser(user);
+		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
+}

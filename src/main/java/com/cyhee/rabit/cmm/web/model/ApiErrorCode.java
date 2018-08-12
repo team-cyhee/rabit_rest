@@ -1,4 +1,4 @@
-package com.cyhee.rabit.web.model;
+package com.cyhee.rabit.cmm.web.model;
 
 public enum ApiErrorCode {
 	DUPLICATED_KEY,

@@ -11,11 +11,13 @@ public interface UserService {
 	
 	User getUser(Long id) throws NoSuchUserException;
 	
+	User getUserByUsername(String username) throws NoSuchUserException;
+	
 	void updateUser(Long id, User userForm) throws NoSuchUserException;
+	
+	void updateUserByUsername(String username, User userForm) throws NoSuchUserException;
 	
 	void deleteUser(Long id) throws NoSuchUserException;
 	
-	User getUserByUsername(String username) throws NoSuchUserException;
-	
-	User getUserByEmail(String email) throws NoSuchUserException;
+	void deleteUserByUsername(String username) throws NoSuchUserException;
 }

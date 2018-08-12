@@ -1,16 +1,10 @@
 package com.cyhee.rabit.user.exception;
 
-import org.springframework.http.HttpStatus;
-
-import com.cyhee.rabit.web.model.ApiErrorCode;
+import com.cyhee.rabit.cmm.web.exception.ApiException;
 
 @SuppressWarnings("serial")
-public abstract class UserException extends RuntimeException {
+public abstract class UserException extends RuntimeException implements ApiException {
 	public UserException(String message) {
 		super(message);
 	}
-
-	public abstract ApiErrorCode getApiErrorCode();
-	
-	public abstract HttpStatus getStatus();
 }
