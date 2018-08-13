@@ -1,11 +1,14 @@
 package com.cyhee.rabit.user;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.Charset;
@@ -17,6 +20,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -30,6 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers=UserController.class, secure=false)
+@EnableSpringDataWebSupport
 public class UserApiTest {
 	@Autowired
 	private MockMvc mvc;
@@ -40,9 +45,9 @@ public class UserApiTest {
 	
 	private static final String url = "/rest/v1/users";
 	
-	private String getUrl() {
+	/*private String getUrl() {
 		return url;
-	}
+	}*/
 	
 	private String getUrl(long id) {
 		return url+"/"+String.valueOf(id);
@@ -73,7 +78,10 @@ public class UserApiTest {
 		
 		ApiTestUtil testUtil = new ApiTestUtil(mvc, url);
 		testUtil.simpleCRUDTest(1L, user);
-		testUtil.getDetailTest(1L, "email", "email@rabit.com");
+
+		mvc.perform(get(getUrl(1L)))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.email", is(user.getEmail())));
 		
 		mvc.perform(get(getUrl(2L)))
 			.andExpect(status().isNotFound());		

@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +22,10 @@ public class BasicUserService implements UserService {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
-	public Iterable<User> getAllUsers() {
-		return userRepository.findAll();
+	public Iterable<User> getUsers(Pageable pageable) {
+		return userRepository.findAll(pageable).getContent();
 	}
-	
+		
 	public void addUser(User user) throws DuplicateUserException{
 		/*Optional<User> userOpt = userRepository.findByEmail(user.getEmail());
     	if(userOpt.isPresent())

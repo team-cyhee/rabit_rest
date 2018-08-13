@@ -1,11 +1,13 @@
 package com.cyhee.rabit.user.service;
 
+import org.springframework.data.domain.Pageable;
+
 import com.cyhee.rabit.user.exception.MalformedUserException;
 import com.cyhee.rabit.user.exception.NoSuchUserException;
 import com.cyhee.rabit.user.model.User;
 
-public interface UserService {
-	Iterable<User> getAllUsers();
+public interface UserService {	
+	Iterable<User> getUsers(Pageable pageable);
 	
 	void addUser(User user) throws MalformedUserException;
 	

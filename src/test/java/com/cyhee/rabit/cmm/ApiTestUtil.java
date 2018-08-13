@@ -16,6 +16,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
 public class ApiTestUtil {
 	private ObjectMapper mapper = new ObjectMapper();
 	private MediaType contentType = new MediaType(
@@ -56,21 +60,5 @@ public class ApiTestUtil {
 		mvc.perform(get(getUrl(1L)))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("@[*]."+type, containsInAnyOrder(target)));
-	}
-
-	public MockMvc getMvc() {
-		return mvc;
-	}
-
-	public void setMvc(MockMvc mvc) {
-		this.mvc = mvc;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
 	}
 }

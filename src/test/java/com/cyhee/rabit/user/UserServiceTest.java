@@ -91,7 +91,6 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	@SuppressWarnings("deprecation")
 	public void createAndGetAll() {
 		userService.addUser(user1);
 		userService.addUser(user2);
@@ -101,7 +100,7 @@ public class UserServiceTest {
 		assertThat(userList)
 			.hasSize(3);
 
-		Pageable pageable = new PageRequest(1, 2);
+		Pageable pageable = PageRequest.of(1, 2);
 		Page<User> userPage = repository.findAll(pageable);
 		assertThat(userPage)
 			.hasSize(1)

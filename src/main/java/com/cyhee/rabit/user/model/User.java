@@ -13,8 +13,6 @@ import javax.validation.constraints.NotNull;
 import com.cyhee.rabit.cmm.model.TimestampEntity;
 import com.cyhee.rabit.validation.Password;
 import com.cyhee.rabit.validation.SetPasswordGroup;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import lombok.Getter;

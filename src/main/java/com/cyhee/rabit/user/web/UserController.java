@@ -2,6 +2,8 @@ package com.cyhee.rabit.user.web;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -26,10 +28,10 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class UserController {
 	@Resource(name = "basicUserService")
 	private UserService userService;
-
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<Iterable<User>> getAllUsers() {
-		return new ResponseEntity<Iterable<User>>(userService.getAllUsers(), HttpStatus.OK);
+	
+	@GetMapping
+	public ResponseEntity<Iterable<User>> getUsers(@PageableDefault Pageable pageable) {
+		return new ResponseEntity<Iterable<User>>(userService.getUsers(pageable), HttpStatus.OK);
 	}
 
 	@JsonView(UserView.UserPost.class)
@@ -51,12 +53,6 @@ public class UserController {
 			return new ApiResponseEntity<>(ApiErrorCode.FORBIDDEN, "Incorrect principal information", HttpStatus.FORBIDDEN);*/
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
-	
-	@GetMapping(value = "/{username}")
-	public ResponseEntity<User> getUserByUsername(@PathVariable String username) {		
-		User user = userService.getUserByUsername(username);
-		return new ResponseEntity<>(user, HttpStatus.OK);
-	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> updateUser(@PathVariable long id, @RequestBody User userForm, BindingResult bindingResult) {
@@ -66,25 +62,10 @@ public class UserController {
 		userService.updateUser(id, userForm);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
-	@RequestMapping(value = "/{username}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> updateUserByUsername(@PathVariable String username, @RequestBody User user, BindingResult bindingResult) {
-		if (bindingResult.hasErrors())
-			throw new ValidationFailException(bindingResult.getAllErrors());
-		
-		userService.updateUserByUsername(username, user);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteUser(@PathVariable long id) {
 		userService.deleteUser(id);
-		return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
-	}
-	
-	@RequestMapping(value = "/{username}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteUserByUsername(@PathVariable String username) {
-		userService.deleteUserByUsername(username);
 		return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
 	}
 }
