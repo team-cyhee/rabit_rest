@@ -15,18 +15,24 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.cyhee.rabit.cmm.model.ContentStatus;
 import com.cyhee.rabit.cmm.model.TimestampEntity;
+import com.cyhee.rabit.goallog.model.GoalLog;
 import com.cyhee.rabit.user.model.User;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 @Entity
 @Table
-@Setter @Getter @ToString
-@NoArgsConstructor
+@Data
+@EqualsAndHashCode(callSuper=false)
+@Accessors(chain=true)
 public class Goal extends TimestampEntity {
 	
 	@ManyToOne(optional=false)
@@ -48,17 +54,8 @@ public class Goal extends TimestampEntity {
 	private Date endDate;
 	
 	@Column(nullable=false)
-	private GoalStatus status = GoalStatus.PENDING;
+	private ContentStatus status = ContentStatus.PENDING;
 	
 	@Column
 	private GoalCycle selectedDays;
-	
-	public Goal(User author, Goal parent, String content, Date startDate, Date endDate) {
-		super();
-		this.author = author;
-		this.parent = parent;
-		this.content = content;
-		this.startDate = startDate;
-		this.endDate = endDate;
-	}
 }

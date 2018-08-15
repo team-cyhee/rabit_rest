@@ -8,7 +8,7 @@ import com.cyhee.rabit.goal.model.Goal;
 public interface GoalService {
 	Page<Goal> getGoals(Pageable pageable);
 	
-	void addGoal(Goal user);
+	void addGoal(Goal goal);
 	
 	Goal getGoal(long id);
 	

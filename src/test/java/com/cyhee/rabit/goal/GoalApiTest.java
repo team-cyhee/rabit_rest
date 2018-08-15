@@ -29,11 +29,11 @@ public class GoalApiTest {
 	
 	@Test
 	public void CRUD() throws Exception {
-		Goal goal = new Goal(null, null, "content1", null, null);
+		Goal goal = new Goal().setContent("content");
 		given(goalService.getGoal(1L)).willReturn(goal);
 		
 		ApiTestUtil testUtil = new ApiTestUtil(mvc, url);
 		testUtil.simpleCRUDTest(1L, goal);
-		testUtil.getDetailTest(1L, "content", "content1");
+		testUtil.getDetailTest(1L, "content", "content");
 	}
 }

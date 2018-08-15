@@ -11,27 +11,30 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.cyhee.rabit.cmm.model.ContentStatus;
 import com.cyhee.rabit.cmm.model.TimestampEntity;
-import com.cyhee.rabit.goal.model.GoalStatus;
-import com.cyhee.rabit.user.model.User;
+import com.cyhee.rabit.goal.model.Goal;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 @Entity
 @Table
-@Setter @Getter @ToString
+@Data
+@EqualsAndHashCode(callSuper=false)
+@Accessors(chain=true)
 public class GoalLog extends TimestampEntity {
 	
 	@ManyToOne(optional=false)
 	@JoinColumn(name="goal_id", foreignKey = @ForeignKey(name = "FK_GOAL_LOG"))
 	@OnDelete(action=OnDeleteAction.CASCADE)
-	private User author;
+	private Goal goal;
 	
 	@Column(columnDefinition = "TEXT")
 	private String content;
 	
 	@Column(nullable=false)
-	private GoalStatus status = GoalStatus.PENDING;
+	private ContentStatus status = ContentStatus.PENDING;
 }

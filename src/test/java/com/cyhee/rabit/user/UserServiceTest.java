@@ -46,9 +46,9 @@ public class UserServiceTest {
 	@Before
 	public void setup() {
 		now = new Date();
-		user1 = new User("email1@a","password1@","user1","name1","010-1234-1234", now);
-		user2 = new User("email2@a","password2@","user2","name2","010-1234-1234", now);
-		user3 = new User("email3@a","password3@","user3","name3","010-1234-1234", now);
+		user1 = new User().setEmail("email1@a").setPassword("password1@").setUsername("username");		
+		user2 = new User().setEmail("email2@a").setPassword("password2@").setUsername("testuser2");
+		user3 = new User().setEmail("email23@a").setPassword("password2@").setUsername("testuser3");
 	}
 
 	@Test

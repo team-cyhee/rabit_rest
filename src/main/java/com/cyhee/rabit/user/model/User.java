@@ -15,13 +15,15 @@ import com.cyhee.rabit.validation.Password;
 import com.cyhee.rabit.validation.SetPasswordGroup;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 @Entity
 @Table
-@Setter @Getter @ToString
+@Data
+@EqualsAndHashCode(callSuper=false)
+@Accessors(chain=true)
 public class User extends TimestampEntity{
 	
 	@Column(nullable=false, unique=true, length=50, updatable=false)
@@ -49,17 +51,4 @@ public class User extends TimestampEntity{
 	
 	@Column(nullable=false)
 	private UserStatus status = UserStatus.PENDING;
-
-	public User() {		
-	}
-
-	public User(String email, String password, String username, String name, String phone, Date birth) {
-		super();
-		this.email = email;
-		this.password = password;
-		this.username = username;
-		this.name = name;
-		this.phone = phone;
-		this.birth = birth;
-	}
 }

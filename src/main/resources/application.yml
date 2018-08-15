@@ -7,6 +7,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         show-sql: true
         format-sql: true
+        type.descriptor.sql.BasicBinder: TRACE          
   datasource:
     url: jdbc:mysql://localhost:6033/rabit?useSSL=false
     username: rabit
@@ -24,3 +25,5 @@ logging.level:
   org.springframework:
     security: debug
     boot: debug
+  org.hibernate:
+    type: TRACE

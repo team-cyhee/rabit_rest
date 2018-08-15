@@ -64,7 +64,7 @@ public class UserApiTest {
 	
 	@Test
 	public void CRUD() throws Exception {
-		User user = new User("email@rabit.com","password1123","user1","name1","010-1234-1234", null);
+		User user = new User().setEmail("user@email.com").setPassword("password1@").setUsername("username");
 		
 		given(userService.getUser(1L)).willReturn(user);
 		given(userService.getUser(2L)).willThrow(NoSuchUserException.class);

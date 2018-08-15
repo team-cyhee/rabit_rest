@@ -3,14 +3,17 @@ package com.cyhee.rabit.goallog.web;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cyhee.rabit.cmm.web.model.ApiResponseEntity;
 import com.cyhee.rabit.goallog.model.GoalLog;
 import com.cyhee.rabit.goallog.service.GoalLogService;
 
@@ -20,31 +23,32 @@ public class GoalLogController {
 	@Resource(name="basicGoalLogService")
 	private GoalLogService goallogService;
 	
-	/*@RequestMapping(method=RequestMethod.GET)
-	public ApiResponseEntity<Iterable<GoalLog>> getAllGoalLogs() {
-        return new ApiResponseEntity<Iterable<GoalLog>>(goallogService.getAllGoalLogs(), HttpStatus.OK);
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<Iterable<GoalLog>> getGoalLogs(@PageableDefault Pageable pageable) {
+		Page<GoalLog> logPage = goallogService.getGoalLogs(pageable);
+        return new ResponseEntity<Iterable<GoalLog>>(logPage.getContent(), HttpStatus.OK);
     }
 	
 	@RequestMapping(method=RequestMethod.POST)
-    public ApiResponseEntity<Void> addGoalLog(@RequestBody GoalLog goallog) {
+    public ResponseEntity<Void> addGoalLog(@RequestBody GoalLog goallog) {
     	goallogService.addGoalLog(goallog);
-        return new ApiResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
-    public ApiResponseEntity<GoalLog> getGoalLog(@PathVariable long id) {
-    	return new ApiResponseEntity<>(goallogService.getGoalLog(id), HttpStatus.OK);
+    public ResponseEntity<GoalLog> getGoalLog(@PathVariable long id) {
+    	return new ResponseEntity<>(goallogService.getGoalLog(id), HttpStatus.OK);
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
-    public ApiResponseEntity<Void> updateGoalLog(@PathVariable long id, @RequestBody GoalLog goallogForm) {
+    public ResponseEntity<Void> updateGoalLog(@PathVariable long id, @RequestBody GoalLog goallogForm) {
     	goallogService.updateGoalLog(id, goallogForm);
-        return new ApiResponseEntity<>(HttpStatus.OK); 
+        return new ResponseEntity<>(HttpStatus.OK); 
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
-    public ApiResponseEntity<Void> deleteGoalLog(@PathVariable long id) {
+    public ResponseEntity<Void> deleteGoalLog(@PathVariable long id) {
     	goallogService.deleteGoalLog(id);
-        return new ApiResponseEntity<Void>(HttpStatus.ACCEPTED);
-    }*/
+        return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
+    }
 }

@@ -43,7 +43,7 @@ public class ApiTestUtil {
 		mvc.perform(post(url).contentType(contentType).content(mapper.writeValueAsString(target)))
 			.andExpect(status().isCreated());
 
-		mvc.perform(get(url))
+		mvc.perform(get(url).param("page", "0").param("size", "10"))
 	        .andExpect(status().isOk());
 		
 		mvc.perform(get(getUrl(id)))
