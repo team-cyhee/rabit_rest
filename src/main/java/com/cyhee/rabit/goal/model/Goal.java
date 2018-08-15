@@ -50,6 +50,9 @@ public class Goal extends TimestampEntity {
 	@Column(nullable=false)
 	private GoalStatus status = GoalStatus.PENDING;
 	
+	@Column
+	private GoalCycle selectedDays;
+	
 	public Goal(User author, Goal parent, String content, Date startDate, Date endDate) {
 		super();
 		this.author = author;

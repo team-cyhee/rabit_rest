@@ -1,5 +1,6 @@
 package com.cyhee.rabit.cmm.web.model;
 
+@Deprecated
 public abstract class ApiResult<T> {
 	protected String message;
 

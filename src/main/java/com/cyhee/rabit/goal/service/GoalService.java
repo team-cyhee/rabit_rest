@@ -1,9 +1,12 @@
 package com.cyhee.rabit.goal.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.cyhee.rabit.goal.model.Goal;
 
 public interface GoalService {
-	Iterable<Goal> getAllGoals();
+	Page<Goal> getGoals(Pageable pageable);
 	
 	void addGoal(Goal user);
 	

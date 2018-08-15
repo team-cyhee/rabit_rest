@@ -1,7 +1,6 @@
 package com.cyhee.rabit.user;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -65,7 +64,7 @@ public class UserApiTest {
 	
 	@Test
 	public void CRUD() throws Exception {
-		User user = new User("email@rabit.com","what2the2fuck","user1","name1","010-1234-1234", null);
+		User user = new User("email@rabit.com","password1123","user1","name1","010-1234-1234", null);
 		
 		given(userService.getUser(1L)).willReturn(user);
 		given(userService.getUser(2L)).willThrow(NoSuchUserException.class);

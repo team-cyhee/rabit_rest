@@ -1,13 +1,6 @@
 package com.cyhee.rabit.cmm.web.model;
 
-import java.util.List;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
-import org.springframework.util.MultiValueMap;
-import org.springframework.validation.ObjectError;
-
+@Deprecated
 public class ApiResponseEntity<T> {/*extends ResponseEntity<ApiResult<T>>{
 
 	public ApiResponseEntity(HttpStatus status) {

@@ -1,6 +1,6 @@
 package com.cyhee.rabit.cmm;
 
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -59,6 +59,6 @@ public class ApiTestUtil {
 	public void getDetailTest(Object id, String type, Object target) throws Exception {
 		mvc.perform(get(getUrl(1L)))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("@[*]."+type, containsInAnyOrder(target)));
+			.andExpect(jsonPath("$."+type, is(target)));
 	}
 }
