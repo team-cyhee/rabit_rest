@@ -41,6 +41,22 @@ public class RabitApplication {
 				userService.addUser(user);
 			}
 		}
+		
+		/*List<Goal> goals = new ArrayList<>();
+		goals.add(new Goal().setAuthor(userService.getUserByUsername("chy")));
+		
+		GoalService goalService = (GoalService)context.getBean(BasicGoalService.class);
+		for (Goal goal : goals) {			
+			goalService.addGoal(goal);
+		}
+		
+		List<Comment> comments = new ArrayList<>();
+		comments.add(new Comment().setAuthor(userService.getUserByUsername("chy")).setParentId(goals.get(0).getId()).setType(ContentType.GOAL));
+		
+		CommentService commentService = (CommentService)context.getBean(BasicCommentService.class);
+		for (Comment comment: comments) {
+			commentService.addComment(comment);
+		}*/
 	}
 	
 	public static User userGenerator(String username) {

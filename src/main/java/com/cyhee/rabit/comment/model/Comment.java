@@ -1,31 +1,25 @@
-package com.cyhee.rabit.goal.model;
 
-import java.util.Date;
+package com.cyhee.rabit.comment.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.cyhee.rabit.cmm.model.ContentStatus;
+import com.cyhee.rabit.cmm.model.ContentType;
 import com.cyhee.rabit.cmm.model.TimestampEntity;
-import com.cyhee.rabit.goallog.model.GoalLog;
 import com.cyhee.rabit.user.model.User;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Entity
@@ -33,29 +27,23 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper=false)
 @Accessors(chain=true)
-public class Goal extends TimestampEntity {
+public class Comment extends TimestampEntity {
 	
 	@ManyToOne(optional=false)
-	@JoinColumn(name="author_id", foreignKey = @ForeignKey(name = "FK_USER_GOAL"))
+	@JoinColumn(name="user_id", foreignKey = @ForeignKey(name = "FK_COMMENT_AUTHOR"))
 	@OnDelete(action=OnDeleteAction.CASCADE)
 	private User author;
 	
-	@ManyToOne(cascade=CascadeType.REMOVE, optional=true)
-	@JoinColumn(name="parent_id")
-	private Goal parent;
-
+	@Column
+	@Enumerated(EnumType.STRING)
+	private ContentType type;
+	
+	@Column
+	private long parentId;
+	
 	@Column(columnDefinition = "TEXT")
 	private String content;
 	
-	@Temporal(TemporalType.TIMESTAMP) 
-	private Date startDate;
-	
-	@Temporal(TemporalType.TIMESTAMP) 
-	private Date endDate;
-	
 	@Column(nullable=false)
 	private ContentStatus status = ContentStatus.ACTIVE;
-	
-	@Column
-	private GoalCycle selectedDays;
 }

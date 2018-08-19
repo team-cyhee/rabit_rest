@@ -36,5 +36,5 @@ public class GoalLog extends TimestampEntity {
 	private String content;
 	
 	@Column(nullable=false)
-	private ContentStatus status = ContentStatus.PENDING;
+	private ContentStatus status = ContentStatus.ACTIVE;
 }

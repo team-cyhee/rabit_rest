@@ -8,9 +8,6 @@ import javax.persistence.MappedSuperclass;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.cyhee.rabit.goal.model.Goal;
-import com.cyhee.rabit.goallog.model.GoalLog;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
