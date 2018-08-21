@@ -27,3 +27,5 @@ logging.level:
     boot: debug
   org.hibernate:
     type: TRACE
+  com.cyhee:
+    rabit: debug

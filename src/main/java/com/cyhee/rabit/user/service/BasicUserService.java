@@ -8,10 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.cyhee.rabit.cmm.model.ContentType;
+import com.cyhee.rabit.cmm.web.exception.NoSuchContentException;
 import com.cyhee.rabit.user.dao.UserRepository;
-import com.cyhee.rabit.user.exception.DuplicateUserException;
 import com.cyhee.rabit.user.exception.MalformedUserException;
-import com.cyhee.rabit.user.exception.NoSuchUserException;
 import com.cyhee.rabit.user.model.User;
 
 @Service("basicUserService")
@@ -26,61 +26,46 @@ public class BasicUserService implements UserService {
 		return userRepository.findAll(pageable).getContent();
 	}
 		
-	public void addUser(User user) throws DuplicateUserException{
-		/*Optional<User> userOpt = userRepository.findByEmail(user.getEmail());
-    	if(userOpt.isPresent())
-    		throw new DuplicateUserException();*/    	
+	public void addUser(User user) {    	
     	user.setPassword(passwordEncoder.encode(user.getPassword()));
-		try {
-			userRepository.save(user);
-		} catch (DataIntegrityViolationException e) {
-			throw new DuplicateUserException();
-		}
+		userRepository.save(user);
 	}
 	
-	public User getUser(Long id) throws NoSuchUserException {
-		return findUser(id);
-	}
-	
-	public User getUserByUsername(String username) throws NoSuchUserException {
-		return findUser(username);
-	}
-
-	public User getUserByEmail(String email) throws NoSuchUserException {
-		Optional<User> userOpt = userRepository.findByEmail(email);
-    	if(!userOpt.isPresent())
-    		throw new NoSuchUserException(email);    	
-    	return userOpt.get();
-	}
-	
-	public void updateUser(Long id, User userForm) throws NoSuchUserException {    	
-    	updateUser(findUser(id), userForm);
-	}
-	
-	public void updateUserByUsername(String username, User userForm) throws NoSuchUserException {
-		updateUser(findUser(username), userForm);
-	}
-	
-	public void deleteUser(Long id) throws NoSuchUserException {
-        userRepository.delete(findUser(id));
-	}
-	
-	public void deleteUserByUsername(String username) throws NoSuchUserException {    	
-        userRepository.delete(findUser(username));
-	}
-	
-	private User findUser(Long id) throws NoSuchUserException {
+	public User getUser(Long id) {
 		Optional<User> userOpt = userRepository.findById(id);
     	if(!userOpt.isPresent())
-    		throw new NoSuchUserException(id);    	
+    		throw new NoSuchContentException(ContentType.USER, id);    	
     	return userOpt.get();
 	}
 	
-	private User findUser(String username) throws NoSuchUserException {
+	public User getUserByUsername(String username) {
 		Optional<User> userOpt = userRepository.findByUsername(username);
     	if(!userOpt.isPresent())
-    		throw new NoSuchUserException(username);    	
+    		throw new NoSuchContentException(ContentType.USER, "username", username);    	
     	return userOpt.get();
+	}
+
+	public User getUserByEmail(String email) {
+		Optional<User> userOpt = userRepository.findByEmail(email);
+    	if(!userOpt.isPresent())
+    		throw new NoSuchContentException(ContentType.USER, "email", email);    	
+    	return userOpt.get();
+	}
+	
+	public void updateUser(Long id, User userForm) {    	
+    	updateUser(getUser(id), userForm);
+	}
+	
+	public void updateUserByUsername(String username, User userForm) {
+		updateUser(getUserByUsername(username), userForm);
+	}
+	
+	public void deleteUser(Long id) {
+        userRepository.delete(getUser(id));
+	}
+	
+	public void deleteUserByUsername(String username) {    	
+        userRepository.delete(getUserByUsername(username));
 	}
 	
 	private void updateUser(User user, User userForm) {

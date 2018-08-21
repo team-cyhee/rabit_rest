@@ -11,6 +11,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * 생성, 수정 일시를 관리하는 entity 객체
+ * 상속하여 사용
+ * @author chy
+ *
+ */
 @MappedSuperclass
 @Data
 @EqualsAndHashCode(callSuper=false)

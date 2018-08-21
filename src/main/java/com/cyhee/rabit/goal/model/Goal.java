@@ -17,15 +17,10 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.cyhee.rabit.cmm.model.ContentStatus;
 import com.cyhee.rabit.cmm.model.TimestampEntity;
-import com.cyhee.rabit.goallog.model.GoalLog;
 import com.cyhee.rabit.user.model.User;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Entity

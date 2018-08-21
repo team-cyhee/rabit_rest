@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-import com.cyhee.rabit.user.exception.NoSuchUserException;
+import com.cyhee.rabit.cmm.web.exception.NoSuchContentException;
 import com.cyhee.rabit.user.model.User;
 import com.cyhee.rabit.user.service.BasicUserService;
 import com.cyhee.rabit.user.service.UserService;
@@ -37,7 +37,7 @@ public class RabitApplication {
 		for (User user : users) {			
 			try {
 				userService.getUserByUsername(user.getUsername());
-			} catch (NoSuchUserException e) {
+			} catch (NoSuchContentException e) {
 				userService.addUser(user);
 			}
 		}

@@ -4,6 +4,11 @@ import org.springframework.http.HttpStatus;
 
 import com.cyhee.rabit.cmm.web.model.ApiErrorCode;
 
+/**
+ * user에 대한 입력이 잘못되었을 때 발생하는 exception
+ * @author chy
+ *
+ */
 @SuppressWarnings("serial")
 public class MalformedUserException extends UserException {
 	public MalformedUserException() {

@@ -2,24 +2,22 @@ package com.cyhee.rabit.user.service;
 
 import org.springframework.data.domain.Pageable;
 
-import com.cyhee.rabit.user.exception.MalformedUserException;
-import com.cyhee.rabit.user.exception.NoSuchUserException;
 import com.cyhee.rabit.user.model.User;
 
 public interface UserService {	
 	Iterable<User> getUsers(Pageable pageable);
 	
-	void addUser(User user) throws MalformedUserException;
+	void addUser(User user);
 	
-	User getUser(Long id) throws NoSuchUserException;
+	User getUser(Long id);
 	
-	User getUserByUsername(String username) throws NoSuchUserException;
+	User getUserByUsername(String username);
 	
-	void updateUser(Long id, User userForm) throws NoSuchUserException;
+	void updateUser(Long id, User userForm);
 	
-	void updateUserByUsername(String username, User userForm) throws NoSuchUserException;
+	void updateUserByUsername(String username, User userForm);
 	
-	void deleteUser(Long id) throws NoSuchUserException;
+	void deleteUser(Long id);
 	
-	void deleteUserByUsername(String username) throws NoSuchUserException;
+	void deleteUserByUsername(String username);
 }

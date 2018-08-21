@@ -5,6 +5,11 @@ import org.springframework.http.HttpStatus;
 import com.cyhee.rabit.cmm.model.ContentType;
 import com.cyhee.rabit.cmm.web.model.ApiErrorCode;
 
+/**
+ * 접근을 시도한 객체가 존재하지 않을 때 발생시키는 Exception
+ * @author chy
+ *
+ */
 public class NoSuchContentException extends RuntimeException implements ApiException {
 	private static final long serialVersionUID = 1L;
 	

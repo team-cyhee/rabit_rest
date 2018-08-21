@@ -8,6 +8,12 @@ import org.springframework.validation.ObjectError;
 import com.cyhee.rabit.cmm.web.exception.ApiException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * 해당 프로젝트에서 사용되는 http error에 대한 객체
+ * error 발생 시 해당 객체를 반환할 것을 권장
+ * @author chy
+ *
+ */
 public class ApiError {
 	private ApiErrorCode error;
 	@JsonProperty
