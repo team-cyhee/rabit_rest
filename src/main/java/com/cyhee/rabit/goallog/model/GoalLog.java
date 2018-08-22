@@ -15,7 +15,6 @@ import com.cyhee.rabit.cmm.model.ContentStatus;
 import com.cyhee.rabit.cmm.model.TimestampEntity;
 import com.cyhee.rabit.goal.model.Goal;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;

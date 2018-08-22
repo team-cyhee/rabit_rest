@@ -30,7 +30,7 @@ import lombok.experimental.Accessors;
 public class Comment extends TimestampEntity {
 	
 	@ManyToOne(optional=false)
-	@JoinColumn(name="user_id", foreignKey = @ForeignKey(name = "FK_COMMENT_AUTHOR"))
+	@JoinColumn(name="author_id", foreignKey = @ForeignKey(name = "FK_COMMENT_AUTHOR"))
 	@OnDelete(action=OnDeleteAction.CASCADE)
 	private User author;
 	
@@ -39,7 +39,7 @@ public class Comment extends TimestampEntity {
 	private ContentType type;
 	
 	@Column
-	private long parentId;
+	private Long parentId;
 	
 	@Column(columnDefinition = "TEXT")
 	private String content;

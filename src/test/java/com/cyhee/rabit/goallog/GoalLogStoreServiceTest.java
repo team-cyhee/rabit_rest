@@ -1,4 +1,4 @@
-package com.cyhee.rabit.user;
+package com.cyhee.rabit.goallog;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,18 +15,21 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.cyhee.rabit.cmm.model.ContentType;
+import com.cyhee.rabit.comment.model.Comment;
+import com.cyhee.rabit.comment.service.BasicCommentService;
 import com.cyhee.rabit.goal.model.Goal;
 import com.cyhee.rabit.goallog.model.GoalLog;
+import com.cyhee.rabit.goallog.store.service.GoalLogStoreService;
 import com.cyhee.rabit.user.model.User;
-import com.cyhee.rabit.user.store.service.UserStoreService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @DataJpaTest
-@Import(UserStoreService.class)
-public class UserStoreServiceTest {
+@Import({GoalLogStoreService.class, BasicCommentService.class})
+public class GoalLogStoreServiceTest {
 	@Autowired
-	UserStoreService userStoreService;
+	GoalLogStoreService goalLogStoreService;
 	@Autowired
 	TestEntityManager entityManger;
 	
@@ -36,6 +39,8 @@ public class UserStoreServiceTest {
 	Goal goal2;
 	GoalLog log1;
 	GoalLog log2;
+	Comment comment1;
+	Comment comment2;
 		
 	@Before
 	public void setup() {
@@ -54,34 +59,26 @@ public class UserStoreServiceTest {
 		entityManger.persist(goal2);
 		entityManger.persist(log1);
 		entityManger.persist(log2);
+		
+		comment1 = new Comment().setAuthor(user1).setType(ContentType.GOALLOG).setContent("comment").setParentId(log1.getId());
+		comment2 = new Comment().setAuthor(user1).setType(ContentType.GOALLOG).setContent("comment").setParentId(log2.getId());
+		
+		entityManger.persist(comment1);
+		entityManger.persist(comment2);
 	}
 	
 	@Test
-	public void getGoals() {
+	public void getComments() {
 		Pageable pageable = PageRequest.of(0, 10);
-		Page<Goal> goals = userStoreService.getGoals(user1, pageable);
+		Page<Comment> comments = goalLogStoreService.getComments(log1, pageable);
 		
-		assertThat(goals.getContent())
-			.hasSize(1).contains(goal1);
+		assertThat(comments.getContent())
+			.hasSize(1).contains(comment1);
 		
-		goals = userStoreService.getGoals(user2, pageable);
+		comments = goalLogStoreService.getComments(log2, pageable);
 		
-		assertThat(goals.getContent())
-			.hasSize(1).contains(goal2);
-	}
-	
-	@Test
-	public void getLogs() {
-		Pageable pageable = PageRequest.of(0, 10);
-		Page<GoalLog> logs = userStoreService.getGoalLogs(user1, pageable);
-		
-		assertThat(logs.getContent())
-			.hasSize(1).contains(log1);
-		
-		logs = userStoreService.getGoalLogs(user2, pageable);
-		
-		assertThat(logs.getContent())
-			.hasSize(1).contains(log2);
+		assertThat(comments.getContent())
+			.hasSize(1).contains(comment2);
 	}
 	
 }

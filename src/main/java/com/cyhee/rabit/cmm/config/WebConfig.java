@@ -1,4 +1,4 @@
-package com.cyhee.rabit;
+package com.cyhee.rabit.cmm.config;
 
 import java.util.List;
 

@@ -3,6 +3,11 @@ package com.cyhee.rabit.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * @{link #Password}
+ * @author chy
+ *
+ */
 public class PasswordValidator implements ConstraintValidator<Password, String> {
 	private boolean needSpecial;
     private boolean needUpper;

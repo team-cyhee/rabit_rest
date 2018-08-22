@@ -1,4 +1,4 @@
-package com.cyhee.rabit.oauth2.client;
+package com.cyhee.rabit.cmm.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +24,9 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @EnableResourceServer
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 	
+	/**
+	 * Jwt token을 해석하는데 사용되는 키
+	 */
 	private String publicKey;
 	
 	@Autowired
@@ -67,11 +70,6 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setTokenStore(tokenStore());
         return defaultTokenServices;
-    }
-    
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-    	return new BCryptPasswordEncoder();
     }
     
 }

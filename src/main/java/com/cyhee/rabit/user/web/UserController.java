@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cyhee.rabit.user.model.User;
-import com.cyhee.rabit.user.model.UserView;
+import com.cyhee.rabit.user.model.UserJsonView;
 import com.cyhee.rabit.user.service.UserService;
 import com.cyhee.rabit.validation.SetPasswordGroup;
 import com.cyhee.rabit.validation.exception.ValidationFailException;
@@ -34,7 +34,7 @@ public class UserController {
 		return new ResponseEntity<Iterable<User>>(userService.getUsers(pageable), HttpStatus.OK);
 	}
 
-	@JsonView(UserView.UserPost.class)
+	@JsonView(UserJsonView.UserPost.class)
 	@PostMapping
 	public ResponseEntity<Void> addUser(@RequestBody @Validated({SetPasswordGroup.class}) User user, BindingResult bindingResult) {
 		if (bindingResult.hasErrors())
@@ -45,12 +45,8 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<User> getUser(@PathVariable long id/*, Principal principal*/) {
-		/*if(principal == null)
-			return new ApiResponseEntity<>(ApiErrorCode.FORBIDDEN, "No principal information", HttpStatus.FORBIDDEN);*/		
+	public ResponseEntity<User> getUser(@PathVariable long id) {		
 		User user = userService.getUser(id);
-		/*if(!user.getUsername().equals(principal.getName()))
-			return new ApiResponseEntity<>(ApiErrorCode.FORBIDDEN, "Incorrect principal information", HttpStatus.FORBIDDEN);*/
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 

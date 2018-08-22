@@ -33,7 +33,7 @@ public class User extends TimestampEntity{
 	
 	@Column(nullable=false, length=255)
 	@Password(groups=SetPasswordGroup.class)
-	@JsonView(UserView.UserPost.class)
+	@JsonView(UserJsonView.UserPost.class)
 	private String password;
 	
 	@Column(nullable=false, unique=true, length=20)

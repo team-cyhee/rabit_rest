@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cyhee.rabit.cmm.web.model.ApiError;
 
+/**
+ * @{link ValidationFailException}ø° ¥Î«— handler
+ * @author chy
+ *
+ */
 @ControllerAdvice
 @RestController
 public class ValidationFailHandler {
