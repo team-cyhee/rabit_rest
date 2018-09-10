@@ -16,16 +16,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.cyhee.rabit.cmm.model.ContentType;
-import com.cyhee.rabit.comment.model.Comment;
-import com.cyhee.rabit.comment.service.BasicCommentService;
-import com.cyhee.rabit.comment.service.CommentService;
-import com.cyhee.rabit.goal.model.Goal;
-import com.cyhee.rabit.goal.service.BasicGoalService;
-import com.cyhee.rabit.goal.service.GoalService;
-import com.cyhee.rabit.user.model.User;
-import com.cyhee.rabit.user.service.BasicUserService;
-import com.cyhee.rabit.user.service.UserService;
+import com.cyhee.rabit.model.cmm.ContentType;
+import com.cyhee.rabit.model.comment.Comment;
+import com.cyhee.rabit.service.comment.BasicCommentService;
+import com.cyhee.rabit.service.comment.CommentService;
+import com.cyhee.rabit.model.goal.Goal;
+import com.cyhee.rabit.service.goal.BasicGoalService;
+import com.cyhee.rabit.service.goal.GoalService;
+import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.user.BasicUserService;
+import com.cyhee.rabit.service.user.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

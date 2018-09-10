@@ -9,10 +9,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-import com.cyhee.rabit.cmm.web.exception.NoSuchContentException;
-import com.cyhee.rabit.user.model.User;
-import com.cyhee.rabit.user.service.BasicUserService;
-import com.cyhee.rabit.user.service.UserService;
+import com.cyhee.rabit.web.cmm.exception.NoSuchContentException;
+import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.user.BasicUserService;
+import com.cyhee.rabit.service.user.UserService;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy
@@ -28,7 +28,7 @@ public class RabitApplication {
 		User me = new User();
 		me.setEmail("whgksdyd112@naver.com");
 		me.setUsername("chy");
-		me.setName("Á¶ÇÑ¿ë");
+		me.setName("ï¿½ï¿½ï¿½Ñ¿ï¿½");
 		me.setPassword(UUID.randomUUID().toString());
 		users.add(me);
 

@@ -6,14 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
-import com.cyhee.rabit.cmm.web.exception.ApiException;
-import com.cyhee.rabit.cmm.web.model.ApiErrorCode;
+import com.cyhee.rabit.web.cmm.exception.ApiException;
+import com.cyhee.rabit.web.cmm.model.ApiErrorCode;
 
 import lombok.Getter;
 
 /**
- * Validation test¿¡ ¼º°øÇÏÁö ¸øÇßÀ» ¶§ ¹ß»ýÇÏ´Â exception
- * ³»ºÎ º¯¼ö·Î validation errors¸¦ °¡Áö°í ÀÖÀ½
+ * Validation testï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ß»ï¿½ï¿½Ï´ï¿½ exception
+ * ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ validation errorsï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
  * @author chy
  *
  */
@@ -30,7 +30,7 @@ public class ValidationFailException extends RuntimeException implements ApiExce
 	}
 	
 	/**
-	 * validation¿¡¼­ ¹ß»ýÇÑ errors¸¦ ÇÏ³ªÀÇ String message·Î ¸¸µé¾îÁÖ´Â ÇÔ¼ö
+	 * validationï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ï¿½ errorsï¿½ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ String messageï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ô¼ï¿½
 	 * @param errors - validation errors
 	 * @return - one single String message from errors
 	 */

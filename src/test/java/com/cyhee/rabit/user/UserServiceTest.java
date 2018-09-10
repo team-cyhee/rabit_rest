@@ -19,11 +19,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.cyhee.rabit.user.dao.UserRepository;
-import com.cyhee.rabit.user.model.User;
-import com.cyhee.rabit.user.model.UserStatus;
-import com.cyhee.rabit.user.service.BasicUserService;
-import com.cyhee.rabit.user.service.UserService;
+import com.cyhee.rabit.dao.user.UserRepository;
+import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.model.user.UserStatus;
+import com.cyhee.rabit.service.user.BasicUserService;
+import com.cyhee.rabit.service.user.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

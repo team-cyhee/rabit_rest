@@ -15,10 +15,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.cyhee.rabit.goal.model.Goal;
-import com.cyhee.rabit.goallog.model.GoalLog;
-import com.cyhee.rabit.user.model.User;
-import com.cyhee.rabit.user.store.service.UserStoreService;
+import com.cyhee.rabit.model.goal.Goal;
+import com.cyhee.rabit.model.goallog.GoalLog;
+import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.user.store.UserStoreService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

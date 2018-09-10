@@ -12,9 +12,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.cyhee.rabit.cmm.ApiTestUtil;
-import com.cyhee.rabit.goal.model.Goal;
-import com.cyhee.rabit.goal.service.GoalService;
-import com.cyhee.rabit.goal.web.GoalController;
+import com.cyhee.rabit.model.goal.Goal;
+import com.cyhee.rabit.service.goal.GoalService;
+import com.cyhee.rabit.web.goal.GoalController;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers=GoalController.class, secure=false)
