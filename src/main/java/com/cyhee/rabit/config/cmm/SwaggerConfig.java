@@ -10,8 +10,8 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * Swagger api ������ ���� �ϰ� �ϴ� config class
- * /swagger-ui.html �� ���� Ȯ��
+ * Swagger api 지원을 가능 하게 하는 config class
+ * /swagger-ui.html 을 통해 확인
  * @author chy
  */
 @Configuration

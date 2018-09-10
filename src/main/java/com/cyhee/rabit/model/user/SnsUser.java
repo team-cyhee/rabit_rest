@@ -7,8 +7,8 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
- * sns token�� �̿��Ͽ� ȸ�����Խ� ����ϴ� packet ��
- * ������ �ʿ��� token�� ȸ������ �������� ���ڷ� ����
+ * sns token을 이용하여 회원가입시 사용하는 packet 모델
+ * 인증에 필요한 token과 회원가입 정보들을 인자로 가짐
  * @author chy
  */
 @Data

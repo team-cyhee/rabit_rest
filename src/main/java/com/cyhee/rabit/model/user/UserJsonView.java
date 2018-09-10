@@ -6,7 +6,7 @@ package com.cyhee.rabit.model.user;
  * @author chy
  */
 public class UserJsonView {
-	// ��ü ���� ����
+	// 객체 생성 방지
 	private UserJsonView() {}
 	
 	public static class UserPost {}	

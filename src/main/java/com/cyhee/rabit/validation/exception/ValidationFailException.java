@@ -12,8 +12,8 @@ import com.cyhee.rabit.web.cmm.model.ApiErrorCode;
 import lombok.Getter;
 
 /**
- * Validation test�� �������� ������ �� �߻��ϴ� exception
- * ���� ������ validation errors�� ������ ����
+ * Validation test에 성공하지 못했을 때 발생하는 exception
+ * 내부 변수로 validation errors를 가지고 있음
  * @author chy
  *
  */
@@ -28,9 +28,9 @@ public class ValidationFailException extends RuntimeException implements ApiExce
 		super(getMessageFromErros(errors));
 		this.errors = errors;
 	}
-	
+
 	/**
-	 * validation���� �߻��� errors�� �ϳ��� String message�� ������ִ� �Լ�
+	 * validation에서 발생한 errors를 하나의 String message로 만들어주는 함수
 	 * @param errors - validation errors
 	 * @return - one single String message from errors
 	 */

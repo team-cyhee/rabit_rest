@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import com.cyhee.rabit.web.cmm.model.ApiErrorCode;
 
 /**
- * User�� unique key�� �ߺ��Ǿ��� �� �߻��ϴ� exception
+ * User의 unique key가 중복되었을 때 발생하는 exception
  * @author chy
  *
  */

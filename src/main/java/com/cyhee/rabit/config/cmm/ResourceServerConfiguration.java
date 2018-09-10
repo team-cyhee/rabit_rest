@@ -16,7 +16,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 /**
- * Oauth2 ��� ���� ����� ����ϴ� Configuration Class 
+ * Oauth2 기반 인증 방식을 허용하는 Configuration Class
  * @author chy
  *
  */
@@ -25,7 +25,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 	
 	/**
-	 * Jwt token�� �ؼ��ϴµ� ���Ǵ� Ű
+     * Jwt token을 해석하는데 사용되는 키
 	 */
 	private String publicKey;
 	
