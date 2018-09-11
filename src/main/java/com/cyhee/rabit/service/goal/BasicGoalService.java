@@ -2,6 +2,7 @@ package com.cyhee.rabit.service.goal;
 
 import java.util.Optional;
 
+import com.cyhee.rabit.model.cmm.ContentStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,11 +36,11 @@ public class BasicGoalService implements GoalService {
 	public void updateGoal(long id, Goal goalForm) {
 		Goal goal = getGoal(id);
 		setGoalProps(goal, goalForm);
-		goalRepository.save(goal);
 	}
 
 	public void deleteGoal(long id) {
-		goalRepository.deleteById(id);
+		Goal goal = getGoal(id);
+		goal.setStatus(ContentStatus.DELETED);
 	}
 	
 	private void setGoalProps(Goal target, Goal source) {

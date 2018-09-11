@@ -2,6 +2,7 @@ package com.cyhee.rabit.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.cyhee.rabit.model.follow.Follow;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +33,9 @@ public class UserStoreServiceTest {
 	
 	User user1;
 	User user2;
+	User user3;
+	Follow follow1;
+	Follow follow2;
 	Goal goal1;
 	Goal goal2;
 	GoalLog log1;
@@ -41,21 +45,37 @@ public class UserStoreServiceTest {
 	public void setup() {
 		user1 = new User().setEmail("email1@com").setPassword("password1@").setUsername("user1");		
 		user2 = new User().setEmail("email2@com").setPassword("password2@").setUsername("user2");
-		
+
+		follow1 = new Follow().setFollower(user1).setFollowee(user2);
+		follow2 = new Follow().setFollower(user1).setFollowee(user3);
+
 		goal1 = new Goal().setAuthor(user1).setContent("content1");
 		goal2 = new Goal().setAuthor(user2).setContent("content2");
 		
 		log1 = new GoalLog().setGoal(goal1).setContent("content1");
 		log2 = new GoalLog().setGoal(goal2).setContent("content2");
-		
+
 		entityManger.persist(user1);
 		entityManger.persist(user2);
+		entityManger.persist(follow1);
+		entityManger.persist(follow2);
 		entityManger.persist(goal1);
 		entityManger.persist(goal2);
 		entityManger.persist(log1);
 		entityManger.persist(log2);
 	}
-	
+
+	@Test
+	public void getFollows() {
+		Pageable pageable = PageRequest.of(0, 10);
+		Page<Follow> follows = userStoreService.getFollowees(user1, pageable);
+
+		assertThat(follows.getContent())
+			.hasSize(2)
+			.contains(follow1)
+			.contains(follow2);
+	}
+
 	@Test
 	public void getGoals() {
 		Pageable pageable = PageRequest.of(0, 10);

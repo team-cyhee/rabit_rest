@@ -2,6 +2,7 @@ package com.cyhee.rabit.service.user;
 
 import java.util.Optional;
 
+import com.cyhee.rabit.model.user.UserStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -62,11 +63,13 @@ public class BasicUserService implements UserService {
 	}
 	
 	public void deleteUser(Long id) {
-        userRepository.delete(getUser(id));
+        User user = getUser(id);
+        user.setStatus(UserStatus.DELETED);
 	}
 	
-	public void deleteUserByUsername(String username) {    	
-        userRepository.delete(getUserByUsername(username));
+	public void deleteUserByUsername(String username) {
+		User user = getUserByUsername(username);
+		user.setStatus(UserStatus.DELETED);
 	}
 	
 	private void updateUser(User user, User userForm) {

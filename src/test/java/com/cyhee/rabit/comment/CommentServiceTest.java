@@ -1,8 +1,8 @@
 package com.cyhee.rabit.comment;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.cyhee.rabit.model.cmm.ContentStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -82,11 +82,12 @@ public class CommentServiceTest {
 
 	@Test
 	public void deleteAndGet() {
+		Comment source = new Comment().setStatus(ContentStatus.DELETED);
 		commentService.deleteComment(comment1.getId());
 		
-		assertThatThrownBy(() -> {
-			commentService.getComment(comment1.getId());
-		});
+		assertThat(comment1)
+			.extracting(Comment::getStatus)
+			.containsExactly(source.getStatus());
 	}
 
 	@Test

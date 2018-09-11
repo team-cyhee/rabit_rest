@@ -3,6 +3,7 @@ package com.cyhee.rabit.service.goallog;
 
 import java.util.Optional;
 
+import com.cyhee.rabit.model.cmm.ContentStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +41,8 @@ public class BasicGoalLogService implements GoalLogService {
 	}
 
 	public void deleteGoalLog(long id) {
-		goallogRepository.deleteById(id);
+		GoalLog log = getGoalLog(id);
+		log.setStatus(ContentStatus.DELETED);
 	}
 	
 	private void setGoalLogProps(GoalLog target, GoalLog source) {

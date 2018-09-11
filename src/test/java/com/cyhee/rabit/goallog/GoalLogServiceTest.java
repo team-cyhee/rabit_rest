@@ -1,8 +1,8 @@
 package com.cyhee.rabit.goallog;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.cyhee.rabit.model.cmm.ContentStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,14 +76,15 @@ public class GoalLogServiceTest {
 	
 	@Test
 	public void deleteAndGet() {
+		GoalLog source = new GoalLog().setStatus(ContentStatus.DELETED);
 		userService.addUser(user1);
 		goalService.addGoal(goal1);
 		goalLogService.addGoalLog(log1);				
 		goalLogService.deleteGoalLog(log1.getId());		
 		
-		assertThatThrownBy(() -> {
-			goalLogService.getGoalLog(log1.getId());
-		});
+		assertThat(log1)
+			.extracting(GoalLog::getStatus)
+			.containsExactly(source.getStatus());
 	}
 	
 	@Test
