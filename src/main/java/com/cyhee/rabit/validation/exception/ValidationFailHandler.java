@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cyhee.rabit.cmm.web.model.ApiError;
+import com.cyhee.rabit.web.cmm.model.ApiError;
 
 /**
- * @{link ValidationFailException}¿¡ ´ëÇÑ handler
+ * @{link ValidationFailException}ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ handler
  * @author chy
  *
  */

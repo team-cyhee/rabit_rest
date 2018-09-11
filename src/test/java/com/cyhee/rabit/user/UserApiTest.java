@@ -25,10 +25,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.cyhee.rabit.cmm.ApiTestUtil;
-import com.cyhee.rabit.user.exception.NoSuchUserException;
-import com.cyhee.rabit.user.model.User;
-import com.cyhee.rabit.user.service.UserService;
-import com.cyhee.rabit.user.web.UserController;
+import com.cyhee.rabit.exception.user.NoSuchUserException;
+import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.user.UserService;
+import com.cyhee.rabit.web.user.UserController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)

@@ -18,9 +18,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.cyhee.rabit.cmm.ApiTestUtil;
-import com.cyhee.rabit.goallog.model.GoalLog;
-import com.cyhee.rabit.goallog.service.GoalLogService;
-import com.cyhee.rabit.goallog.web.GoalLogController;
+import com.cyhee.rabit.model.goallog.GoalLog;
+import com.cyhee.rabit.service.goallog.GoalLogService;
+import com.cyhee.rabit.web.goallog.GoalLogController;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers=GoalLogController.class, secure=false)

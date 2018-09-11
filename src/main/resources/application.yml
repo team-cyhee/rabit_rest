@@ -9,9 +9,9 @@ spring:
         format-sql: true
         type.descriptor.sql.BasicBinder: TRACE          
   datasource:
-    url: jdbc:mysql://localhost:6033/rabit?useSSL=false
-    username: rabit
-    password: rabit
+    url: jdbc:mysql://localhost:3306/rabit?useSSL=false
+    username: root
+    password: qlalfdla22@A
 
 config.oauth2.publicKey: |
       -----BEGIN PUBLIC KEY-----

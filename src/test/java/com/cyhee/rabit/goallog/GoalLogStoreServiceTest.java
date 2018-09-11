@@ -15,13 +15,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.cyhee.rabit.cmm.model.ContentType;
-import com.cyhee.rabit.comment.model.Comment;
-import com.cyhee.rabit.comment.service.BasicCommentService;
-import com.cyhee.rabit.goal.model.Goal;
-import com.cyhee.rabit.goallog.model.GoalLog;
-import com.cyhee.rabit.goallog.store.service.GoalLogStoreService;
-import com.cyhee.rabit.user.model.User;
+import com.cyhee.rabit.model.cmm.ContentType;
+import com.cyhee.rabit.model.comment.Comment;
+import com.cyhee.rabit.service.comment.BasicCommentService;
+import com.cyhee.rabit.model.goal.Goal;
+import com.cyhee.rabit.model.goallog.GoalLog;
+import com.cyhee.rabit.service.goallog.store.GoalLogStoreService;
+import com.cyhee.rabit.model.user.User;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
