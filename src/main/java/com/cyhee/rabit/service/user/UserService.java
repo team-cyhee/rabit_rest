@@ -1,11 +1,12 @@
 package com.cyhee.rabit.service.user;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.cyhee.rabit.model.user.User;
 
 public interface UserService {	
-	Iterable<User> getUsers(Pageable pageable);
+	Page<User> getUsers(Pageable pageable);
 	
 	void addUser(User user);
 	

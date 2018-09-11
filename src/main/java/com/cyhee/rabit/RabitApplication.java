@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-import com.cyhee.rabit.web.cmm.exception.NoSuchContentException;
+import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.user.BasicUserService;
 import com.cyhee.rabit.service.user.UserService;

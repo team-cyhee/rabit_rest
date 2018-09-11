@@ -24,9 +24,9 @@ public class CommentController {
 	private CommentService commentService;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<Iterable<Comment>> getComments(@PageableDefault Pageable pageable) {
+	public ResponseEntity<Page<Comment>> getComments(@PageableDefault Pageable pageable) {
 		Page<Comment> commentPage = commentService.getComments(pageable);
-        return new ResponseEntity<Iterable<Comment>>(commentPage.getContent(), HttpStatus.OK);
+        return new ResponseEntity<Page<Comment>>(commentPage, HttpStatus.OK);
     }
 	
 	@RequestMapping(method=RequestMethod.POST)

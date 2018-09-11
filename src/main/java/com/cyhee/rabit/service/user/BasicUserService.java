@@ -4,12 +4,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cyhee.rabit.model.cmm.ContentType;
-import com.cyhee.rabit.web.cmm.exception.NoSuchContentException;
+import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.dao.user.UserRepository;
 import com.cyhee.rabit.exception.user.MalformedUserException;
 import com.cyhee.rabit.model.user.User;
@@ -22,8 +23,8 @@ public class BasicUserService implements UserService {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
-	public Iterable<User> getUsers(Pageable pageable) {
-		return userRepository.findAll(pageable).getContent();
+	public Page<User> getUsers(Pageable pageable) {
+		return userRepository.findAll(pageable);
 	}
 		
 	public void addUser(User user) {    	

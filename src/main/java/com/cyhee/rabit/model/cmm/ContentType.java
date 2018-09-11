@@ -1,6 +1,7 @@
 package com.cyhee.rabit.model.cmm;
 
 import com.cyhee.rabit.model.comment.Comment;
+import com.cyhee.rabit.model.follow.Follow;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.model.user.User;
@@ -11,7 +12,7 @@ import com.cyhee.rabit.model.user.User;
  *
  */
 public enum ContentType {
-	USER(User.class), GOAL(Goal.class), GOALLOG(GoalLog.class), COMMENT(Comment.class);
+	USER(User.class), FOLLOW(Follow.class), GOAL(Goal.class), GOALLOG(GoalLog.class), COMMENT(Comment.class);
 	
 	private Class<?> clazz;
 	

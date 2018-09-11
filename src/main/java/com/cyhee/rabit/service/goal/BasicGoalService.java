@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.cyhee.rabit.model.cmm.ContentType;
-import com.cyhee.rabit.web.cmm.exception.NoSuchContentException;
+import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.dao.goal.GoalRepository;
 import com.cyhee.rabit.model.goal.Goal;
 

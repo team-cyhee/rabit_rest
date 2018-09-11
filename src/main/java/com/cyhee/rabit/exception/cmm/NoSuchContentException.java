@@ -1,5 +1,6 @@
-package com.cyhee.rabit.web.cmm.exception;
+package com.cyhee.rabit.exception.cmm;
 
+import com.cyhee.rabit.web.cmm.exception.ApiException;
 import org.springframework.http.HttpStatus;
 
 import com.cyhee.rabit.model.cmm.ContentType;

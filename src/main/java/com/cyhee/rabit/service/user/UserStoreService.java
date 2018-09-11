@@ -1,5 +1,7 @@
-package com.cyhee.rabit.service.user.store;
+package com.cyhee.rabit.service.user;
 
+import com.cyhee.rabit.dao.follow.FollowRepository;
+import com.cyhee.rabit.model.follow.Follow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +16,9 @@ import com.cyhee.rabit.model.user.User;
 @Service
 public class UserStoreService {
 	@Autowired
+	private FollowRepository followRepository;
+
+	@Autowired
 	private GoalRepository goalRepository;
 	
 	@Autowired
@@ -27,4 +32,11 @@ public class UserStoreService {
 		return goalLogRepository.findAllByAuthor(author, pageable);
 	}
 
+	public Page<Follow> getFollowers(User followee, Pageable pageable) {
+		return followRepository.findByFollowee(followee, pageable);
+	}
+
+	public Page<Follow> getFollowees(User follower, Pageable pageable) {
+		return followRepository.findByFollower(follower, pageable);
+	}
 }
