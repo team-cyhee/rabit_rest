@@ -3,6 +3,7 @@ package com.cyhee.rabit.service.comment;
 
 import java.util.Optional;
 
+import com.cyhee.rabit.model.cmm.ContentStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,11 +41,11 @@ public class BasicCommentService implements CommentService {
 	public void updateComment(long id, Comment source) {
 		Comment comment = getComment(id);
 		setCommentProps(comment, source);
-		repository.save(comment);
 	}
 
 	public void deleteComment(long id) {
-		repository.deleteById(id);
+		Comment comment = getComment(id);
+		comment.setStatus(ContentStatus.DELETED);
 	}
 	
 	private void setCommentProps(Comment target, Comment source) {

@@ -78,16 +78,19 @@ public class UserServiceTest {
 	
 	@Test
 	public void deleteAndGet() {
-		userService.addUser(user1);		
-		
-		Optional<User> userOpt = repository.findByEmail("email1@a");
+		userService.addUser(user1);
+
+		String email1 = "email1@a";
+		User source = new User().setStatus(UserStatus.DELETED);
+		Optional<User> userOpt = repository.findByEmail(email1);
 		
 		User user = userOpt.get();
 		userService.deleteUser(user.getId());
 		
-		userOpt = repository.findByEmail("email1");
-		assertThat(userOpt.isPresent())
-			.isEqualTo(false);
+		userOpt = repository.findByEmail(email1);
+		assertThat(userOpt.get())
+				.extracting(User::getStatus)
+				.containsExactly(source.getStatus());
 	}
 	
 	@Test
