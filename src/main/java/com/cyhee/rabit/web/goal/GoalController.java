@@ -2,6 +2,7 @@ package com.cyhee.rabit.web.goal;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -22,8 +23,8 @@ public class GoalController {
 	private GoalService goalService;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<Iterable<Goal>> getGoals(@PageableDefault Pageable pageable) {
-        return new ResponseEntity<Iterable<Goal>>(goalService.getGoals(pageable), HttpStatus.OK);
+	public ResponseEntity<Page<Goal>> getGoals(@PageableDefault Pageable pageable) {
+        return new ResponseEntity<Page<Goal>>(goalService.getGoals(pageable), HttpStatus.OK);
     }
 	
 	@RequestMapping(method=RequestMethod.POST)

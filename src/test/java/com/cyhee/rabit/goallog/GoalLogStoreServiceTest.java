@@ -20,7 +20,7 @@ import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.service.comment.BasicCommentService;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
-import com.cyhee.rabit.service.goallog.store.GoalLogStoreService;
+import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 import com.cyhee.rabit.model.user.User;
 
 @RunWith(SpringRunner.class)

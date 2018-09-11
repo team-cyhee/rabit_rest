@@ -1,4 +1,4 @@
-package com.cyhee.rabit.service.goal.store;
+package com.cyhee.rabit.service.goal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

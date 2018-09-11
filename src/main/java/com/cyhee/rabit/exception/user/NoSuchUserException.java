@@ -2,7 +2,7 @@ package com.cyhee.rabit.exception.user;
 
 import org.springframework.http.HttpStatus;
 
-import com.cyhee.rabit.web.cmm.exception.NoSuchContentException;
+import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.web.cmm.model.ApiErrorCode;
 
 /**

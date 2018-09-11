@@ -1,4 +1,4 @@
-package com.cyhee.rabit.web.goal.store;
+package com.cyhee.rabit.web.goal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.service.goal.GoalService;
-import com.cyhee.rabit.service.goal.store.GoalStoreService;
+import com.cyhee.rabit.service.goal.GoalStoreService;
 import com.cyhee.rabit.model.goallog.GoalLog;
 
 @RestController

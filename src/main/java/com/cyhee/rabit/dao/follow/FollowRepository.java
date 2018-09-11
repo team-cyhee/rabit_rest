@@ -9,6 +9,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 // This will be AUTO IMPLEMENTED by Spring into a Bean called commentRepository
 // CRUD refers Create, Read, Update, Delete
 
-public interface FollowRepository extends PagingAndSortingRepository {
-    Page<Follow> findByFollowerAndFollowing(User follower, User following, Pageable pageable);
+public interface FollowRepository extends PagingAndSortingRepository<Follow, Long> {
+    Page<Follow> findByFollower(User follower, Pageable pageable);
+
+    Page<Follow> findByFollowee(User followee, Pageable pageable);
 }

@@ -17,15 +17,15 @@ import javax.persistence.*;
 @Accessors(chain=true)
 public class Follow extends TimestampEntity {
 
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name="follower_id", foreignKey = @ForeignKey(name = "FK_USER_FOLLOWER"))
     @OnDelete(action= OnDeleteAction.CASCADE)
-    private User Follower;
+    private User follower;
 
-    @ManyToMany
-    @JoinColumn(name="following_id", foreignKey = @ForeignKey(name = "FK_USER_FOLLOWING"))
+    @ManyToOne
+    @JoinColumn(name="followee_id", foreignKey = @ForeignKey(name = "FK_USER_FOLLOWEE"))
     @OnDelete(action= OnDeleteAction.CASCADE)
-    private User Following;
+    private User followee;
 
     @Column(nullable=false)
     private FollowStatus status = FollowStatus.ACTIVE;

@@ -2,6 +2,7 @@ package com.cyhee.rabit.web.user;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -30,8 +31,8 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping
-	public ResponseEntity<Iterable<User>> getUsers(@PageableDefault Pageable pageable) {
-		return new ResponseEntity<Iterable<User>>(userService.getUsers(pageable), HttpStatus.OK);
+	public ResponseEntity<Page<User>> getUsers(@PageableDefault Pageable pageable) {
+		return new ResponseEntity<Page<User>>(userService.getUsers(pageable), HttpStatus.OK);
 	}
 
 	@JsonView(UserJsonView.UserPost.class)

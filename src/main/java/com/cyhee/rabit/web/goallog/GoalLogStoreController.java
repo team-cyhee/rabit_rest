@@ -1,4 +1,4 @@
-package com.cyhee.rabit.web.goallog.store;
+package com.cyhee.rabit.web.goallog;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.service.goallog.GoalLogService;
-import com.cyhee.rabit.service.goallog.store.GoalLogStoreService;
+import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 
 @RestController
 @RequestMapping("rest/v1/goallogs/{id}")

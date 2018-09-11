@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.model.user.User;
-import com.cyhee.rabit.service.user.store.UserStoreService;
+import com.cyhee.rabit.service.user.UserStoreService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
