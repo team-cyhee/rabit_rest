@@ -1,13 +1,9 @@
 
 package com.cyhee.rabit.model.goallog;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.cyhee.rabit.model.file.FileInfo;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -18,6 +14,8 @@ import com.cyhee.rabit.model.goal.Goal;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.util.List;
 
 @Entity
 @Table
@@ -36,4 +34,7 @@ public class GoalLog extends TimestampEntity {
 	
 	@Column(nullable=false)
 	private ContentStatus status = ContentStatus.ACTIVE;
+
+	@ManyToMany
+	private List<FileInfo> file;
 }

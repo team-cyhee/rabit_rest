@@ -1,17 +1,11 @@
 package com.cyhee.rabit.model.goal;
 
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
+import com.cyhee.rabit.model.file.FileInfo;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -53,4 +47,7 @@ public class Goal extends TimestampEntity {
 	
 	@Column
 	private GoalCycle selectedDays;
+
+	@ManyToMany
+	private List<FileInfo> files;
 }
