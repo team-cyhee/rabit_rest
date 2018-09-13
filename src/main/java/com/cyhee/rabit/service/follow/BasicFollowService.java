@@ -4,6 +4,7 @@ import com.cyhee.rabit.dao.follow.FollowRepository;
 import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.follow.Follow;
+import com.cyhee.rabit.model.follow.FollowStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,11 +37,11 @@ public class BasicFollowService implements FollowService {
     public void updateFollow(long id, Follow followForm) {
         Follow follow = getFollow(id);
         setFollowProps(follow, followForm);
-        followRepository.save(follow);
     }
 
     public void deleteFollow(long id) {
-        followRepository.deleteById(id);
+        Follow follow = getFollow(id);
+        follow.setStatus(FollowStatus.INACTIVE);
     }
 
     private void setFollowProps(Follow target, Follow source) {
