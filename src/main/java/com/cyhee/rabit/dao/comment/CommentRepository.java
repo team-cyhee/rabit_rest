@@ -1,6 +1,7 @@
 
 package com.cyhee.rabit.dao.comment;
 
+import com.cyhee.rabit.model.cmm.ContentStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -12,5 +13,7 @@ import com.cyhee.rabit.model.comment.Comment;
 // CRUD refers Create, Read, Update, Delete
 
 public interface CommentRepository extends PagingAndSortingRepository<Comment, Long> {
-	Page<Comment> findByTypeAndParentId(ContentType type, Long parentId, Pageable pageable);
+	Page<Comment> findByTypeAndParentIdAndStatusNot(ContentType type, Long parentId, ContentStatus notStatus, Pageable pageable);
+
+	Page<Comment> findByStatusNot(ContentStatus notStatus, Pageable pageable);
 }

@@ -19,7 +19,7 @@ public class BasicGoalService implements GoalService {
 	private GoalRepository goalRepository;
 
 	public Page<Goal> getGoals(Pageable pageable) {
-		return goalRepository.findAll(pageable);
+		return goalRepository.findByStatusNot(ContentStatus.DELETED, pageable);
 	}
 
 	public void addGoal(Goal goal) {

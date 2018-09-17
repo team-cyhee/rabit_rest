@@ -1,5 +1,6 @@
 package com.cyhee.rabit.service.goal;
 
+import com.cyhee.rabit.model.cmm.ContentStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +23,7 @@ public class GoalStoreService {
 	CommentService commentService;
 	
 	public Page<GoalLog> getGoalLogs(Goal goal, Pageable pageable) {
-		return goalLogRepository.findAllByGoal(goal, pageable);
+		return goalLogRepository.findByGoalAndStatusNot(goal, ContentStatus.DELETED, pageable);
 	}
 	
 	public Page<Comment> getComments(Goal goal, Pageable pageable) {
