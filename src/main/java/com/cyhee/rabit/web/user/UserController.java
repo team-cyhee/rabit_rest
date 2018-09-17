@@ -61,8 +61,8 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteUser(@PathVariable long id) {
-		userService.deleteUser(id);
+	public ResponseEntity<Void> deleteUser(@PathVariable long id, @PageableDefault Pageable pageable) {
+		userService.deleteUser(id, pageable);
 		return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
 	}
 }
