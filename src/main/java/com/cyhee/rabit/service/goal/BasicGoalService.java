@@ -18,6 +18,9 @@ public class BasicGoalService implements GoalService {
 	@Autowired
 	private GoalRepository goalRepository;
 
+	@Autowired
+	private GoalStoreService goalStoreService;
+
 	public Page<Goal> getGoals(Pageable pageable) {
 		return goalRepository.findAll(pageable);
 	}
@@ -38,9 +41,10 @@ public class BasicGoalService implements GoalService {
 		setGoalProps(goal, goalForm);
 	}
 
-	public void deleteGoal(long id) {
+	public void deleteGoal(long id, Pageable pageable) {
 		Goal goal = getGoal(id);
 		goal.setStatus(ContentStatus.DELETED);
+		goalStoreService.deleteAllGoalStore(goal, pageable);
 	}
 	
 	private void setGoalProps(Goal target, Goal source) {

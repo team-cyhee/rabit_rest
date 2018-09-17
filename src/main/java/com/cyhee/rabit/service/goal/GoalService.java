@@ -14,5 +14,5 @@ public interface GoalService {
 	
 	void updateGoal(long id, Goal goalForm);
 	
-	void deleteGoal(long id);
+	void deleteGoal(long id, Pageable pageable);
 }
