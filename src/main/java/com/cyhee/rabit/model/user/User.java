@@ -1,16 +1,14 @@
 package com.cyhee.rabit.model.user;
 
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import com.cyhee.rabit.model.cmm.TimestampEntity;
+import com.cyhee.rabit.model.file.FileInfo;
 import com.cyhee.rabit.validation.Password;
 import com.cyhee.rabit.validation.SetPasswordGroup;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -51,4 +49,7 @@ public class User extends TimestampEntity{
 	
 	@Column(nullable=false)
 	private UserStatus status = UserStatus.PENDING;
+
+	@ManyToMany
+	private List<FileInfo> photo;
 }
