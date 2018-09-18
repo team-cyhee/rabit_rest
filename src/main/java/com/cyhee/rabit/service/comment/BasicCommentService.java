@@ -20,11 +20,11 @@ public class BasicCommentService implements CommentService {
 	private CommentRepository repository;
 	
 	public Page<Comment> getComments(ContentType type, Long parentid, Pageable pageable) {
-		return repository.findByTypeAndParentId(type, parentid, pageable);
+		return repository.findByTypeAndParentIdAndStatusNot(type, parentid, ContentStatus.DELETED, pageable);
 	}
 
 	public Page<Comment> getComments(Pageable pageable) {
-		return repository.findAll(pageable);
+		return repository.findByStatusNot(ContentStatus.DELETED, pageable);
 	}
 
 	public void addComment(Comment comment) {

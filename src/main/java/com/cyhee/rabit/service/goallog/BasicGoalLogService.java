@@ -20,7 +20,7 @@ public class BasicGoalLogService implements GoalLogService {
 	private GoalLogRepository goallogRepository;
 
 	public Page<GoalLog> getGoalLogs(Pageable pageable) {
-		return goallogRepository.findAll(pageable);
+		return goallogRepository.findByStatusNot(ContentStatus.DELETED, pageable);
 	}
 
 	public void addGoalLog(GoalLog goallog) {
