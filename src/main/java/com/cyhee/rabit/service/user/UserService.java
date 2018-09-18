@@ -18,7 +18,7 @@ public interface UserService {
 	
 	void updateUserByUsername(String username, User userForm);
 	
-	void deleteUser(Long id, Pageable pageable);
+	void deleteUser(Long id);
 	
-	void deleteUserByUsername(String username, Pageable pageable);
+	void deleteUserByUsername(String username);
 }

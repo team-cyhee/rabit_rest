@@ -22,7 +22,7 @@ public class BasicGoalService implements GoalService {
 	private GoalStoreService goalStoreService;
 
 	public Page<Goal> getGoals(Pageable pageable) {
-		return goalRepository.findAll(pageable);
+		return goalRepository.findByStatusNot(ContentStatus.DELETED, pageable);
 	}
 
 	public void addGoal(Goal goal) {
@@ -41,10 +41,10 @@ public class BasicGoalService implements GoalService {
 		setGoalProps(goal, goalForm);
 	}
 
-	public void deleteGoal(long id, Pageable pageable) {
+	public void deleteGoal(long id) {
 		Goal goal = getGoal(id);
 		goal.setStatus(ContentStatus.DELETED);
-		goalStoreService.deleteAllGoalStore(goal, pageable);
+		goalStoreService.deleteAllGoalStore(goal);
 	}
 	
 	private void setGoalProps(Goal target, Goal source) {

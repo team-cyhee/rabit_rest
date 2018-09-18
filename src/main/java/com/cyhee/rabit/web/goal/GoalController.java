@@ -46,7 +46,7 @@ public class GoalController {
     
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
     public ResponseEntity<Void> deleteGoal(@PathVariable long id, @PageableDefault Pageable pageable) {
-    	goalService.deleteGoal(id, pageable);
+    	goalService.deleteGoal(id);
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
     }
 }

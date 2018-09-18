@@ -19,7 +19,7 @@ public class BasicFollowService implements FollowService {
     private FollowRepository followRepository;
 
     public Page<Follow> getFollows(Pageable pageable) {
-        return followRepository.findAll(pageable);
+        return followRepository.findByStatusNot(FollowStatus.INACTIVE, pageable);
     }
 
     public void addFollow(Follow follow) {

@@ -46,14 +46,14 @@ public class BasicUserService implements UserService {
 	}
 	
 	public User getUserByUsername(String username) {
-		Optional<User> userOpt = userRepository.findByUsername(username);
+		Optional<User> userOpt = userRepository.findByUsernameAndStatusNot(username, UserStatus.DELETED);
     	if(!userOpt.isPresent())
     		throw new NoSuchContentException(ContentType.USER, "username", username);    	
     	return userOpt.get();
 	}
 
 	public User getUserByEmail(String email) {
-		Optional<User> userOpt = userRepository.findByEmail(email);
+		Optional<User> userOpt = userRepository.findByEmailAndStatusNot(email, UserStatus.DELETED);
     	if(!userOpt.isPresent())
     		throw new NoSuchContentException(ContentType.USER, "email", email);    	
     	return userOpt.get();
@@ -67,16 +67,16 @@ public class BasicUserService implements UserService {
 		updateUser(getUserByUsername(username), userForm);
 	}
 	
-	public void deleteUser(Long id, Pageable pageable) {
+	public void deleteUser(Long id) {
         User user = getUser(id);
         user.setStatus(UserStatus.DELETED);
-		userStoreService.deleteAllUserStore(user, pageable);
+		userStoreService.deleteAllUserStore(user);
 	}
 	
-	public void deleteUserByUsername(String username, Pageable pageable) {
+	public void deleteUserByUsername(String username) {
 		User user = getUserByUsername(username);
 		user.setStatus(UserStatus.DELETED);
-		userStoreService.deleteAllUserStore(user, pageable);
+		userStoreService.deleteAllUserStore(user);
 	}
 	
 	private void updateUser(User user, User userForm) {
