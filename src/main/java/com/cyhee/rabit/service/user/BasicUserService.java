@@ -41,14 +41,14 @@ public class BasicUserService implements UserService {
 	}
 	
 	public User getUserByUsername(String username) {
-		Optional<User> userOpt = userRepository.findByUsername(username);
+		Optional<User> userOpt = userRepository.findByUsernameAndStatusNot(username, UserStatus.DELETED);
     	if(!userOpt.isPresent())
     		throw new NoSuchContentException(ContentType.USER, "username", username);    	
     	return userOpt.get();
 	}
 
 	public User getUserByEmail(String email) {
-		Optional<User> userOpt = userRepository.findByEmail(email);
+		Optional<User> userOpt = userRepository.findByEmailAndStatusNot(email, UserStatus.DELETED);
     	if(!userOpt.isPresent())
     		throw new NoSuchContentException(ContentType.USER, "email", email);    	
     	return userOpt.get();

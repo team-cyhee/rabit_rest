@@ -1,7 +1,9 @@
 package com.cyhee.rabit.service.user;
 
 import com.cyhee.rabit.dao.follow.FollowRepository;
+import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.follow.Follow;
+import com.cyhee.rabit.model.follow.FollowStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,18 +27,18 @@ public class UserStoreService {
 	private GoalLogRepository goalLogRepository;
 
 	public Page<Goal> getGoals(User author, Pageable pageable) {
-		return goalRepository.findAllByAuthor(author, pageable);
+		return goalRepository.findByAuthorAndStatusNot(author, ContentStatus.DELETED, pageable);
 	}
 	
 	public Page<GoalLog> getGoalLogs(User author, Pageable pageable) {
-		return goalLogRepository.findAllByAuthor(author, pageable);
+		return goalLogRepository.findByAuthorAndStatusNot(author, ContentStatus.DELETED, pageable);
 	}
 
 	public Page<Follow> getFollowers(User followee, Pageable pageable) {
-		return followRepository.findByFollowee(followee, pageable);
+		return followRepository.findByFolloweeStatusNot(followee, FollowStatus.INACTIVE, pageable);
 	}
 
 	public Page<Follow> getFollowees(User follower, Pageable pageable) {
-		return followRepository.findByFollower(follower, pageable);
+		return followRepository.findByFollowerStatusNot(follower, FollowStatus.INACTIVE, pageable);
 	}
 }

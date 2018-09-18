@@ -37,7 +37,7 @@ public class BasicFileService implements FileService {
     private FileRepository repository;
 
     public Page<FileInfo> getFiles(Pageable pageable) {
-        return repository.findAll(pageable);
+        return repository.findByStatusNot(FileStatus.DELETED, pageable);
     }
 
     public void addFile(MultipartFile file) throws IOException, InvalidFileException {
