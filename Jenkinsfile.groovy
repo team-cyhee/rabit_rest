@@ -10,6 +10,6 @@ node {
   }
   
   stage('Move') {
-    sh 'mv ./build/libs/*.jar /usr/local/rabit/rest/rest.jar
+    sh 'mv ./build/libs/*.jar /usr/local/rabit/rest/rest.jar'
   }  
 }
