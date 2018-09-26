@@ -13,6 +13,7 @@ node {
   stage('Deploy') {
     def target = '/usr/local/rabit/'
     sh 'cp ./build/libs/*.jar ' + target + 'rest/rest.jar'
+    sh 'docker --version'
     sh 'docker-compose -f ' + target + 'docker-compose.yml stop' 
     sh 'docker-compose -f ' + target + 'docker-compose.yml up -d' 
   }  
