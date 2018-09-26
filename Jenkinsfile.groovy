@@ -12,6 +12,7 @@ node {
   
   stage('Move') {
     sh 'whoami'
+    sh 'mkdir hi'
     sh 'sudo mv ./build/libs/*.jar /usr/local/rabit/rest/rest.jar'
   }  
 }
