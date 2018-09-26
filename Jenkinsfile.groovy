@@ -11,6 +11,6 @@ node {
   }
   
   stage('Move') {
-    sh 'mv ./build/libs/*.jar /usr/local/rabit/rest/rest.jar'
+    sh 'sudo mv ./build/libs/*.jar /usr/local/rabit/rest/rest.jar'
   }  
 }
