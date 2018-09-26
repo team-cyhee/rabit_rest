@@ -1,5 +1,7 @@
 node {  
   stage('Bulid') {
+    sh 'ls'
+    sh 'pwd'
     sh 'gradlew build -x test'
   }
   
