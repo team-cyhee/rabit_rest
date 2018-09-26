@@ -80,6 +80,7 @@ public class UserServiceTest {
 	
 	@Test
 	public void deleteAndGet() {
+		Pageable pageable = PageRequest.of(0, 10);
 		userService.addUser(user1);
 
 		String email1 = "email1@a";
@@ -87,7 +88,7 @@ public class UserServiceTest {
 		Optional<User> userOpt = repository.findByEmailAndStatusNot(email1, UserStatus.DELETED);
 		
 		User user = userOpt.get();
-		userService.deleteUser(user.getId());
+		userService.deleteUser(user.getId(), pageable);
 		
 		userOpt = repository.findByEmailAndStatusNot(email1, UserStatus.ACTIVE);
 		assertThat(userOpt.get())

@@ -19,6 +19,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -64,13 +66,14 @@ public class UserApiTest {
 	
 	@Test
 	public void CRUD() throws Exception {
+		Pageable pageable = PageRequest.of(0, 10);
 		User user = new User().setEmail("user@email.com").setPassword("password1@").setUsername("username");
 		
 		given(userService.getUser(1L)).willReturn(user);
 		given(userService.getUser(2L)).willThrow(NoSuchUserException.class);
 		Mockito.doThrow(NoSuchUserException.class)
 			.when(userService)
-			.deleteUser(2L);
+			.deleteUser(2L, pageable);
 		Mockito.doThrow(NoSuchUserException.class)
 			.when(userService)
 			.updateUser(eq(2L), any());

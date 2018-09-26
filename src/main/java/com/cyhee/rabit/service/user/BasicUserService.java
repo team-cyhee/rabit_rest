@@ -2,6 +2,8 @@ package com.cyhee.rabit.service.user;
 
 import java.util.Optional;
 
+import com.cyhee.rabit.model.cmm.ContentStatus;
+import com.cyhee.rabit.model.follow.FollowStatus;
 import com.cyhee.rabit.model.user.UserStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -23,6 +25,9 @@ public class BasicUserService implements UserService {
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+
+	@Autowired
+	private UserStoreService userStoreService;
 	
 	public Page<User> getUsers(Pageable pageable) {
 		return userRepository.findAll(pageable);
@@ -65,11 +70,13 @@ public class BasicUserService implements UserService {
 	public void deleteUser(Long id) {
         User user = getUser(id);
         user.setStatus(UserStatus.DELETED);
+		userStoreService.deleteAllUserStore(user);
 	}
 	
 	public void deleteUserByUsername(String username) {
 		User user = getUserByUsername(username);
 		user.setStatus(UserStatus.DELETED);
+		userStoreService.deleteAllUserStore(user);
 	}
 	
 	private void updateUser(User user, User userForm) {
