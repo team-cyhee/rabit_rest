@@ -6,7 +6,7 @@ node {
   stage('Bulid') {
     sh 'ls'
     sh 'pwd'
-    sh 'chomod +x gradlew'
+    sh 'chmod +x gradlew'
     sh './gradlew build -x test'
   }
   
