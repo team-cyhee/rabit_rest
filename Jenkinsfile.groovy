@@ -12,6 +12,6 @@ node {
   
   stage('Move') {
     sh 'whoami'
-    sh 'sudo cp ./build/libs/*.jar /usr/local/rabit/rest/rest.jar'
+    sh 'cp ./build/libs/*.jar /usr/local/rabit/rest/rest.jar'
   }  
 }
