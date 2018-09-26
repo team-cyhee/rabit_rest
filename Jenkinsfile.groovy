@@ -11,6 +11,7 @@ node {
   }
   
   stage('Move') {
+    sh 'whoami'
     sh 'sudo mv ./build/libs/*.jar /usr/local/rabit/rest/rest.jar'
   }  
 }
