@@ -6,10 +6,10 @@ node {
   stage('Bulid') {
     sh 'ls'
     sh 'pwd'
-    sh 'gradlew build -x test'
+    sh './gradlew build -x test'
   }
   
   stage('Move') {
-    echo 'Hi Hi'
+    sh 'mv ./build/libs/*.jar /usr/local/rabit/rest/rest.jar
   }  
 }
