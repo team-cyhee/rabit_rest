@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cyhee.rabit.dao.user.UserRepository;
@@ -28,6 +29,7 @@ import com.cyhee.rabit.service.user.UserService;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @DataJpaTest
+@TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
 @Import({BasicUserService.class, BCryptPasswordEncoder.class})
 public class UserServiceTest {
 	@Autowired
@@ -57,7 +59,7 @@ public class UserServiceTest {
 		userService.addUser(user1);
 		after = new Date(now.getTime() + 1000);
 		
-		Optional<User> userOpt = repository.findByEmail("email1@a");
+		Optional<User> userOpt = repository.findByEmailAndStatusNot("email1@a", UserStatus.DELETED);
 		
 		User user = userOpt.get();
 		assertThat(user)
@@ -82,12 +84,12 @@ public class UserServiceTest {
 
 		String email1 = "email1@a";
 		User source = new User().setStatus(UserStatus.DELETED);
-		Optional<User> userOpt = repository.findByEmail(email1);
+		Optional<User> userOpt = repository.findByEmailAndStatusNot(email1, UserStatus.DELETED);
 		
 		User user = userOpt.get();
 		userService.deleteUser(user.getId());
 		
-		userOpt = repository.findByEmail(email1);
+		userOpt = repository.findByEmailAndStatusNot(email1, UserStatus.ACTIVE);
 		assertThat(userOpt.get())
 				.extracting(User::getStatus)
 				.containsExactly(source.getStatus());
@@ -124,7 +126,7 @@ public class UserServiceTest {
 		entityManger.flush();
 		entityManger.clear();
 		
-		Optional<User> userOpt = repository.findByEmail("email1@a");		
+		Optional<User> userOpt = repository.findByEmailAndStatusNot("email1@a", UserStatus.DELETED);		
 		User user = userOpt.get();
 		
 		assertThat(user.getName())

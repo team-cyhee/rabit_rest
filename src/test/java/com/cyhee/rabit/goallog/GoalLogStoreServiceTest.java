@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cyhee.rabit.model.cmm.ContentType;
@@ -26,6 +27,7 @@ import com.cyhee.rabit.model.user.User;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @DataJpaTest
+@TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
 @Import({GoalLogStoreService.class, BasicCommentService.class})
 public class GoalLogStoreServiceTest {
 	@Autowired

@@ -18,7 +18,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 @Entity
-@Table
+@Table(name="rabit_user")
 @Data
 @EqualsAndHashCode(callSuper=false)
 @Accessors(chain=true)
