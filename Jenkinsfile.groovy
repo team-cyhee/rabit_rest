@@ -10,8 +10,10 @@ node {
     sh './gradlew build -x test'
   }
   
-  stage('Move') {
-    sh 'whoami'
-    sh 'cp ./build/libs/*.jar /usr/local/rabit/rest/rest.jar'
+  stage('Deploy') {
+    def target = '/usr/local/rabit/'
+    sh 'cp ./build/libs/*.jar ' + target + 'rest/rest.jar'
+    sh 'docker-compose -f ' + target + 'docker-compose.yml stop' 
+    sh 'docker-compose -f ' + target + 'docker-compose.yml up -d' 
   }  
 }
