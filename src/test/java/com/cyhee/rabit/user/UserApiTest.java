@@ -73,7 +73,7 @@ public class UserApiTest {
 		given(userService.getUser(2L)).willThrow(NoSuchUserException.class);
 		Mockito.doThrow(NoSuchUserException.class)
 			.when(userService)
-			.deleteUser(2L, pageable);
+			.deleteUser(2L);
 		Mockito.doThrow(NoSuchUserException.class)
 			.when(userService)
 			.updateUser(eq(2L), any());

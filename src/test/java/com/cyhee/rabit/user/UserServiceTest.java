@@ -88,7 +88,7 @@ public class UserServiceTest {
 		Optional<User> userOpt = repository.findByEmailAndStatusNot(email1, UserStatus.DELETED);
 		
 		User user = userOpt.get();
-		userService.deleteUser(user.getId(), pageable);
+		userService.deleteUser(user.getId());
 		
 		userOpt = repository.findByEmailAndStatusNot(email1, UserStatus.ACTIVE);
 		assertThat(userOpt.get())
