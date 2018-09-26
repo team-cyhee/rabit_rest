@@ -6,7 +6,7 @@ node {
   stage('Bulid') {
     sh 'ls'
     sh 'pwd'
-    sh './gradlew build -x test'
+    sh 'gradle build -x test'
   }
   
   stage('Move') {
