@@ -48,9 +48,9 @@ public class UserServiceTest {
 	@Before
 	public void setup() {
 		now = new Date();
-		user1 = new User().setEmail("email1@a").setPassword("password1@").setUsername("username");		
-		user2 = new User().setEmail("email2@a").setPassword("password2@").setUsername("testuser2");
-		user3 = new User().setEmail("email23@a").setPassword("password2@").setUsername("testuser3");
+		user1 = new User().setEmail("email1@a").setUsername("username");		
+		user2 = new User().setEmail("email2@a").setUsername("testuser2");
+		user3 = new User().setEmail("email23@a").setUsername("testuser3");
 	}
 
 	@Test
@@ -73,8 +73,6 @@ public class UserServiceTest {
                 assertThat(now.compareTo((Date) date)).isNotPositive();
                 assertThat(after.compareTo((Date) date)).isPositive();
               });
-		assertThat(user.getPassword())
-			.isNotEqualTo("password1");
 	}
 	
 	

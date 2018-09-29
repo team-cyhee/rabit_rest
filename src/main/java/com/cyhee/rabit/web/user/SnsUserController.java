@@ -23,11 +23,11 @@ import com.cyhee.rabit.model.user.SnsUser;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.user.UserService;
 
+// TODO It should be moved to authorization server
 @RestController
 @RequestMapping("rest/v1/sns/users")
 public class SnsUserController {
-	
-	private static Logger logger = LogManager.getLogger(SnsUserController.class);
+	/*private static Logger logger = LogManager.getLogger(SnsUserController.class);
 	
 	@Resource(name="basicUserService")
 	UserService userService;
@@ -63,5 +63,5 @@ public class SnsUserController {
 			}
 			return new ResponseEntity<ApiError>(new ApiError(ApiErrorCode.TOKEN_AUTHORIZATION_FAIL, e), HttpStatus.BAD_GATEWAY);
 		}
-	}
+	}*/
 }

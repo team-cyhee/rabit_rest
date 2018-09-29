@@ -29,11 +29,6 @@ public class User extends TimestampEntity{
 	@NotNull
 	private String email;
 	
-	@Column(nullable=false, length=255)
-	@Password(groups=SetPasswordGroup.class)
-	@JsonView(UserJsonView.UserPost.class)
-	private String password;
-	
 	@Column(nullable=false, unique=true, length=20)
 	@NotNull
 	private String username;

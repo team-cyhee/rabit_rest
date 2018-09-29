@@ -32,11 +32,6 @@ public class BasicUserService implements UserService {
 	public Page<User> getUsers(Pageable pageable) {
 		return userRepository.findAll(pageable);
 	}
-		
-	public void addUser(User user) {    	
-    	user.setPassword(passwordEncoder.encode(user.getPassword()));
-		userRepository.save(user);
-	}
 	
 	public User getUser(Long id) {
 		Optional<User> userOpt = userRepository.findById(id);
