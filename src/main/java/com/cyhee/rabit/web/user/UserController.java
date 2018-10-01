@@ -35,16 +35,6 @@ public class UserController {
 		return new ResponseEntity<Page<User>>(userService.getUsers(pageable), HttpStatus.OK);
 	}
 
-	@JsonView(UserJsonView.UserPost.class)
-	@PostMapping
-	public ResponseEntity<Void> addUser(@RequestBody @Validated({SetPasswordGroup.class}) User user, BindingResult bindingResult) {
-		if (bindingResult.hasErrors())
-			throw new ValidationFailException(bindingResult.getAllErrors());
-	
-		userService.addUser(user);
-		return new ResponseEntity<>(HttpStatus.CREATED);
-	}
-
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<User> getUser(@PathVariable long id) {		
 		User user = userService.getUser(id);

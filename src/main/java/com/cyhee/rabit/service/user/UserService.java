@@ -8,8 +8,6 @@ import com.cyhee.rabit.model.user.User;
 public interface UserService {	
 	Page<User> getUsers(Pageable pageable);
 	
-	void addUser(User user);
-	
 	User getUser(Long id);
 	
 	User getUserByUsername(String username);

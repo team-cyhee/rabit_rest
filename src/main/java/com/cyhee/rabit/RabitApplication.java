@@ -21,7 +21,7 @@ public class RabitApplication {
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(RabitApplication.class, args);
 		
-		List<User> users = new ArrayList<>();
+		/*List<User> users = new ArrayList<>();
 		users.add(userGenerator("user1"));
 		users.add(userGenerator("user2"));
 		
@@ -40,7 +40,7 @@ public class RabitApplication {
 			} catch (NoSuchContentException e) {
 				userService.addUser(user);
 			}
-		}
+		}*/
 		
 		/*List<Goal> goals = new ArrayList<>();
 		goals.add(new Goal().setAuthor(userService.getUserByUsername("chy")));
@@ -59,12 +59,12 @@ public class RabitApplication {
 		}*/
 	}
 	
-	public static User userGenerator(String username) {
+	/*public static User userGenerator(String username) {
 		User user = new User();
 		user.setEmail(username+"@rabit.com");
 		user.setUsername(username);
 		user.setName(username+"name");
 		user.setPassword(username);
 		return user;
-	}
+	}*/
 }
