@@ -2,6 +2,9 @@ package com.cyhee.rabit.comment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.cyhee.rabit.service.comment.CommentService;
+import com.cyhee.rabit.service.goal.GoalService;
+import com.cyhee.rabit.service.user.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,25 +24,19 @@ import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.user.User;
-import com.cyhee.rabit.service.comment.BasicCommentService;
-import com.cyhee.rabit.service.comment.CommentService;
-import com.cyhee.rabit.service.goal.BasicGoalService;
-import com.cyhee.rabit.service.goal.GoalService;
-import com.cyhee.rabit.service.user.BasicUserService;
-import com.cyhee.rabit.service.user.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @DataJpaTest
 @TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
-@Import({BasicUserService.class, BCryptPasswordEncoder.class, BasicGoalService.class, BasicCommentService.class})
+@Import({UserService.class, BCryptPasswordEncoder.class, GoalService.class, CommentService.class})
 public class CommentServiceTest {
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private GoalService goalService;
 	@Autowired
-	private CommentService commentService;	
+	private CommentService commentService;
 
 	User user1;
 	User user2;

@@ -24,7 +24,7 @@ public class UserStoreController {
 	@Autowired
 	UserStoreService userStoreService;
 	
-	@Resource(name="basicUserService")
+	@Resource(name="userService")
 	UserService userService;
 	
 	@GetMapping("/goals")

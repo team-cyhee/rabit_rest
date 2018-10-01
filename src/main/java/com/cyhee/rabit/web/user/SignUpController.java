@@ -2,6 +2,7 @@ package com.cyhee.rabit.web.user;
 
 import javax.annotation.Resource;
 
+import com.cyhee.rabit.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cyhee.rabit.model.user.User;
-import com.cyhee.rabit.service.user.UserService;
 import com.cyhee.rabit.validation.SetPasswordGroup;
 import com.cyhee.rabit.validation.exception.ValidationFailException;
 
@@ -20,7 +20,7 @@ import com.cyhee.rabit.validation.exception.ValidationFailException;
 @RequestMapping("rest/v1/signup")
 @Deprecated
 public class SignUpController {
-	@Resource(name = "basicUserService")
+	@Resource(name = "userService")
 	private UserService userService;
 	
 	@PostMapping

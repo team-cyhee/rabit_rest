@@ -2,7 +2,8 @@ package com.cyhee.rabit.goallog;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.cyhee.rabit.model.cmm.ContentStatus;
+import com.cyhee.rabit.service.goallog.GoalLogService;
+import com.cyhee.rabit.service.user.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,20 +19,15 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cyhee.rabit.model.goal.Goal;
-import com.cyhee.rabit.service.goal.BasicGoalService;
 import com.cyhee.rabit.service.goal.GoalService;
 import com.cyhee.rabit.model.goallog.GoalLog;
-import com.cyhee.rabit.service.goallog.BasicGoalLogService;
-import com.cyhee.rabit.service.goallog.GoalLogService;
 import com.cyhee.rabit.model.user.User;
-import com.cyhee.rabit.service.user.BasicUserService;
-import com.cyhee.rabit.service.user.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @DataJpaTest
 @TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
-@Import({BasicUserService.class, BCryptPasswordEncoder.class, BasicGoalService.class, BasicGoalLogService.class})
+@Import({UserService.class, BCryptPasswordEncoder.class, GoalService.class, GoalLogService.class})
 public class GoalLogServiceTest {
 	@Autowired
 	private UserService userService;
@@ -44,10 +40,10 @@ public class GoalLogServiceTest {
 	User user2;
 	Goal goal1;
 	Goal goal2;
-	GoalLog log1;
-	GoalLog log2;
-	GoalLog log3;
-	GoalLog log4;
+	GoalLog gl1;
+	GoalLog gl2;
+	GoalLog gl3;
+	GoalLog gl4;
 		
 	@Before
 	public void setup() {
@@ -57,36 +53,22 @@ public class GoalLogServiceTest {
 		goal1 = new Goal().setAuthor(user1).setContent("content1");
 		goal2 = new Goal().setAuthor(user2).setContent("content2");
 		
-		log1 = new GoalLog().setGoal(goal1).setContent("content1");
-		log2 = new GoalLog().setGoal(goal2).setContent("content2");
-		log3 = new GoalLog().setGoal(goal1).setContent("content3");
-		log4 = new GoalLog().setGoal(goal2).setContent("content4");
+		gl1 = new GoalLog().setGoal(goal1).setContent("content1");
+		gl2 = new GoalLog().setGoal(goal2).setContent("content2");
+		gl3 = new GoalLog().setGoal(goal1).setContent("content3");
+		gl4 = new GoalLog().setGoal(goal2).setContent("content4");
 	}
 
 	@Test
 	public void createAndGet() {
 		userService.addUser(user1);
 		goalService.addGoal(goal1);
-		goalLogService.addGoalLog(log1);
+		goalLogService.addGoalLog(gl1);
 		
-		GoalLog log = goalLogService.getGoalLog(log1.getId());
+		GoalLog gl = goalLogService.getGoalLog(gl1.getId());
 		
-		assertThat(log)
-			.isEqualTo(log1);
-	}
-	
-	
-	@Test
-	public void deleteAndGet() {
-		GoalLog source = new GoalLog().setStatus(ContentStatus.DELETED);
-		userService.addUser(user1);
-		goalService.addGoal(goal1);
-		goalLogService.addGoalLog(log1);				
-		goalLogService.deleteGoalLog(log1.getId());		
-		
-		assertThat(log1)
-			.extracting(GoalLog::getStatus)
-			.containsExactly(source.getStatus());
+		assertThat(gl)
+			.isEqualTo(gl1);
 	}
 	
 	@Test
@@ -95,29 +77,29 @@ public class GoalLogServiceTest {
 		userService.addUser(user2);
 		goalService.addGoal(goal1);
 		goalService.addGoal(goal2);
-		goalLogService.addGoalLog(log1);
-		goalLogService.addGoalLog(log2);
-		goalLogService.addGoalLog(log3);
-		goalLogService.addGoalLog(log4);
+		goalLogService.addGoalLog(gl1);
+		goalLogService.addGoalLog(gl2);
+		goalLogService.addGoalLog(gl3);
+		goalLogService.addGoalLog(gl4);
 
 		Pageable pageable = PageRequest.of(1, 2);
 		Page<GoalLog> page = goalLogService.getGoalLogs(pageable);
 		assertThat(page)
 			.hasSize(2)
-			.containsExactlyInAnyOrder(log3, log4);
+			.containsExactlyInAnyOrder(gl3, gl4);
 	}
 	
 	@Test
 	public void update() {
 		userService.addUser(user1);
 		goalService.addGoal(goal1);
-		goalLogService.addGoalLog(log1);
+		goalLogService.addGoalLog(gl1);
 		
 		GoalLog form = new GoalLog().setContent("new Content");
 		
-		goalLogService.updateGoalLog(log1.getId(), form);
+		goalLogService.updateGoalLog(gl1.getId(), form);
 		
-		assertThat(log1)
+		assertThat(gl1)
 			.extracting(GoalLog::getContent)
 			.containsExactly(form.getContent());
 	}

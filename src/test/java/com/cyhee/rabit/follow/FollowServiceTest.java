@@ -5,9 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.cyhee.rabit.model.follow.Follow;
 import com.cyhee.rabit.model.follow.FollowStatus;
 import com.cyhee.rabit.model.user.User;
-import com.cyhee.rabit.service.follow.BasicFollowService;
 import com.cyhee.rabit.service.follow.FollowService;
-import com.cyhee.rabit.service.user.BasicUserService;
 import com.cyhee.rabit.service.user.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 @DataJpaTest
 @TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
-@Import({BasicUserService.class, BCryptPasswordEncoder.class, BasicUserService.class, BasicFollowService.class})
+@Import({UserService.class, BCryptPasswordEncoder.class, UserService.class, FollowService.class})
 public class FollowServiceTest {
     @Autowired
     private UserService userService;

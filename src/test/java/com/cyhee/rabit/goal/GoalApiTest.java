@@ -16,16 +16,16 @@ import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.service.goal.GoalService;
 import com.cyhee.rabit.web.goal.GoalController;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(controllers=GoalController.class, secure=false)
-@EnableSpringDataWebSupport
-public class GoalApiTest {
-	@Autowired
-	private MockMvc mvc;
-	@MockBean(name="basicGoalService")
-    private GoalService goalService;
-	
-	private static final String url = "/rest/v1/goals";
+	@RunWith(SpringRunner.class)
+	@WebMvcTest(controllers=GoalController.class, secure=false)
+	@EnableSpringDataWebSupport
+	public class GoalApiTest {
+		@Autowired
+		private MockMvc mvc;
+		@MockBean(name="goalService")
+		private GoalService goalService;
+
+		private static final String url = "/rest/v1/goals";
 	
 	@Test
 	public void CRUD() throws Exception {

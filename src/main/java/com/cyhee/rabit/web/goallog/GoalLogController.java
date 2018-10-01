@@ -3,6 +3,7 @@ package com.cyhee.rabit.web.goallog;
 
 import javax.annotation.Resource;
 
+import com.cyhee.rabit.service.goallog.GoalLogService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,12 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cyhee.rabit.model.goallog.GoalLog;
-import com.cyhee.rabit.service.goallog.GoalLogService;
 
 @RestController
 @RequestMapping("rest/v1/goallogs")
 public class GoalLogController {
-	@Resource(name="basicGoalLogService")
+	@Resource(name="goalLogService")
 	private GoalLogService goallogService;
 	
 	@RequestMapping(method=RequestMethod.GET)
