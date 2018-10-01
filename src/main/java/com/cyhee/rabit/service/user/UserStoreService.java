@@ -7,7 +7,6 @@ import com.cyhee.rabit.model.follow.FollowStatus;
 import com.cyhee.rabit.service.follow.FollowService;
 import com.cyhee.rabit.service.goal.GoalService;
 import com.cyhee.rabit.service.goallog.GoalLogService;
-import com.cyhee.rabit.model.follow.FollowStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +22,9 @@ import java.util.List;
 
 @Service
 public class UserStoreService {
+	@Autowired
+	private UserService userService;
+
 	@Autowired
 	private FollowRepository followRepository;
 
@@ -40,6 +42,16 @@ public class UserStoreService {
 
 	@Autowired
 	private FollowService followService;
+
+	public void deleteUser(Long id) {
+		User user = userService.deleteUser(id);
+		deleteAllUserStore(user);
+	}
+
+	public void deleteUserByUsername(Long id) {
+		User user = userService.deleteUser(id);
+		deleteAllUserStore(user);
+	}
 
 	public Page<Goal> getGoals(User author, Pageable pageable) {
 		return goalRepository.findByAuthorAndStatusNot(author, ContentStatus.DELETED, pageable);

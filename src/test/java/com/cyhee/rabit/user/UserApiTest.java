@@ -39,7 +39,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class UserApiTest {
 	@Autowired
 	private MockMvc mvc;
-	@MockBean(name="basicUserService")
+	@MockBean(name="userService")
     private UserService userService;
 	private ObjectMapper mapper;
 	private MediaType contentType;

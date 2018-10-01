@@ -2,6 +2,7 @@ package com.cyhee.rabit.web.goal;
 
 import javax.annotation.Resource;
 
+import com.cyhee.rabit.service.goal.GoalService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -14,12 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cyhee.rabit.model.goal.Goal;
-import com.cyhee.rabit.service.goal.GoalService;
 
 @RestController
 @RequestMapping("rest/v1/goals")
 public class GoalController {
-	@Resource(name="basicGoalService")
+	@Resource(name="goalService")
 	private GoalService goalService;
 	
 	@RequestMapping(method=RequestMethod.GET)

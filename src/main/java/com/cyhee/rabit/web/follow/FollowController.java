@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("rest/v1/follows")
 public class FollowController {
-    @Resource(name="basicFollowService")
+    @Resource(name="followService")
     private FollowService followService;
 
     @RequestMapping(method=RequestMethod.GET)

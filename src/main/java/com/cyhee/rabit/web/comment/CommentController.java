@@ -3,6 +3,7 @@ package com.cyhee.rabit.web.comment;
 
 import javax.annotation.Resource;
 
+import com.cyhee.rabit.service.comment.CommentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,12 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cyhee.rabit.model.comment.Comment;
-import com.cyhee.rabit.service.comment.CommentService;
 
 @RestController
 @RequestMapping("rest/v1/comments")
 public class CommentController {
-	@Resource(name="basicCommentService")
+	@Resource(name="commentService")
 	private CommentService commentService;
 	
 	@RequestMapping(method=RequestMethod.GET)
