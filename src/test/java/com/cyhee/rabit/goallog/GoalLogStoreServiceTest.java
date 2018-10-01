@@ -2,6 +2,11 @@ package com.cyhee.rabit.goallog;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.cyhee.rabit.model.cmm.ContentStatus;
+import com.cyhee.rabit.service.comment.CommentService;
+import com.cyhee.rabit.service.goal.GoalService;
+import com.cyhee.rabit.service.goallog.GoalLogService;
+import com.cyhee.rabit.service.user.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +23,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
-import com.cyhee.rabit.service.comment.BasicCommentService;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.service.goallog.GoalLogStoreService;
@@ -28,12 +32,20 @@ import com.cyhee.rabit.model.user.User;
 @SpringBootTest
 @DataJpaTest
 @TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
-@Import({GoalLogStoreService.class, BasicCommentService.class})
+@Import({GoalLogStoreService.class, CommentService.class})
 public class GoalLogStoreServiceTest {
 	@Autowired
-	GoalLogStoreService goalLogStoreService;
+	private UserService userService;
 	@Autowired
-	TestEntityManager entityManger;
+	private GoalService goalService;
+	@Autowired
+	private GoalLogService goalLogService;
+	@Autowired
+	private CommentService commentService;
+	@Autowired
+	private GoalLogStoreService goalLogStoreService;
+	@Autowired
+	private TestEntityManager entityManger;
 	
 	User user1;
 	User user2;
@@ -82,5 +94,23 @@ public class GoalLogStoreServiceTest {
 		assertThat(comments.getContent())
 			.hasSize(1).contains(comment2);
 	}
-	
+
+	@Test
+	public void deleteAndGet() {
+		GoalLog glSource = new GoalLog().setStatus(ContentStatus.DELETED);
+		Comment cmtSource = new Comment().setStatus(ContentStatus.DELETED);
+		userService.addUser(user1);
+		goalService.addGoal(goal1);
+		goalLogService.addGoalLog(log1);
+		commentService.addComment(comment1);
+		goalLogStoreService.deleteGoalLog(log1.getId());
+
+		assertThat(log1)
+				.extracting(GoalLog::getStatus)
+				.containsExactly(glSource.getStatus());
+
+		assertThat(comment1)
+				.extracting(Comment::getStatus)
+				.containsExactly(cmtSource.getStatus());
+	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.cyhee.rabit.service.user.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -11,8 +12,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.model.user.User;
-import com.cyhee.rabit.service.user.BasicUserService;
-import com.cyhee.rabit.service.user.UserService;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy
@@ -32,7 +31,7 @@ public class RabitApplication {
 		me.setPassword(UUID.randomUUID().toString());
 		users.add(me);
 
-		UserService userService = (UserService)context.getBean(BasicUserService.class);
+		UserService userService = (UserService)context.getBean(UserService.class);
 		
 		for (User user : users) {			
 			try {
@@ -45,7 +44,7 @@ public class RabitApplication {
 		/*List<Goal> goals = new ArrayList<>();
 		goals.add(new Goal().setAuthor(userService.getUserByUsername("chy")));
 		
-		GoalService goalService = (GoalService)context.getBean(BasicGoalService.class);
+		GoalService goalService = (GoalService)context.getBean(GoalService.class);
 		for (Goal goal : goals) {			
 			goalService.addGoal(goal);
 		}
@@ -53,7 +52,7 @@ public class RabitApplication {
 		List<Comment> comments = new ArrayList<>();
 		comments.add(new Comment().setAuthor(userService.getUserByUsername("chy")).setParentId(goals.get(0).getId()).setType(ContentType.GOAL));
 		
-		CommentService commentService = (CommentService)context.getBean(BasicCommentService.class);
+		CommentService commentService = (CommentService)context.getBean(CommentService.class);
 		for (Comment comment: comments) {
 			commentService.addComment(comment);
 		}*/

@@ -2,6 +2,7 @@ package com.cyhee.rabit.web.user;
 
 import javax.annotation.Resource;
 
+import com.cyhee.rabit.service.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.model.user.UserJsonView;
-import com.cyhee.rabit.service.user.UserService;
 import com.cyhee.rabit.validation.SetPasswordGroup;
 import com.cyhee.rabit.validation.exception.ValidationFailException;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 @RestController
 @RequestMapping("rest/v1/users")
 public class UserController {
-	@Resource(name = "basicUserService")
+	@Resource(name = "userService")
 	private UserService userService;
 	
 	@GetMapping

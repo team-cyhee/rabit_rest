@@ -23,14 +23,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.cyhee.rabit.dao.user.UserRepository;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.model.user.UserStatus;
-import com.cyhee.rabit.service.user.BasicUserService;
 import com.cyhee.rabit.service.user.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @DataJpaTest
 @TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
-@Import({BasicUserService.class, BCryptPasswordEncoder.class})
+@Import({UserService.class, BCryptPasswordEncoder.class})
 public class UserServiceTest {
 	@Autowired
 	private TestEntityManager entityManger;
@@ -73,25 +72,6 @@ public class UserServiceTest {
                 assertThat(now.compareTo((Date) date)).isNotPositive();
                 assertThat(after.compareTo((Date) date)).isPositive();
               });
-	}
-	
-	
-	@Test
-	public void deleteAndGet() {
-		Pageable pageable = PageRequest.of(0, 10);
-		userService.addUser(user1);
-
-		String email1 = "email1@a";
-		User source = new User().setStatus(UserStatus.DELETED);
-		Optional<User> userOpt = repository.findByEmailAndStatusNot(email1, UserStatus.DELETED);
-		
-		User user = userOpt.get();
-		userService.deleteUser(user.getId());
-		
-		userOpt = repository.findByEmailAndStatusNot(email1, UserStatus.ACTIVE);
-		assertThat(userOpt.get())
-				.extracting(User::getStatus)
-				.containsExactly(source.getStatus());
 	}
 	
 	@Test
