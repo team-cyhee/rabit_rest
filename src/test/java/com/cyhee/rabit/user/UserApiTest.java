@@ -67,7 +67,7 @@ public class UserApiTest {
 	@Test
 	public void CRUD() throws Exception {
 		Pageable pageable = PageRequest.of(0, 10);
-		User user = new User().setEmail("user@email.com").setPassword("password1@").setUsername("username");
+		User user = new User().setEmail("user@email.com").setUsername("username");
 		
 		given(userService.getUser(1L)).willReturn(user);
 		given(userService.getUser(2L)).willThrow(NoSuchUserException.class);
@@ -79,7 +79,7 @@ public class UserApiTest {
 			.updateUser(eq(2L), any());
 		
 		ApiTestUtil testUtil = new ApiTestUtil(mvc, url);
-		testUtil.simpleCRUDTest(1L, user);
+		testUtil.simpleRUDTest(1L, user);
 
 		mvc.perform(get(getUrl(1L)))
 			.andExpect(status().isOk())

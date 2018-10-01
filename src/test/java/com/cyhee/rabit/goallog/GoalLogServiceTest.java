@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,8 @@ public class GoalLogServiceTest {
 	private GoalService goalService;
 	@Autowired
 	private GoalLogService goalLogService;
+	@Autowired
+	private TestEntityManager entityManager;
 	
 	User user1;
 	User user2;
@@ -47,8 +50,8 @@ public class GoalLogServiceTest {
 		
 	@Before
 	public void setup() {
-		user1 = new User().setEmail("email1@com").setPassword("password1@").setUsername("user1");		
-		user2 = new User().setEmail("email2@com").setPassword("password2@").setUsername("user2");
+		user1 = new User().setEmail("email1@com").setUsername("user1");		
+		user2 = new User().setEmail("email2@com").setUsername("user2");
 		
 		goal1 = new Goal().setAuthor(user1).setContent("content1");
 		goal2 = new Goal().setAuthor(user2).setContent("content2");
@@ -57,12 +60,16 @@ public class GoalLogServiceTest {
 		gl2 = new GoalLog().setGoal(goal2).setContent("content2");
 		gl3 = new GoalLog().setGoal(goal1).setContent("content3");
 		gl4 = new GoalLog().setGoal(goal2).setContent("content4");
+		
+		entityManager.persist(user1);
+		entityManager.persist(user2);
+
+		entityManager.persist(goal1);
+		entityManager.persist(goal2);
 	}
 
 	@Test
 	public void createAndGet() {
-		userService.addUser(user1);
-		goalService.addGoal(goal1);
 		goalLogService.addGoalLog(gl1);
 		
 		GoalLog gl = goalLogService.getGoalLog(gl1.getId());
@@ -73,10 +80,6 @@ public class GoalLogServiceTest {
 	
 	@Test
 	public void createAndGetAll() {
-		userService.addUser(user1);
-		userService.addUser(user2);
-		goalService.addGoal(goal1);
-		goalService.addGoal(goal2);
 		goalLogService.addGoalLog(gl1);
 		goalLogService.addGoalLog(gl2);
 		goalLogService.addGoalLog(gl3);
@@ -91,8 +94,6 @@ public class GoalLogServiceTest {
 	
 	@Test
 	public void update() {
-		userService.addUser(user1);
-		goalService.addGoal(goal1);
 		goalLogService.addGoalLog(gl1);
 		
 		GoalLog form = new GoalLog().setContent("new Content");

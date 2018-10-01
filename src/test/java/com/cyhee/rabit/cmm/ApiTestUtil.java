@@ -56,6 +56,20 @@ public class ApiTestUtil {
 			.andExpect(status().isAccepted());
 	}
 	
+	public void simpleRUDTest(Object id, Object target) throws JsonProcessingException, Exception {
+		mvc.perform(get(url).param("page", "0").param("size", "10"))
+	        .andExpect(status().isOk());
+		
+		mvc.perform(get(getUrl(id)))
+			.andExpect(status().isOk());
+		
+		mvc.perform(put(getUrl(id)).contentType(contentType).content(mapper.writeValueAsString(target)))
+			.andExpect(status().isOk());
+		
+		mvc.perform(delete(getUrl(id)))
+			.andExpect(status().isAccepted());
+	}
+	
 	public void getDetailTest(Object id, String type, Object target) throws Exception {
 		mvc.perform(get(getUrl(1L)))
 			.andExpect(status().isOk())

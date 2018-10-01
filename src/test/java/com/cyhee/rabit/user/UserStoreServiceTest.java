@@ -2,15 +2,6 @@ package com.cyhee.rabit.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.cyhee.rabit.model.cmm.ContentStatus;
-import com.cyhee.rabit.model.cmm.ContentType;
-import com.cyhee.rabit.model.comment.Comment;
-import com.cyhee.rabit.model.follow.Follow;
-import com.cyhee.rabit.model.user.UserStatus;
-import com.cyhee.rabit.service.comment.CommentService;
-import com.cyhee.rabit.service.goal.GoalService;
-import com.cyhee.rabit.service.goallog.GoalLogService;
-import com.cyhee.rabit.service.user.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,24 +16,27 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.cyhee.rabit.model.cmm.ContentStatus;
+import com.cyhee.rabit.model.cmm.ContentType;
+import com.cyhee.rabit.model.comment.Comment;
+import com.cyhee.rabit.model.follow.Follow;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.model.user.UserStatus;
+import com.cyhee.rabit.service.comment.CommentService;
+import com.cyhee.rabit.service.follow.FollowService;
+import com.cyhee.rabit.service.goal.GoalService;
+import com.cyhee.rabit.service.goallog.GoalLogService;
+import com.cyhee.rabit.service.user.UserService;
 import com.cyhee.rabit.service.user.UserStoreService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @DataJpaTest
 @TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
-@Import(UserStoreService.class)
-public class UserStoreServiceTest {	@Autowired
-private UserService userService;
-	@Autowired
-	private GoalService goalService;
-	@Autowired
-	private GoalLogService goalLogService;
-	@Autowired
-	private CommentService commentService;
+@Import({UserStoreService.class, UserService.class, GoalService.class, GoalLogService.class, FollowService.class, CommentService.class})
+public class UserStoreServiceTest {
 	@Autowired
 	private UserStoreService userStoreService;
 	@Autowired
@@ -63,8 +57,8 @@ private UserService userService;
 		
 	@Before
 	public void setup() {
-		user1 = new User().setEmail("email1@com").setPassword("password1@").setUsername("user1");		
-		user2 = new User().setEmail("email2@com").setPassword("password2@").setUsername("user2");
+		user1 = new User().setEmail("email1@com").setUsername("user1");		
+		user2 = new User().setEmail("email2@com").setUsername("user2");
 
 		follow1 = new Follow().setFollower(user1).setFollowee(user2);
 		follow2 = new Follow().setFollower(user1).setFollowee(user3);
@@ -133,13 +127,6 @@ private UserService userService;
 
 	@Test
 	public void deleteAndGet() {
-		userService.addUser(user1);
-		goalService.addGoal(goal1);
-		goalService.addGoal(goal2);
-		goalLogService.addGoalLog(gl1);
-		commentService.addComment(commentInGoal1ByUser1);
-		commentService.addComment(commentInGoalLog1ByUser2);
-		commentService.addComment(commentInGoal2ByUser1);
 
 		User userSource = new User().setStatus(UserStatus.DELETED);
 		Goal g1Source = new Goal().setStatus(ContentStatus.DELETED);
@@ -167,6 +154,7 @@ private UserService userService;
 				.extracting(GoalLog::getStatus)
 				.containsExactly(glSource.getStatus());
 
+		// TODO delete comment
 		assertThat(commentInGoal1ByUser1)
 				.extracting(Comment::getStatus)
 				.containsExactly(cmt1Source.getStatus());

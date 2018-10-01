@@ -2,11 +2,6 @@ package com.cyhee.rabit.goallog;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.cyhee.rabit.model.cmm.ContentStatus;
-import com.cyhee.rabit.service.comment.CommentService;
-import com.cyhee.rabit.service.goal.GoalService;
-import com.cyhee.rabit.service.goallog.GoalLogService;
-import com.cyhee.rabit.service.user.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,27 +16,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
-import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.comment.CommentService;
+import com.cyhee.rabit.service.goallog.GoalLogService;
+import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @DataJpaTest
 @TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
-@Import({GoalLogStoreService.class, CommentService.class})
+@Import({GoalLogStoreService.class, CommentService.class, GoalLogService.class})
 public class GoalLogStoreServiceTest {
-	@Autowired
-	private UserService userService;
-	@Autowired
-	private GoalService goalService;
-	@Autowired
-	private GoalLogService goalLogService;
-	@Autowired
-	private CommentService commentService;
 	@Autowired
 	private GoalLogStoreService goalLogStoreService;
 	@Autowired
@@ -58,8 +48,8 @@ public class GoalLogStoreServiceTest {
 		
 	@Before
 	public void setup() {
-		user1 = new User().setEmail("email1@com").setPassword("password1@").setUsername("user1");		
-		user2 = new User().setEmail("email2@com").setPassword("password2@").setUsername("user2");
+		user1 = new User().setEmail("email1@com").setUsername("user1");		
+		user2 = new User().setEmail("email2@com").setUsername("user2");
 		
 		goal1 = new Goal().setAuthor(user1).setContent("content1");
 		goal2 = new Goal().setAuthor(user2).setContent("content2");
@@ -99,10 +89,7 @@ public class GoalLogStoreServiceTest {
 	public void deleteAndGet() {
 		GoalLog glSource = new GoalLog().setStatus(ContentStatus.DELETED);
 		Comment cmtSource = new Comment().setStatus(ContentStatus.DELETED);
-		userService.addUser(user1);
-		goalService.addGoal(goal1);
-		goalLogService.addGoalLog(log1);
-		commentService.addComment(comment1);
+
 		goalLogStoreService.deleteGoalLog(log1.getId());
 
 		assertThat(log1)

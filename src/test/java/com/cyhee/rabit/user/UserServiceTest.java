@@ -50,12 +50,13 @@ public class UserServiceTest {
 		user1 = new User().setEmail("email1@a").setUsername("username");		
 		user2 = new User().setEmail("email2@a").setUsername("testuser2");
 		user3 = new User().setEmail("email23@a").setUsername("testuser3");
+		
 	}
 
 	@Test
 	public void createAndGet() throws InterruptedException {
 		now = new Date();
-		userService.addUser(user1);
+		entityManger.persist(user1);
 		after = new Date(now.getTime() + 1000);
 		
 		Optional<User> userOpt = repository.findByEmailAndStatusNot("email1@a", UserStatus.DELETED);
@@ -76,9 +77,9 @@ public class UserServiceTest {
 	
 	@Test
 	public void createAndGetAll() {
-		userService.addUser(user1);
-		userService.addUser(user2);
-		userService.addUser(user3);
+		entityManger.persist(user1);
+		entityManger.persist(user2);
+		entityManger.persist(user3);
 		
 		Iterable<User> userList = repository.findAll();
 		assertThat(userList)
@@ -93,8 +94,8 @@ public class UserServiceTest {
 	
 	@Test
 	public void update() {
-		userService.addUser(user1);
-		userService.addUser(user2);
+		entityManger.persist(user1);
+		entityManger.persist(user2);
 		
 		entityManger.flush();
 		entityManger.clear();

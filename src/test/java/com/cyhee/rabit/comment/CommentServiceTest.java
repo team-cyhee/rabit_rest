@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
@@ -32,11 +33,11 @@ import com.cyhee.rabit.model.user.User;
 @Import({UserService.class, BCryptPasswordEncoder.class, GoalService.class, CommentService.class})
 public class CommentServiceTest {
 	@Autowired
-	private UserService userService;
-	@Autowired
 	private GoalService goalService;
 	@Autowired
 	private CommentService commentService;
+	@Autowired
+	private TestEntityManager entityManger;
 
 	User user1;
 	User user2;
@@ -52,15 +53,15 @@ public class CommentServiceTest {
 
 	@Before
 	public void setup() {
-		user1 = new User().setEmail("user@email.com").setPassword("password1@").setUsername("username");		
-		user2 = new User().setEmail("email2@a").setPassword("password2@").setUsername("testuser2");
+		user1 = new User().setEmail("user@email.com").setUsername("username");		
+		user2 = new User().setEmail("email2@a").setUsername("testuser2");
 
 		goal1 = new Goal().setAuthor(user1).setContent("content1");
 		goal2 = new Goal().setAuthor(user2).setContent("content2");
 		goal3 = new Goal().setAuthor(user2).setContent("content3");
 		goal4 = new Goal().setAuthor(user2).setContent("content2").setParent(goal1);
 		
-		userService.addUser(user1);
+		entityManger.persist(user1);
 		goalService.addGoal(goal1);
 		comment1 = new Comment().setAuthor(user1)
 			.setType(ContentType.GOAL).setContent("comment").setParentId(goal1.getId());

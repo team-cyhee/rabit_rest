@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,7 +29,10 @@ public class FollowServiceTest {
     private UserService userService;
 
     @Autowired
-    private FollowService followService;
+    private FollowService followService;    
+
+	@Autowired
+	private TestEntityManager entityManger;
 
     User user1;
     User user2;
@@ -37,17 +41,18 @@ public class FollowServiceTest {
 
     @Before
     public void setup() {
-        user1 = new User().setEmail("email1@com").setPassword("password1@").setUsername("user1");
-        user2 = new User().setEmail("email2@com").setPassword("password2@").setUsername("user2");
-        user2 = new User().setEmail("email3@com").setPassword("password3@").setUsername("user3");
+        user1 = new User().setEmail("email1@com").setUsername("user1");
+        user2 = new User().setEmail("email2@com").setUsername("user2");
+        user2 = new User().setEmail("email3@com").setUsername("user3");
+        
+    	entityManger.persist(user1);
+    	entityManger.persist(user2);
 
         follow1 = new Follow().setFollower(user1).setFollowee(user2);
     }
 
     @Test
     public void createAndGet() {
-        userService.addUser(user1);
-        userService.addUser(user2);
         followService.addFollow(follow1);
 
         Follow follow = followService.getFollow(follow1.getId());
@@ -58,8 +63,6 @@ public class FollowServiceTest {
 
     @Test
     public void update() {
-        userService.addUser(user1);
-        userService.addUser(user2);
         followService.addFollow(follow1);
 
         Follow form = new Follow().setFollowee(user3);
@@ -74,9 +77,7 @@ public class FollowServiceTest {
     @Test
     public void deleteAndGet() {
         Follow source = new Follow().setStatus(FollowStatus.INACTIVE);
-
-        userService.addUser(user1);
-        userService.addUser(user2);
+        
         followService.addFollow(follow1);
 
         followService.deleteFollow(follow1.getId());
