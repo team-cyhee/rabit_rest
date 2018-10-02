@@ -2,6 +2,10 @@ package com.cyhee.rabit.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.cyhee.rabit.service.goal.GoalService;
+import com.cyhee.rabit.service.goal.GoalStoreService;
+import com.cyhee.rabit.service.goallog.GoalLogService;
+import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,8 +30,6 @@ import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.model.user.UserStatus;
 import com.cyhee.rabit.service.comment.CommentService;
 import com.cyhee.rabit.service.follow.FollowService;
-import com.cyhee.rabit.service.goal.GoalService;
-import com.cyhee.rabit.service.goallog.GoalLogService;
 import com.cyhee.rabit.service.user.UserService;
 import com.cyhee.rabit.service.user.UserStoreService;
 
@@ -35,7 +37,7 @@ import com.cyhee.rabit.service.user.UserStoreService;
 @SpringBootTest
 @DataJpaTest
 @TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
-@Import({UserStoreService.class, UserService.class, GoalService.class, GoalLogService.class, FollowService.class, CommentService.class})
+@Import({UserStoreService.class, UserService.class, GoalService.class, GoalLogService.class, GoalStoreService.class, GoalLogStoreService.class, FollowService.class, CommentService.class})
 public class UserStoreServiceTest {
 	@Autowired
 	private UserStoreService userStoreService;
@@ -69,10 +71,6 @@ public class UserStoreServiceTest {
 		gl1 = new GoalLog().setGoal(goal1).setContent("content1");
 		gl2 = new GoalLog().setGoal(goal2).setContent("content2");
 
-		commentInGoal1ByUser1 = new Comment().setAuthor(user1).setType(ContentType.GOAL).setContent("commentInGoal1ByUser1").setParentId(goal1.getId());
-		commentInGoalLog1ByUser2 = new Comment().setAuthor(user2).setType(ContentType.GOALLOG).setContent("commentInGoalLog1ByUser2").setParentId(gl1.getId());
-		commentInGoal2ByUser1 = new Comment().setAuthor(user1).setType(ContentType.GOAL).setContent("commentInGoal2ByUser1").setParentId(goal2.getId());
-
 		entityManger.persist(user1);
 		entityManger.persist(user2);
 		entityManger.persist(follow1);
@@ -81,6 +79,11 @@ public class UserStoreServiceTest {
 		entityManger.persist(goal2);
 		entityManger.persist(gl1);
 		entityManger.persist(gl2);
+
+		commentInGoal1ByUser1 = new Comment().setAuthor(user1).setType(ContentType.GOAL).setContent("commentInGoal1ByUser1").setParentId(goal1.getId());
+		commentInGoalLog1ByUser2 = new Comment().setAuthor(user2).setType(ContentType.GOALLOG).setContent("commentInGoalLog1ByUser2").setParentId(gl1.getId());
+		commentInGoal2ByUser1 = new Comment().setAuthor(user1).setType(ContentType.GOAL).setContent("commentInGoal2ByUser1").setParentId(goal2.getId());
+
 		entityManger.persist(commentInGoal1ByUser1);
 		entityManger.persist(commentInGoalLog1ByUser2);
 		entityManger.persist(commentInGoal2ByUser1);
@@ -110,7 +113,7 @@ public class UserStoreServiceTest {
 		assertThat(goals.getContent())
 			.hasSize(1).contains(goal2);
 	}
-	
+
 	@Test
 	public void getLogs() {
 		Pageable pageable = PageRequest.of(0, 10);
@@ -128,44 +131,36 @@ public class UserStoreServiceTest {
 	@Test
 	public void deleteAndGet() {
 
-		User userSource = new User().setStatus(UserStatus.DELETED);
-		Goal g1Source = new Goal().setStatus(ContentStatus.DELETED);
-		Goal g2Source = new Goal().setStatus(ContentStatus.ACTIVE);
-		GoalLog glSource = new GoalLog().setStatus(ContentStatus.DELETED);
-		Comment cmt1Source = new Comment().setStatus(ContentStatus.DELETED);
-		Comment cmt2Source = new Comment().setStatus(ContentStatus.DELETED);
-		Comment cmt3Source = new Comment().setStatus(ContentStatus.ACTIVE);
-
 		userStoreService.deleteUser(user1.getId());
 
 		assertThat(user1)
 				.extracting(User::getStatus)
-				.containsExactly(userSource.getStatus());
+				.containsExactly(UserStatus.DELETED);
 
 		assertThat(goal1)
 				.extracting(Goal::getStatus)
-				.containsExactly(g1Source.getStatus());
+				.containsExactly(ContentStatus.DELETED);
 
 		assertThat(goal2)
 				.extracting(Goal::getStatus)
-				.containsExactly(g2Source.getStatus());
+				.containsExactly(ContentStatus.ACTIVE);
 
 		assertThat(gl1)
 				.extracting(GoalLog::getStatus)
-				.containsExactly(glSource.getStatus());
+				.containsExactly(ContentStatus.DELETED);
 
 		// TODO delete comment
 		assertThat(commentInGoal1ByUser1)
 				.extracting(Comment::getStatus)
-				.containsExactly(cmt1Source.getStatus());
+				.containsExactly(ContentStatus.DELETED);
 
 		assertThat(commentInGoalLog1ByUser2)
 				.extracting(Comment::getStatus)
-				.containsExactly(cmt2Source.getStatus());
+				.containsExactly(ContentStatus.DELETED);
 
 		assertThat(commentInGoal2ByUser1)
 				.extracting(Comment::getStatus)
-				.containsExactly(cmt3Source.getStatus());
+				.containsExactly(ContentStatus.ACTIVE);
 	}
 	
 }

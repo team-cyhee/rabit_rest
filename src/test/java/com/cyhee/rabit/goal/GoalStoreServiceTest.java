@@ -2,6 +2,7 @@ package com.cyhee.rabit.goal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +32,7 @@ import com.cyhee.rabit.service.goallog.GoalLogService;
 @SpringBootTest
 @DataJpaTest
 @TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
-@Import({GoalStoreService.class, CommentService.class, GoalService.class, GoalLogService.class})
+@Import({GoalStoreService.class, CommentService.class, GoalService.class, GoalLogService.class, GoalLogStoreService.class})
 public class GoalStoreServiceTest {
 	@Autowired
 	private GoalStoreService goalStoreService;
@@ -102,24 +103,20 @@ public class GoalStoreServiceTest {
 
 	@Test
 	public void deleteGoal() {
-		Goal gSource = new Goal().setStatus(ContentStatus.DELETED);
-		GoalLog glSource = new GoalLog().setStatus(ContentStatus.DELETED);
-		Comment cmtSource = new Comment().setStatus(ContentStatus.DELETED);
 
 		goalStoreService.deleteGoal(goal1.getId());
 
 		assertThat(goal1)
 				.extracting(Goal::getStatus)
-				.containsExactly(gSource.getStatus());
+				.containsExactly(ContentStatus.DELETED);
 
 		assertThat(gl1)
 				.extracting(GoalLog::getStatus)
-				.containsExactly(glSource.getStatus());
+				.containsExactly(ContentStatus.DELETED);
 
-		// TODO delete comment
 		assertThat(comment1)
 				.extracting(Comment::getStatus)
-				.containsExactly(cmtSource.getStatus());
+				.containsExactly(ContentStatus.DELETED);
 	}
 	
 }
