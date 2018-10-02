@@ -4,6 +4,7 @@ package com.cyhee.rabit.web.goallog;
 import javax.annotation.Resource;
 
 import com.cyhee.rabit.service.goallog.GoalLogService;
+import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,6 +23,9 @@ import com.cyhee.rabit.model.goallog.GoalLog;
 public class GoalLogController {
 	@Resource(name="goalLogService")
 	private GoalLogService goallogService;
+
+	@Resource(name="goalLogStoreService")
+    private GoalLogStoreService goallogStoreService;
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<Page<GoalLog>> getGoalLogs(@PageableDefault Pageable pageable) {
@@ -48,7 +52,7 @@ public class GoalLogController {
     
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
     public ResponseEntity<Void> deleteGoalLog(@PathVariable long id) {
-    	goallogService.deleteGoalLog(id);
+    	goallogStoreService.deleteGoalLog(id);
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
     }
 }
