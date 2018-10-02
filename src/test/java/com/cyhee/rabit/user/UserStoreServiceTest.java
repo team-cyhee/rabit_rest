@@ -2,7 +2,6 @@ package com.cyhee.rabit.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.cyhee.rabit.model.follow.Follow;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,21 +16,31 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.cyhee.rabit.model.cmm.ContentStatus;
+import com.cyhee.rabit.model.cmm.ContentType;
+import com.cyhee.rabit.model.comment.Comment;
+import com.cyhee.rabit.model.follow.Follow;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.model.user.UserStatus;
+import com.cyhee.rabit.service.comment.CommentService;
+import com.cyhee.rabit.service.follow.FollowService;
+import com.cyhee.rabit.service.goal.GoalService;
+import com.cyhee.rabit.service.goallog.GoalLogService;
+import com.cyhee.rabit.service.user.UserService;
 import com.cyhee.rabit.service.user.UserStoreService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @DataJpaTest
 @TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
-@Import(UserStoreService.class)
+@Import({UserStoreService.class, UserService.class, GoalService.class, GoalLogService.class, FollowService.class, CommentService.class})
 public class UserStoreServiceTest {
 	@Autowired
-	UserStoreService userStoreService;
+	private UserStoreService userStoreService;
 	@Autowired
-	TestEntityManager entityManger;
+	private TestEntityManager entityManger;
 	
 	User user1;
 	User user2;
@@ -40,13 +49,16 @@ public class UserStoreServiceTest {
 	Follow follow2;
 	Goal goal1;
 	Goal goal2;
-	GoalLog log1;
-	GoalLog log2;
+	GoalLog gl1;
+	GoalLog gl2;
+	Comment commentInGoal1ByUser1;
+	Comment commentInGoalLog1ByUser2;
+	Comment commentInGoal2ByUser1;
 		
 	@Before
 	public void setup() {
-		user1 = new User().setEmail("email1@com").setPassword("password1@").setUsername("user1");		
-		user2 = new User().setEmail("email2@com").setPassword("password2@").setUsername("user2");
+		user1 = new User().setEmail("email1@com").setUsername("user1");		
+		user2 = new User().setEmail("email2@com").setUsername("user2");
 
 		follow1 = new Follow().setFollower(user1).setFollowee(user2);
 		follow2 = new Follow().setFollower(user1).setFollowee(user3);
@@ -54,8 +66,12 @@ public class UserStoreServiceTest {
 		goal1 = new Goal().setAuthor(user1).setContent("content1");
 		goal2 = new Goal().setAuthor(user2).setContent("content2");
 		
-		log1 = new GoalLog().setGoal(goal1).setContent("content1");
-		log2 = new GoalLog().setGoal(goal2).setContent("content2");
+		gl1 = new GoalLog().setGoal(goal1).setContent("content1");
+		gl2 = new GoalLog().setGoal(goal2).setContent("content2");
+
+		commentInGoal1ByUser1 = new Comment().setAuthor(user1).setType(ContentType.GOAL).setContent("commentInGoal1ByUser1").setParentId(goal1.getId());
+		commentInGoalLog1ByUser2 = new Comment().setAuthor(user2).setType(ContentType.GOALLOG).setContent("commentInGoalLog1ByUser2").setParentId(gl1.getId());
+		commentInGoal2ByUser1 = new Comment().setAuthor(user1).setType(ContentType.GOAL).setContent("commentInGoal2ByUser1").setParentId(goal2.getId());
 
 		entityManger.persist(user1);
 		entityManger.persist(user2);
@@ -63,8 +79,11 @@ public class UserStoreServiceTest {
 		entityManger.persist(follow2);
 		entityManger.persist(goal1);
 		entityManger.persist(goal2);
-		entityManger.persist(log1);
-		entityManger.persist(log2);
+		entityManger.persist(gl1);
+		entityManger.persist(gl2);
+		entityManger.persist(commentInGoal1ByUser1);
+		entityManger.persist(commentInGoalLog1ByUser2);
+		entityManger.persist(commentInGoal2ByUser1);
 	}
 
 	//@Test
@@ -95,15 +114,58 @@ public class UserStoreServiceTest {
 	@Test
 	public void getLogs() {
 		Pageable pageable = PageRequest.of(0, 10);
-		Page<GoalLog> logs = userStoreService.getGoalLogs(user1, pageable);
+		Page<GoalLog> gls = userStoreService.getGoalLogs(user1, pageable);
 		
-		assertThat(logs.getContent())
-			.hasSize(1).contains(log1);
+		assertThat(gls.getContent())
+			.hasSize(1).contains(gl1);
 		
-		logs = userStoreService.getGoalLogs(user2, pageable);
+		gls = userStoreService.getGoalLogs(user2, pageable);
 		
-		assertThat(logs.getContent())
-			.hasSize(1).contains(log2);
+		assertThat(gls.getContent())
+			.hasSize(1).contains(gl2);
+	}
+
+	@Test
+	public void deleteAndGet() {
+
+		User userSource = new User().setStatus(UserStatus.DELETED);
+		Goal g1Source = new Goal().setStatus(ContentStatus.DELETED);
+		Goal g2Source = new Goal().setStatus(ContentStatus.ACTIVE);
+		GoalLog glSource = new GoalLog().setStatus(ContentStatus.DELETED);
+		Comment cmt1Source = new Comment().setStatus(ContentStatus.DELETED);
+		Comment cmt2Source = new Comment().setStatus(ContentStatus.DELETED);
+		Comment cmt3Source = new Comment().setStatus(ContentStatus.ACTIVE);
+
+		userStoreService.deleteUser(user1.getId());
+
+		assertThat(user1)
+				.extracting(User::getStatus)
+				.containsExactly(userSource.getStatus());
+
+		assertThat(goal1)
+				.extracting(Goal::getStatus)
+				.containsExactly(g1Source.getStatus());
+
+		assertThat(goal2)
+				.extracting(Goal::getStatus)
+				.containsExactly(g2Source.getStatus());
+
+		assertThat(gl1)
+				.extracting(GoalLog::getStatus)
+				.containsExactly(glSource.getStatus());
+
+		// TODO delete comment
+		assertThat(commentInGoal1ByUser1)
+				.extracting(Comment::getStatus)
+				.containsExactly(cmt1Source.getStatus());
+
+		assertThat(commentInGoalLog1ByUser2)
+				.extracting(Comment::getStatus)
+				.containsExactly(cmt2Source.getStatus());
+
+		assertThat(commentInGoal2ByUser1)
+				.extracting(Comment::getStatus)
+				.containsExactly(cmt3Source.getStatus());
 	}
 	
 }

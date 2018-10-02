@@ -2,11 +2,15 @@ package com.cyhee.rabit.comment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.cyhee.rabit.service.comment.CommentService;
+import com.cyhee.rabit.service.goal.GoalService;
+import com.cyhee.rabit.service.user.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
@@ -21,25 +25,19 @@ import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.user.User;
-import com.cyhee.rabit.service.comment.BasicCommentService;
-import com.cyhee.rabit.service.comment.CommentService;
-import com.cyhee.rabit.service.goal.BasicGoalService;
-import com.cyhee.rabit.service.goal.GoalService;
-import com.cyhee.rabit.service.user.BasicUserService;
-import com.cyhee.rabit.service.user.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @DataJpaTest
 @TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
-@Import({BasicUserService.class, BCryptPasswordEncoder.class, BasicGoalService.class, BasicCommentService.class})
+@Import({UserService.class, BCryptPasswordEncoder.class, GoalService.class, CommentService.class})
 public class CommentServiceTest {
-	@Autowired
-	private UserService userService;
 	@Autowired
 	private GoalService goalService;
 	@Autowired
-	private CommentService commentService;	
+	private CommentService commentService;
+	@Autowired
+	private TestEntityManager entityManger;
 
 	User user1;
 	User user2;
@@ -55,15 +53,15 @@ public class CommentServiceTest {
 
 	@Before
 	public void setup() {
-		user1 = new User().setEmail("user@email.com").setPassword("password1@").setUsername("username");		
-		user2 = new User().setEmail("email2@a").setPassword("password2@").setUsername("testuser2");
+		user1 = new User().setEmail("user@email.com").setUsername("username");		
+		user2 = new User().setEmail("email2@a").setUsername("testuser2");
 
 		goal1 = new Goal().setAuthor(user1).setContent("content1");
 		goal2 = new Goal().setAuthor(user2).setContent("content2");
 		goal3 = new Goal().setAuthor(user2).setContent("content3");
 		goal4 = new Goal().setAuthor(user2).setContent("content2").setParent(goal1);
 		
-		userService.addUser(user1);
+		entityManger.persist(user1);
 		goalService.addGoal(goal1);
 		comment1 = new Comment().setAuthor(user1)
 			.setType(ContentType.GOAL).setContent("comment").setParentId(goal1.getId());

@@ -16,51 +16,54 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
-import com.cyhee.rabit.service.comment.BasicCommentService;
 import com.cyhee.rabit.model.goal.Goal;
-import com.cyhee.rabit.service.goal.GoalStoreService;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.comment.CommentService;
+import com.cyhee.rabit.service.goal.GoalService;
+import com.cyhee.rabit.service.goal.GoalStoreService;
+import com.cyhee.rabit.service.goallog.GoalLogService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @DataJpaTest
 @TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
-@Import({GoalStoreService.class, BasicCommentService.class})
+@Import({GoalStoreService.class, CommentService.class, GoalService.class, GoalLogService.class})
 public class GoalStoreServiceTest {
 	@Autowired
-	GoalStoreService goalStoreService;
+	private GoalStoreService goalStoreService;
 	@Autowired
-	TestEntityManager entityManger;
+	private TestEntityManager entityManger;
 	
 	User user1;
 	User user2;
 	Goal goal1;
 	Goal goal2;
-	GoalLog log1;
-	GoalLog log2;
+	GoalLog gl1;
+	GoalLog gl2;
 	Comment comment1;
 	Comment comment2;
 		
 	@Before
 	public void setup() {
-		user1 = new User().setEmail("email1@com").setPassword("password1@").setUsername("user1");		
-		user2 = new User().setEmail("email2@com").setPassword("password2@").setUsername("user2");
+		user1 = new User().setEmail("email1@com").setUsername("user1");		
+		user2 = new User().setEmail("email2@com").setUsername("user2");
 		
 		goal1 = new Goal().setAuthor(user1).setContent("content1");
 		goal2 = new Goal().setAuthor(user2).setContent("content2");
 		
-		log1 = new GoalLog().setGoal(goal1).setContent("content1");
-		log2 = new GoalLog().setGoal(goal2).setContent("content2");
+		gl1 = new GoalLog().setGoal(goal1).setContent("content1");
+		gl2 = new GoalLog().setGoal(goal2).setContent("content2");
 		
 		entityManger.persist(user1);
 		entityManger.persist(user2);
 		entityManger.persist(goal1);
 		entityManger.persist(goal2);
-		entityManger.persist(log1);
-		entityManger.persist(log2);
+		entityManger.persist(gl1);
+		entityManger.persist(gl2);
 		
 		comment1 = new Comment().setAuthor(user1).setType(ContentType.GOAL).setContent("comment").setParentId(goal1.getId());
 		comment2 = new Comment().setAuthor(user1).setType(ContentType.GOAL).setContent("comment").setParentId(goal2.getId());
@@ -70,17 +73,17 @@ public class GoalStoreServiceTest {
 	}
 	
 	@Test
-	public void getLogs() {
+	public void getGls() {
 		Pageable pageable = PageRequest.of(0, 10);
-		Page<GoalLog> logs = goalStoreService.getGoalLogs(goal1, pageable);
+		Page<GoalLog> gls = goalStoreService.getGoalLogs(goal1, pageable);
 		
-		assertThat(logs.getContent())
-			.hasSize(1).contains(log1);
+		assertThat(gls.getContent())
+			.hasSize(1).contains(gl1);
 		
-		logs = goalStoreService.getGoalLogs(goal2, pageable);
+		gls = goalStoreService.getGoalLogs(goal2, pageable);
 		
-		assertThat(logs.getContent())
-			.hasSize(1).contains(log2);
+		assertThat(gls.getContent())
+			.hasSize(1).contains(gl2);
 	}
 	
 	@Test
@@ -95,6 +98,28 @@ public class GoalStoreServiceTest {
 		
 		assertThat(comments.getContent())
 			.hasSize(1).contains(comment2);
+	}
+
+	@Test
+	public void deleteGoal() {
+		Goal gSource = new Goal().setStatus(ContentStatus.DELETED);
+		GoalLog glSource = new GoalLog().setStatus(ContentStatus.DELETED);
+		Comment cmtSource = new Comment().setStatus(ContentStatus.DELETED);
+
+		goalStoreService.deleteGoal(goal1.getId());
+
+		assertThat(goal1)
+				.extracting(Goal::getStatus)
+				.containsExactly(gSource.getStatus());
+
+		assertThat(gl1)
+				.extracting(GoalLog::getStatus)
+				.containsExactly(glSource.getStatus());
+
+		// TODO delete comment
+		assertThat(comment1)
+				.extracting(Comment::getStatus)
+				.containsExactly(cmtSource.getStatus());
 	}
 	
 }

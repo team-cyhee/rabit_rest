@@ -23,14 +23,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.cyhee.rabit.dao.user.UserRepository;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.model.user.UserStatus;
-import com.cyhee.rabit.service.user.BasicUserService;
 import com.cyhee.rabit.service.user.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @DataJpaTest
 @TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
-@Import({BasicUserService.class, BCryptPasswordEncoder.class})
+@Import({UserService.class, BCryptPasswordEncoder.class})
 public class UserServiceTest {
 	@Autowired
 	private TestEntityManager entityManger;
@@ -51,12 +50,13 @@ public class UserServiceTest {
 		user1 = new User().setEmail("email1@a").setUsername("username");		
 		user2 = new User().setEmail("email2@a").setUsername("testuser2");
 		user3 = new User().setEmail("email23@a").setUsername("testuser3");
+		
 	}
 
 	@Test
 	public void createAndGet() throws InterruptedException {
 		now = new Date();
-		userService.addUser(user1);
+		entityManger.persist(user1);
 		after = new Date(now.getTime() + 1000);
 		
 		Optional<User> userOpt = repository.findByEmailAndStatusNot("email1@a", UserStatus.DELETED);
@@ -75,30 +75,11 @@ public class UserServiceTest {
               });
 	}
 	
-	
-	@Test
-	public void deleteAndGet() {
-		Pageable pageable = PageRequest.of(0, 10);
-		userService.addUser(user1);
-
-		String email1 = "email1@a";
-		User source = new User().setStatus(UserStatus.DELETED);
-		Optional<User> userOpt = repository.findByEmailAndStatusNot(email1, UserStatus.DELETED);
-		
-		User user = userOpt.get();
-		userService.deleteUser(user.getId());
-		
-		userOpt = repository.findByEmailAndStatusNot(email1, UserStatus.ACTIVE);
-		assertThat(userOpt.get())
-				.extracting(User::getStatus)
-				.containsExactly(source.getStatus());
-	}
-	
 	@Test
 	public void createAndGetAll() {
-		userService.addUser(user1);
-		userService.addUser(user2);
-		userService.addUser(user3);
+		entityManger.persist(user1);
+		entityManger.persist(user2);
+		entityManger.persist(user3);
 		
 		Iterable<User> userList = repository.findAll();
 		assertThat(userList)
@@ -113,8 +94,8 @@ public class UserServiceTest {
 	
 	@Test
 	public void update() {
-		userService.addUser(user1);
-		userService.addUser(user2);
+		entityManger.persist(user1);
+		entityManger.persist(user2);
 		
 		entityManger.flush();
 		entityManger.clear();

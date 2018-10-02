@@ -2,6 +2,7 @@ package com.cyhee.rabit.web.user;
 
 import javax.annotation.Resource;
 
+import com.cyhee.rabit.service.user.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpEntity;
@@ -21,7 +22,6 @@ import com.cyhee.rabit.web.cmm.model.ApiError;
 import com.cyhee.rabit.web.cmm.model.ApiErrorCode;
 import com.cyhee.rabit.model.user.SnsUser;
 import com.cyhee.rabit.model.user.User;
-import com.cyhee.rabit.service.user.UserService;
 
 // TODO It should be moved to authorization server
 @RestController
@@ -29,7 +29,7 @@ import com.cyhee.rabit.service.user.UserService;
 public class SnsUserController {
 	/*private static Logger logger = LogManager.getLogger(SnsUserController.class);
 	
-	@Resource(name="basicUserService")
+	@Resource(name="userService")
 	UserService userService;
 	
 	String authServer = "http://localhost:8081/oauth/naver/profile";
