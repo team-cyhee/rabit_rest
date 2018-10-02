@@ -35,6 +35,8 @@ public class GoalLogStoreService {
 	}
 
 	public void deleteAllGoalLogStore(GoalLog goalLog) {
-		getComments(goalLog).forEach(cmt -> commentService.deleteComment(cmt.getId()));
+        for (Comment cmt : getComments(goalLog)) {
+            commentService.deleteComment(cmt.getId());
+        }
 	}
 }

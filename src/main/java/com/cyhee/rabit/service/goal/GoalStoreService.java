@@ -3,7 +3,7 @@ package com.cyhee.rabit.service.goal;
 import com.cyhee.rabit.model.cmm.ContentStatus;
 
 import com.cyhee.rabit.service.comment.CommentService;
-import com.cyhee.rabit.service.goallog.GoalLogService;
+import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +29,7 @@ public class GoalStoreService {
 	CommentService commentService;
 
 	@Autowired
-	GoalLogService goalLogService;
+	GoalLogStoreService goalLogStoreService;
 
 	public void deleteGoal(long id) {
 		Goal goal = goalService.deleteGoal(id);
@@ -49,11 +49,15 @@ public class GoalStoreService {
 	}
 
 	public List<Comment> getComments(Goal goal) {
-		return commentService.getComments(ContentType.COMMENT, goal.getId());
+		return commentService.getComments(ContentType.GOAL, goal.getId());
 	}
 
 	public void deleteAllGoalStore(Goal goal) {
-		getGoalLogs(goal).forEach(gl -> goalLogService.deleteGoalLog(gl.getId()));
-		getComments(goal).forEach(cmt -> commentService.deleteComment(cmt.getId()));
+		for (GoalLog gl : getGoalLogs(goal)) {
+			goalLogStoreService.deleteGoalLog(gl.getId());
+		}
+		for (Comment cmt : getComments(goal)) {
+			commentService.deleteComment(cmt.getId());
+		}
 	}
 }

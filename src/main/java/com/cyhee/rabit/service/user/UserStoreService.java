@@ -5,8 +5,8 @@ import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.follow.Follow;
 import com.cyhee.rabit.model.follow.FollowStatus;
 import com.cyhee.rabit.service.follow.FollowService;
-import com.cyhee.rabit.service.goal.GoalService;
-import com.cyhee.rabit.service.goallog.GoalLogService;
+import com.cyhee.rabit.service.goal.GoalStoreService;
+import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,10 +35,10 @@ public class UserStoreService {
 	private GoalLogRepository goalLogRepository;
 
 	@Autowired
-	private GoalService goalService;
+	private GoalStoreService goalStoreService;
 
 	@Autowired
-	private GoalLogService goalLogService;
+	private GoalLogStoreService goalLogStoreService;
 
 	@Autowired
 	private FollowService followService;
@@ -86,9 +86,17 @@ public class UserStoreService {
 	}
 
 	public void deleteAllUserStore(User user) {
-		getGoals(user).forEach(g -> goalService.deleteGoal(g.getId()));
-		getGoalLogs(user).forEach(gl -> goalLogService.deleteGoalLog(gl.getId()));
-		getFollowees(user).forEach(fee -> followService.deleteFollow(fee.getId()));
-		getFollowers(user).forEach(fer -> followService.deleteFollow(fer.getId()));
+		for (Goal g : getGoals(user)) {
+			goalStoreService.deleteGoal(g.getId());
+		}
+		for (GoalLog gl : getGoalLogs(user)) {
+			goalLogStoreService.deleteGoalLog(gl.getId());
+		}
+		for (Follow fee : getFollowees(user)) {
+			followService.deleteFollow(fee.getId());
+		}
+		for (Follow fer :getFollowers(user)) {
+			followService.deleteFollow(fer.getId());
+		}
 	}
 }

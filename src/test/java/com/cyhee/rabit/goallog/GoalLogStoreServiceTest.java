@@ -1,4 +1,4 @@
-package com.cyhee.rabit.goallog;
+package com.cyhee.rabit.goalgl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,8 +41,8 @@ public class GoalLogStoreServiceTest {
 	User user2;
 	Goal goal1;
 	Goal goal2;
-	GoalLog log1;
-	GoalLog log2;
+	GoalLog gl1;
+	GoalLog gl2;
 	Comment comment1;
 	Comment comment2;
 		
@@ -54,18 +54,18 @@ public class GoalLogStoreServiceTest {
 		goal1 = new Goal().setAuthor(user1).setContent("content1");
 		goal2 = new Goal().setAuthor(user2).setContent("content2");
 		
-		log1 = new GoalLog().setGoal(goal1).setContent("content1");
-		log2 = new GoalLog().setGoal(goal2).setContent("content2");
+		gl1 = new GoalLog().setGoal(goal1).setContent("content1");
+		gl2 = new GoalLog().setGoal(goal2).setContent("content2");
 		
 		entityManger.persist(user1);
 		entityManger.persist(user2);
 		entityManger.persist(goal1);
 		entityManger.persist(goal2);
-		entityManger.persist(log1);
-		entityManger.persist(log2);
+		entityManger.persist(gl1);
+		entityManger.persist(gl2);
 		
-		comment1 = new Comment().setAuthor(user1).setType(ContentType.GOALLOG).setContent("comment").setParentId(log1.getId());
-		comment2 = new Comment().setAuthor(user1).setType(ContentType.GOALLOG).setContent("comment").setParentId(log2.getId());
+		comment1 = new Comment().setAuthor(user1).setType(ContentType.GOALLOG).setContent("comment").setParentId(gl1.getId());
+		comment2 = new Comment().setAuthor(user1).setType(ContentType.GOALLOG).setContent("comment").setParentId(gl2.getId());
 		
 		entityManger.persist(comment1);
 		entityManger.persist(comment2);
@@ -74,12 +74,12 @@ public class GoalLogStoreServiceTest {
 	@Test
 	public void getComments() {
 		Pageable pageable = PageRequest.of(0, 10);
-		Page<Comment> comments = goalLogStoreService.getComments(log1, pageable);
+		Page<Comment> comments = goalLogStoreService.getComments(gl1, pageable);
 		
 		assertThat(comments.getContent())
 			.hasSize(1).contains(comment1);
 		
-		comments = goalLogStoreService.getComments(log2, pageable);
+		comments = goalLogStoreService.getComments(gl2, pageable);
 		
 		assertThat(comments.getContent())
 			.hasSize(1).contains(comment2);
@@ -87,17 +87,15 @@ public class GoalLogStoreServiceTest {
 
 	@Test
 	public void deleteAndGet() {
-		GoalLog glSource = new GoalLog().setStatus(ContentStatus.DELETED);
-		Comment cmtSource = new Comment().setStatus(ContentStatus.DELETED);
 
-		goalLogStoreService.deleteGoalLog(log1.getId());
+		goalLogStoreService.deleteGoalLog(gl1.getId());
 
-		assertThat(log1)
+		assertThat(gl1)
 				.extracting(GoalLog::getStatus)
-				.containsExactly(glSource.getStatus());
+				.containsExactly(ContentStatus.DELETED);
 
 		assertThat(comment1)
 				.extracting(Comment::getStatus)
-				.containsExactly(cmtSource.getStatus());
+				.containsExactly(ContentStatus.DELETED);
 	}
 }
