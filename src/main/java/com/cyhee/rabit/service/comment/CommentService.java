@@ -48,9 +48,10 @@ public class CommentService {
 		setCommentProps(comment, source);
 	}
 
-	public void deleteComment(long id) {
+	public Comment deleteComment(long id) {
 		Comment comment = getComment(id);
 		comment.setStatus(ContentStatus.DELETED);
+		return comment;
 	}
 	
 	private void setCommentProps(Comment target, Comment source) {

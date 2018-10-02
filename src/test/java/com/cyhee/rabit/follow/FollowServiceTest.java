@@ -3,7 +3,7 @@ package com.cyhee.rabit.follow;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cyhee.rabit.model.follow.Follow;
-import com.cyhee.rabit.model.follow.FollowStatus;
+import com.cyhee.rabit.model.cmm.RadioStatus;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.follow.FollowService;
 import com.cyhee.rabit.service.user.UserService;
@@ -76,7 +76,7 @@ public class FollowServiceTest {
 
     @Test
     public void deleteAndGet() {
-        Follow source = new Follow().setStatus(FollowStatus.INACTIVE);
+        Follow source = new Follow().setStatus(RadioStatus.INACTIVE);
         
         followService.addFollow(follow1);
 

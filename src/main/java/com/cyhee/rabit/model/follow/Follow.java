@@ -1,5 +1,6 @@
 package com.cyhee.rabit.model.follow;
 
+import com.cyhee.rabit.model.cmm.RadioStatus;
 import com.cyhee.rabit.model.cmm.TimestampEntity;
 import com.cyhee.rabit.model.user.User;
 import lombok.Data;
@@ -28,5 +29,5 @@ public class Follow extends TimestampEntity {
     private User followee;
 
     @Column(nullable=false)
-    private FollowStatus status = FollowStatus.ACTIVE;
+    private RadioStatus status = RadioStatus.ACTIVE;
 }

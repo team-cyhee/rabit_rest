@@ -1,5 +1,10 @@
 package com.cyhee.rabit.service.goallog;
 
+import com.cyhee.rabit.dao.comment.CommentRepository;
+import com.cyhee.rabit.model.cmm.ContentStatus;
+import com.cyhee.rabit.model.like.Like;
+import com.cyhee.rabit.service.comment.CommentStoreService;
+import com.cyhee.rabit.service.like.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +24,13 @@ public class GoalLogStoreService {
 	GoalLogService goalLogService;
 
 	@Autowired
-	CommentService commentService;
+	CommentStoreService commentStoreService;
+
+	@Autowired
+	CommentRepository commentRepository;
+
+	@Autowired
+	LikeService likeService;
 
 	public void deleteGoalLog(long id) {
 		GoalLog gl = goalLogService.deleteGoalLog(id);
@@ -27,16 +38,27 @@ public class GoalLogStoreService {
 	}
 
 	public Page<Comment> getComments(GoalLog goalLog, Pageable pageable) {
-		return commentService.getComments(ContentType.GOALLOG, goalLog.getId(), pageable);
+		return commentRepository.findByTypeAndParentIdAndStatusNot(ContentType.GOALLOG, goalLog.getId(), ContentStatus.DELETED, pageable);
 	}
 
 	public List<Comment> getComments(GoalLog goalLog) {
-		return commentService.getComments(ContentType.GOALLOG, goalLog.getId());
+		return commentRepository.findByTypeAndParentIdAndStatusNot(ContentType.GOALLOG, goalLog.getId(), ContentStatus.DELETED);
+	}
+
+	public Page<Like> getLikes(GoalLog goalLog, Pageable pageable) {
+		return likeService.getLikes(ContentType.GOAL, goalLog.getId(), pageable);
+	}
+
+	public List<Like> getLikes(GoalLog goalLog) {
+		return likeService.getLikes(ContentType.GOAL, goalLog.getId());
 	}
 
 	public void deleteAllGoalLogStore(GoalLog goalLog) {
         for (Comment cmt : getComments(goalLog)) {
-            commentService.deleteComment(cmt.getId());
+            commentStoreService.deleteComment(cmt.getId());
         }
+		for (Like like : getLikes(goalLog)) {
+			likeService.deleteLike(like.getId());
+		}
 	}
 }

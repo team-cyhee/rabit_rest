@@ -4,7 +4,7 @@ import com.cyhee.rabit.dao.follow.FollowRepository;
 import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.follow.Follow;
-import com.cyhee.rabit.model.follow.FollowStatus;
+import com.cyhee.rabit.model.cmm.RadioStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +19,7 @@ public class FollowService {
     private FollowRepository followRepository;
 
     public Page<Follow> getFollows(Pageable pageable) {
-        return followRepository.findByStatusNot(FollowStatus.INACTIVE, pageable);
+        return followRepository.findByStatusNot(RadioStatus.INACTIVE, pageable);
     }
 
     public void addFollow(Follow follow) {
@@ -41,13 +41,10 @@ public class FollowService {
 
     public void deleteFollow(long id) {
         Follow follow = getFollow(id);
-        follow.setStatus(FollowStatus.INACTIVE);
+        follow.setStatus(RadioStatus.INACTIVE);
     }
 
     private void setFollowProps(Follow target, Follow source) {
-        target.setFollower(source.getFollower());
-        target.setFollowee(source.getFollowee());
         target.setStatus(source.getStatus());
-        target.setCreateDate(source.getCreateDate());
     }
 }
