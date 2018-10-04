@@ -14,7 +14,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name="content_like")
 @Data
 @EqualsAndHashCode(callSuper=false)
 @Accessors(chain=true)
@@ -29,7 +29,7 @@ public class Like extends TimestampEntity {
 	@Enumerated(EnumType.STRING)
 	private ContentType type;
 	
-	@Column
+	@Column(nullable=false)
 	private Long parentId;
 
 	@Column(nullable=false)

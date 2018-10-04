@@ -46,11 +46,11 @@ public class GoalLogStoreService {
 	}
 
 	public Page<Like> getLikes(GoalLog goalLog, Pageable pageable) {
-		return likeService.getLikes(ContentType.GOAL, goalLog.getId(), pageable);
+		return likeService.getLikes(ContentType.GOALLOG, goalLog.getId(), pageable);
 	}
 
 	public List<Like> getLikes(GoalLog goalLog) {
-		return likeService.getLikes(ContentType.GOAL, goalLog.getId());
+		return likeService.getLikes(ContentType.GOALLOG, goalLog.getId());
 	}
 
 	public void deleteAllGoalLogStore(GoalLog goalLog) {

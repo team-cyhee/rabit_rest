@@ -30,7 +30,7 @@ public class CommentStoreService {
     }
 
     public List<Like> getLikes(Comment goal) {
-        return likeService.getLikes(ContentType.GOAL, goal.getId());
+        return likeService.getLikes(ContentType.COMMENT, goal.getId());
     }
 
     public void deleteAllCommentStore(Comment comment) {

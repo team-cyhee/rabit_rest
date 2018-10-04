@@ -26,9 +26,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @Import({UserService.class, BCryptPasswordEncoder.class, UserService.class, FollowService.class})
 public class FollowServiceTest {
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private FollowService followService;    
 
 	@Autowired
