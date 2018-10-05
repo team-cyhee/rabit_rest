@@ -4,6 +4,7 @@ package com.cyhee.rabit.web.comment;
 import javax.annotation.Resource;
 
 import com.cyhee.rabit.service.comment.CommentService;
+import com.cyhee.rabit.service.comment.CommentStoreService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,6 +23,9 @@ import com.cyhee.rabit.model.comment.Comment;
 public class CommentController {
 	@Resource(name="commentService")
 	private CommentService commentService;
+
+	@Resource(name="commentStoreService")
+    private CommentStoreService commentStoreService;
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<Page<Comment>> getComments(@PageableDefault Pageable pageable) {
@@ -48,7 +52,7 @@ public class CommentController {
     
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
     public ResponseEntity<Void> deleteComment(@PathVariable long id) {
-    	commentService.deleteComment(id);
+    	commentStoreService.deleteComment(id);
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
     }
 }

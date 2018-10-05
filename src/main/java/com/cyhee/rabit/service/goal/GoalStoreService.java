@@ -1,9 +1,12 @@
 package com.cyhee.rabit.service.goal;
 
+import com.cyhee.rabit.dao.comment.CommentRepository;
 import com.cyhee.rabit.model.cmm.ContentStatus;
 
-import com.cyhee.rabit.service.comment.CommentService;
+import com.cyhee.rabit.model.like.Like;
+import com.cyhee.rabit.service.comment.CommentStoreService;
 import com.cyhee.rabit.service.goallog.GoalLogStoreService;
+import com.cyhee.rabit.service.like.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +29,13 @@ public class GoalStoreService {
 	GoalLogRepository goalLogRepository;
 	
 	@Autowired
-	CommentService commentService;
+	CommentStoreService commentStoreService;
+
+	@Autowired
+	CommentRepository commentRepository;
+
+	@Autowired
+	LikeService likeService;
 
 	@Autowired
 	GoalLogStoreService goalLogStoreService;
@@ -45,11 +54,19 @@ public class GoalStoreService {
     }
 	
 	public Page<Comment> getComments(Goal goal, Pageable pageable) {
-		return commentService.getComments(ContentType.GOAL, goal.getId(), pageable);
+		return commentRepository.findByTypeAndParentIdAndStatusNot(ContentType.GOAL, goal.getId(), ContentStatus.DELETED, pageable);
 	}
 
 	public List<Comment> getComments(Goal goal) {
-		return commentService.getComments(ContentType.GOAL, goal.getId());
+		return commentRepository.findByTypeAndParentIdAndStatusNot(ContentType.GOAL, goal.getId(), ContentStatus.DELETED);
+	}
+
+	public Page<Like> getLikes(Goal goal, Pageable pageable) {
+		return likeService.getLikes(ContentType.GOAL, goal.getId(), pageable);
+	}
+
+	public List<Like> getLikes(Goal goal) {
+		return likeService.getLikes(ContentType.GOAL, goal.getId());
 	}
 
 	public void deleteAllGoalStore(Goal goal) {
@@ -57,7 +74,11 @@ public class GoalStoreService {
 			goalLogStoreService.deleteGoalLog(gl.getId());
 		}
 		for (Comment cmt : getComments(goal)) {
-			commentService.deleteComment(cmt.getId());
+			commentStoreService.deleteComment(cmt.getId());
+		}
+		for (Like like : getLikes(goal)) {
+			likeService.deleteLike(like.getId());
 		}
 	}
+
 }

@@ -1,9 +1,12 @@
 package com.cyhee.rabit.service.user;
 
+import com.cyhee.rabit.dao.comment.CommentRepository;
 import com.cyhee.rabit.dao.follow.FollowRepository;
 import com.cyhee.rabit.model.cmm.ContentStatus;
+import com.cyhee.rabit.model.cmm.ContentType;
+import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.follow.Follow;
-import com.cyhee.rabit.model.follow.FollowStatus;
+import com.cyhee.rabit.model.cmm.RadioStatus;
 import com.cyhee.rabit.service.follow.FollowService;
 import com.cyhee.rabit.service.goal.GoalStoreService;
 import com.cyhee.rabit.service.goallog.GoalLogStoreService;
@@ -41,6 +44,9 @@ public class UserStoreService {
 	private GoalLogStoreService goalLogStoreService;
 
 	@Autowired
+	CommentRepository commentRepository;
+
+	@Autowired
 	private FollowService followService;
 
 	public void deleteUser(Long id) {
@@ -69,20 +75,28 @@ public class UserStoreService {
 		return goalLogRepository.findByAuthorAndStatusNot(author, ContentStatus.DELETED);
 	}
 
+	public Page<Comment> getComments(Goal goal, Pageable pageable) {
+		return commentRepository.findByTypeAndParentIdAndStatusNot(ContentType.USER, goal.getId(), ContentStatus.DELETED, pageable);
+	}
+
+	public List<Comment> getComments(Goal goal) {
+		return commentRepository.findByTypeAndParentIdAndStatusNot(ContentType.USER, goal.getId(), ContentStatus.DELETED);
+	}
+
 	public Page<Follow> getFollowers(User followee, Pageable pageable) {
-		return followRepository.findByFolloweeAndStatusNot(followee, FollowStatus.INACTIVE, pageable);
+		return followRepository.findByFolloweeAndStatusNot(followee, RadioStatus.INACTIVE, pageable);
 	}
 
 	public List<Follow> getFollowers(User followee) {
-		return followRepository.findByFolloweeAndStatusNot(followee, FollowStatus.INACTIVE);
+		return followRepository.findByFolloweeAndStatusNot(followee, RadioStatus.INACTIVE);
 	}
 
 	public Page<Follow> getFollowees(User follower, Pageable pageable) {
-		return followRepository.findByFollowerAndStatusNot(follower, FollowStatus.INACTIVE, pageable);
+		return followRepository.findByFollowerAndStatusNot(follower, RadioStatus.INACTIVE, pageable);
 	}
 
 	public List<Follow> getFollowees(User follower) {
-		return followRepository.findByFollowerAndStatusNot(follower, FollowStatus.INACTIVE);
+		return followRepository.findByFollowerAndStatusNot(follower, RadioStatus.INACTIVE);
 	}
 
 	public void deleteAllUserStore(User user) {

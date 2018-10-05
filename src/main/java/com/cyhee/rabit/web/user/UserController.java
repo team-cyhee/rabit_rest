@@ -3,6 +3,7 @@ package com.cyhee.rabit.web.user;
 import javax.annotation.Resource;
 
 import com.cyhee.rabit.service.user.UserService;
+import com.cyhee.rabit.service.user.UserStoreService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -29,6 +30,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class UserController {
 	@Resource(name = "userService")
 	private UserService userService;
+
+	@Resource(name = "userStoreService")
+	private UserStoreService userStoreService;
 	
 	@GetMapping
 	public ResponseEntity<Page<User>> getUsers(@PageableDefault Pageable pageable) {
@@ -52,7 +56,7 @@ public class UserController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteUser(@PathVariable long id, @PageableDefault Pageable pageable) {
-		userService.deleteUser(id);
+		userStoreService.deleteUser(id);
 		return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
 	}
 }

@@ -31,10 +31,6 @@ import com.cyhee.rabit.model.user.User;
 @Import({UserService.class, BCryptPasswordEncoder.class, GoalService.class, GoalLogService.class})
 public class GoalLogServiceTest {
 	@Autowired
-	private UserService userService;
-	@Autowired
-	private GoalService goalService;
-	@Autowired
 	private GoalLogService goalLogService;
 	@Autowired
 	private TestEntityManager entityManager;

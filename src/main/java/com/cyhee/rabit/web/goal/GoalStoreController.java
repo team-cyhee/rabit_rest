@@ -1,5 +1,6 @@
 package com.cyhee.rabit.web.goal;
 
+import com.cyhee.rabit.model.like.Like;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,4 +37,10 @@ public class GoalStoreController {
 		Goal goal = goalService.getGoal(id);
         return new ResponseEntity<>(goalStoreService.getComments(goal, pageable), HttpStatus.OK);
     }
+
+    @GetMapping("/likes")
+	public ResponseEntity<Page<Like>> getLikes(@PathVariable Long id, @PageableDefault Pageable pageable) {
+		Goal goal = goalService.getGoal(id);
+		return new ResponseEntity<>(goalStoreService.getLikes(goal, pageable), HttpStatus.OK);
+	}
 }

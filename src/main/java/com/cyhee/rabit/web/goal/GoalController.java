@@ -3,6 +3,7 @@ package com.cyhee.rabit.web.goal;
 import javax.annotation.Resource;
 
 import com.cyhee.rabit.service.goal.GoalService;
+import com.cyhee.rabit.service.goal.GoalStoreService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -21,6 +22,9 @@ import com.cyhee.rabit.model.goal.Goal;
 public class GoalController {
 	@Resource(name="goalService")
 	private GoalService goalService;
+
+	@Resource(name="goalStoreService")
+    private GoalStoreService goalStoreService;
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<Page<Goal>> getGoals(@PageableDefault Pageable pageable) {
@@ -46,7 +50,7 @@ public class GoalController {
     
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
     public ResponseEntity<Void> deleteGoal(@PathVariable long id, @PageableDefault Pageable pageable) {
-    	goalService.deleteGoal(id);
+    	goalStoreService.deleteGoal(id);
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
     }
 }
