@@ -46,9 +46,6 @@ public class CommentServiceTest {
 	Goal goal3;
 	Goal goal4;
 	Comment comment1;
-	Comment comment2;
-	Comment comment3;
-	Comment comment4;
 
 
 	@Before
@@ -77,17 +74,6 @@ public class CommentServiceTest {
 		assertThat(page)
 			.hasSize(1)
 			.containsExactlyInAnyOrder(comment1);
-	}
-
-
-	@Test
-	public void deleteAndGet() {
-		Comment source = new Comment().setStatus(ContentStatus.DELETED);
-		commentService.deleteComment(comment1.getId());
-		
-		assertThat(comment1)
-			.extracting(Comment::getStatus)
-			.containsExactly(source.getStatus());
 	}
 
 	@Test

@@ -2,6 +2,11 @@ package com.cyhee.rabit.goal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.cyhee.rabit.model.cmm.RadioStatus;
+import com.cyhee.rabit.model.like.Like;
+import com.cyhee.rabit.service.comment.CommentStoreService;
+import com.cyhee.rabit.service.goallog.GoalLogStoreService;
+import com.cyhee.rabit.service.like.LikeService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +36,7 @@ import com.cyhee.rabit.service.goallog.GoalLogService;
 @SpringBootTest
 @DataJpaTest
 @TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
-@Import({GoalStoreService.class, CommentService.class, GoalService.class, GoalLogService.class})
+@Import({GoalStoreService.class, GoalService.class, GoalLogService.class, GoalLogStoreService.class, CommentService.class, CommentStoreService.class, LikeService.class})
 public class GoalStoreServiceTest {
 	@Autowired
 	private GoalStoreService goalStoreService;
@@ -42,10 +47,15 @@ public class GoalStoreServiceTest {
 	User user2;
 	Goal goal1;
 	Goal goal2;
-	GoalLog gl1;
+	GoalLog goalLogInGoal1;
 	GoalLog gl2;
-	Comment comment1;
-	Comment comment2;
+	Comment commentInGoal1;
+	Comment commentInGoal2;
+	Comment commentInGoalLog;
+	Like likeOnGoal;
+	Like likeOnGoalLog;
+	Like likeOnCommentInGoal;
+	Like likeOnCommentInGoalLog;
 		
 	@Before
 	public void setup() {
@@ -55,21 +65,33 @@ public class GoalStoreServiceTest {
 		goal1 = new Goal().setAuthor(user1).setContent("content1");
 		goal2 = new Goal().setAuthor(user2).setContent("content2");
 		
-		gl1 = new GoalLog().setGoal(goal1).setContent("content1");
+		goalLogInGoal1 = new GoalLog().setGoal(goal1).setContent("content1");
 		gl2 = new GoalLog().setGoal(goal2).setContent("content2");
 		
 		entityManger.persist(user1);
 		entityManger.persist(user2);
 		entityManger.persist(goal1);
 		entityManger.persist(goal2);
-		entityManger.persist(gl1);
+		entityManger.persist(goalLogInGoal1);
 		entityManger.persist(gl2);
 		
-		comment1 = new Comment().setAuthor(user1).setType(ContentType.GOAL).setContent("comment").setParentId(goal1.getId());
-		comment2 = new Comment().setAuthor(user1).setType(ContentType.GOAL).setContent("comment").setParentId(goal2.getId());
+		commentInGoal1 = new Comment().setAuthor(user1).setType(ContentType.GOAL).setContent("comment").setParentId(goal1.getId());
+		commentInGoal2 = new Comment().setAuthor(user1).setType(ContentType.GOAL).setContent("comment").setParentId(goal2.getId());
+		commentInGoalLog = new Comment().setAuthor(user1).setType(ContentType.GOALLOG).setContent("comment").setParentId(goalLogInGoal1.getId());
+		likeOnGoal = new Like().setAuthor(user2).setType(ContentType.GOAL).setParentId(goal1.getId());
+		likeOnGoalLog = new Like().setAuthor(user2).setType(ContentType.GOALLOG).setParentId(goalLogInGoal1.getId());
 		
-		entityManger.persist(comment1);
-		entityManger.persist(comment2);
+		entityManger.persist(commentInGoal1);
+		entityManger.persist(commentInGoal2);
+		entityManger.persist(commentInGoalLog);
+
+		likeOnCommentInGoal = new Like().setAuthor(user2).setType(ContentType.COMMENT).setParentId(commentInGoal1.getId());
+		likeOnCommentInGoalLog = new Like().setAuthor(user2).setType(ContentType.COMMENT).setParentId(commentInGoalLog.getId()); 
+
+		entityManger.persist(likeOnGoal);
+		entityManger.persist(likeOnGoalLog);
+		entityManger.persist(likeOnCommentInGoal);
+		entityManger.persist(likeOnCommentInGoalLog);
 	}
 	
 	@Test
@@ -78,7 +100,7 @@ public class GoalStoreServiceTest {
 		Page<GoalLog> gls = goalStoreService.getGoalLogs(goal1, pageable);
 		
 		assertThat(gls.getContent())
-			.hasSize(1).contains(gl1);
+			.hasSize(1).contains(goalLogInGoal1);
 		
 		gls = goalStoreService.getGoalLogs(goal2, pageable);
 		
@@ -90,36 +112,58 @@ public class GoalStoreServiceTest {
 	public void getComments() {
 		Pageable pageable = PageRequest.of(0, 10);
 		Page<Comment> comments = goalStoreService.getComments(goal1, pageable);
-		System.out.println(comment1);
+		System.out.println(commentInGoal1);
 		assertThat(comments.getContent())
-			.hasSize(1).contains(comment1);
+			.hasSize(1).contains(commentInGoal1);
 		
 		comments = goalStoreService.getComments(goal2, pageable);
 		
 		assertThat(comments.getContent())
-			.hasSize(1).contains(comment2);
+			.hasSize(1).contains(commentInGoal2);
 	}
 
 	@Test
+	public void getLikes() {
+		Pageable pageable = PageRequest.of(0, 10);
+		Page<Like> likes = goalStoreService.getLikes(goal1, pageable);
+
+		assertThat(likes)
+				.hasSize(1)
+				.containsExactlyInAnyOrder(likeOnGoal);
+	}
+	
+	@Test
 	public void deleteGoal() {
-		Goal gSource = new Goal().setStatus(ContentStatus.DELETED);
-		GoalLog glSource = new GoalLog().setStatus(ContentStatus.DELETED);
-		Comment cmtSource = new Comment().setStatus(ContentStatus.DELETED);
 
 		goalStoreService.deleteGoal(goal1.getId());
 
 		assertThat(goal1)
 				.extracting(Goal::getStatus)
-				.containsExactly(gSource.getStatus());
+				.containsExactly(ContentStatus.DELETED);
 
-		assertThat(gl1)
+		assertThat(goalLogInGoal1)
 				.extracting(GoalLog::getStatus)
-				.containsExactly(glSource.getStatus());
+				.containsExactly(ContentStatus.DELETED);
 
-		// TODO delete comment
-		assertThat(comment1)
+		assertThat(commentInGoal1)
 				.extracting(Comment::getStatus)
-				.containsExactly(cmtSource.getStatus());
+				.containsExactly(ContentStatus.DELETED);
+		
+		assertThat(likeOnGoal)
+				.extracting(Like::getStatus)
+				.containsExactly(RadioStatus.INACTIVE);
+		
+		assertThat(likeOnGoalLog)
+				.extracting(Like::getStatus)
+				.containsExactly(RadioStatus.INACTIVE);
+		
+		assertThat(likeOnCommentInGoal)
+				.extracting(Like::getStatus)
+				.containsExactly(RadioStatus.INACTIVE);
+
+		assertThat(likeOnCommentInGoalLog)
+				.extracting(Like::getStatus)
+				.containsExactly(RadioStatus.INACTIVE);
 	}
 	
 }

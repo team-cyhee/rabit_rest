@@ -1,5 +1,6 @@
 package com.cyhee.rabit.web.goallog;
 
+import com.cyhee.rabit.model.like.Like;
 import com.cyhee.rabit.service.goallog.GoalLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,4 +30,10 @@ public class GoalLogStoreController {
 		GoalLog goalLog = goalLogService.getGoalLog(id);
         return new ResponseEntity<>(goalLogStoreService.getComments(goalLog, pageable), HttpStatus.OK);
     }
+
+	@GetMapping("/likes")
+	public ResponseEntity<Page<Like>> getLikes(@PathVariable Long id, @PageableDefault Pageable pageable) {
+		GoalLog goalLog = goalLogService.getGoalLog(id);
+		return new ResponseEntity<>(goalLogStoreService.getLikes(goalLog, pageable), HttpStatus.OK);
+	}
 }
