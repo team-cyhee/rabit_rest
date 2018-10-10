@@ -36,11 +36,13 @@ public class GoalService {
 	public void updateGoal(long id, Goal goalForm) {
 		Goal goal = getGoal(id);
 		setGoalProps(goal, goalForm);
+		goalRepository.save(goal);
 	}
 
 	public Goal deleteGoal(long id) {
 		Goal goal = getGoal(id);
 		goal.setStatus(ContentStatus.DELETED);
+		goalRepository.save(goal);
 		return goal;
 	}
 	

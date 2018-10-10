@@ -4,15 +4,15 @@ package com.cyhee.rabit.service.comment;
 import java.util.List;
 import java.util.Optional;
 
-import com.cyhee.rabit.model.cmm.ContentStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.cyhee.rabit.model.cmm.ContentType;
-import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.dao.comment.CommentRepository;
+import com.cyhee.rabit.exception.cmm.NoSuchContentException;
+import com.cyhee.rabit.model.cmm.ContentStatus;
+import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
 
 @Service("commentService")
@@ -46,11 +46,13 @@ public class CommentService {
 	public void updateComment(long id, Comment source) {
 		Comment comment = getComment(id);
 		setCommentProps(comment, source);
+		repository.save(comment);
 	}
 
 	public Comment deleteComment(long id) {
 		Comment comment = getComment(id);
 		comment.setStatus(ContentStatus.DELETED);
+		repository.save(comment);
 		return comment;
 	}
 	

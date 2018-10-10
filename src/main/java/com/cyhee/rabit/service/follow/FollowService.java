@@ -37,11 +37,13 @@ public class FollowService {
     public void updateFollow(long id, Follow followForm) {
         Follow follow = getFollow(id);
         setFollowProps(follow, followForm);
+        followRepository.save(follow);
     }
 
     public void deleteFollow(long id) {
         Follow follow = getFollow(id);
         follow.setStatus(RadioStatus.INACTIVE);
+        followRepository.save(follow);
     }
 
     private void setFollowProps(Follow target, Follow source) {

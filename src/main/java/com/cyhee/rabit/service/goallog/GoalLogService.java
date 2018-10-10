@@ -44,6 +44,7 @@ public class GoalLogService {
 	public GoalLog deleteGoalLog(long id) {
 		GoalLog log = getGoalLog(id);
 		log.setStatus(ContentStatus.DELETED);
+		goallogRepository.save(log);
 		return log;
 	}
 	

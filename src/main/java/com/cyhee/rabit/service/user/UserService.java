@@ -56,12 +56,14 @@ public class UserService {
 	public User deleteUser(Long id) {
         User user = getUser(id);
         user.setStatus(UserStatus.DELETED);
+		userRepository.save(user);
         return user;
 	}
 	
 	public User deleteUserByUsername(String username) {
 		User user = getUserByUsername(username);
 		user.setStatus(UserStatus.DELETED);
+		userRepository.save(user);
 		return user;
 	}
 	

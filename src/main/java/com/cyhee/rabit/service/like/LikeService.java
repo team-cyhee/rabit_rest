@@ -45,11 +45,13 @@ public class LikeService {
 	public void updateLike(long id, Like source) {
 		Like like = getLike(id);
 		setLikeProps(like, source);
+		repository.save(like);
 	}
 
 	public void deleteLike(long id) {
 		Like like = getLike(id);
 		like.setStatus(RadioStatus.INACTIVE);
+		repository.save(like);
 	}
 	
 	private void setLikeProps(Like target, Like source) {
