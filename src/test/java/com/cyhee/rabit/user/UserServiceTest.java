@@ -2,6 +2,7 @@ package com.cyhee.rabit.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import org.junit.Before;
@@ -104,5 +105,17 @@ public class UserServiceTest {
 		
 		assertThat(user1.getStatus())
 			.isEqualTo(UserStatus.DELETED);
+	}
+	
+	@Test
+	public void getByStatus() {
+		user1.setStatus(UserStatus.ACTIVE);
+		user2.setStatus(UserStatus.FORBIDDEN);
+		user3.setStatus(UserStatus.PENDING);
+		
+		Page<User> userPage = userService.getUsersByStatusIn(Arrays.asList(UserStatus.FORBIDDEN, UserStatus.ACTIVE), PageRequest.of(0, 100));
+		assertThat(userPage)
+			.hasSize(2)
+			.containsAll(Arrays.asList(user1, user2));
 	}
 }

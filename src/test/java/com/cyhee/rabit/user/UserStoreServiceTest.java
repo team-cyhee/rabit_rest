@@ -2,10 +2,6 @@ package com.cyhee.rabit.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.cyhee.rabit.service.goal.GoalService;
-import com.cyhee.rabit.service.goal.GoalStoreService;
-import com.cyhee.rabit.service.goallog.GoalLogService;
-import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +25,13 @@ import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.model.user.UserStatus;
 import com.cyhee.rabit.service.comment.CommentService;
+import com.cyhee.rabit.service.comment.CommentStoreService;
 import com.cyhee.rabit.service.follow.FollowService;
+import com.cyhee.rabit.service.goal.GoalService;
+import com.cyhee.rabit.service.goal.GoalStoreService;
+import com.cyhee.rabit.service.goallog.GoalLogService;
+import com.cyhee.rabit.service.goallog.GoalLogStoreService;
+import com.cyhee.rabit.service.like.LikeService;
 import com.cyhee.rabit.service.user.UserService;
 import com.cyhee.rabit.service.user.UserStoreService;
 
@@ -37,7 +39,7 @@ import com.cyhee.rabit.service.user.UserStoreService;
 @SpringBootTest
 @DataJpaTest
 @TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
-@Import({UserStoreService.class, UserService.class, GoalService.class, GoalLogService.class, GoalStoreService.class, GoalLogStoreService.class, FollowService.class, CommentService.class})
+@Import({UserStoreService.class, UserService.class, GoalService.class, GoalLogService.class, GoalStoreService.class, GoalLogStoreService.class, FollowService.class, CommentService.class, CommentStoreService.class, LikeService.class})
 public class UserStoreServiceTest {
 	@Autowired
 	private UserStoreService userStoreService;
@@ -103,12 +105,12 @@ public class UserStoreServiceTest {
 	@Test
 	public void getGoals() {
 		Pageable pageable = PageRequest.of(0, 10);
-		Page<Goal> goals = userStoreService.getGoals(user1, pageable);
+		Page<Goal> goals = userStoreService.getGoals(user1, ContentStatus.all(), pageable);
 		
 		assertThat(goals.getContent())
 			.hasSize(1).contains(goal1);
 		
-		goals = userStoreService.getGoals(user2, pageable);
+		goals = userStoreService.getGoals(user2, ContentStatus.all(), pageable);
 		
 		assertThat(goals.getContent())
 			.hasSize(1).contains(goal2);
@@ -117,12 +119,12 @@ public class UserStoreServiceTest {
 	@Test
 	public void getLogs() {
 		Pageable pageable = PageRequest.of(0, 10);
-		Page<GoalLog> gls = userStoreService.getGoalLogs(user1, pageable);
+		Page<GoalLog> gls = userStoreService.getGoalLogs(user1, ContentStatus.all(), pageable);
 		
 		assertThat(gls.getContent())
 			.hasSize(1).contains(gl1);
 		
-		gls = userStoreService.getGoalLogs(user2, pageable);
+		gls = userStoreService.getGoalLogs(user2, ContentStatus.all(), pageable);
 		
 		assertThat(gls.getContent())
 			.hasSize(1).contains(gl2);

@@ -14,9 +14,9 @@ import java.util.List;
 // CRUD refers Create, Read, Update, Delete
 
 public interface GoalRepository extends PagingAndSortingRepository<Goal, Long> {
-	Page<Goal> findByStatusNot(ContentStatus notStatus, Pageable pageable);
+	Page<Goal> findAllByStatusIn(List<ContentStatus> statusList, Pageable pageable);
 
-	Page<Goal> findByAuthorAndStatusNot(User author, ContentStatus notStatus, Pageable pageable);
+	List<Goal> findAllByAuthor(User author);	
 
-	List<Goal> findByAuthorAndStatusNot(User author, ContentStatus notStatus);
+	Page<Goal> findAllByAuthorAndStatusIn(User author, List<ContentStatus> statusList, Pageable pageable);
 }
