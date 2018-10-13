@@ -30,6 +30,7 @@ import com.cyhee.rabit.cmm.ApiTestUtil;
 import com.cyhee.rabit.exception.user.NoSuchUserException;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.user.UserService;
+import com.cyhee.rabit.service.user.UserStoreService;
 import com.cyhee.rabit.web.user.UserController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -41,6 +42,8 @@ public class UserApiTest {
 	private MockMvc mvc;
 	@MockBean(name="userService")
     private UserService userService;
+	@MockBean(name="userStoreService")
+    private UserStoreService userStoreService;
 	private ObjectMapper mapper;
 	private MediaType contentType;
 	
@@ -72,7 +75,7 @@ public class UserApiTest {
 		given(userService.getUser(1L)).willReturn(user);
 		given(userService.getUser(2L)).willThrow(NoSuchUserException.class);
 		Mockito.doThrow(NoSuchUserException.class)
-			.when(userService)
+			.when(userStoreService)
 			.deleteUser(2L);
 		Mockito.doThrow(NoSuchUserException.class)
 			.when(userService)

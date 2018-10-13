@@ -59,7 +59,13 @@ public class CommentServiceTest {
 		goal4 = new Goal().setAuthor(user2).setContent("content2").setParent(goal1);
 		
 		entityManger.persist(user1);
-		goalService.addGoal(goal1);
+		entityManger.persist(user2);
+		
+		entityManger.persist(goal1);
+		entityManger.persist(goal2);
+		entityManger.persist(goal3);
+		entityManger.persist(goal4);
+		
 		comment1 = new Comment().setAuthor(user1)
 			.setType(ContentType.GOAL).setContent("comment").setParentId(goal1.getId());
 		
@@ -71,6 +77,7 @@ public class CommentServiceTest {
 		Pageable pageable = PageRequest.of(0, 10);
 		Page<Comment> page = commentService.getComments(ContentType.GOAL, goal1.getId(), pageable);
 		
+		System.out.println(page);
 		assertThat(page)
 			.hasSize(1)
 			.containsExactlyInAnyOrder(comment1);

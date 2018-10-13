@@ -13,13 +13,13 @@ import java.util.List;
 // CRUD refers Create, Read, Update, Delete
 
 public interface FollowRepository extends PagingAndSortingRepository<Follow, Long> {
-    Page<Follow> findByStatusNot(RadioStatus notStatus, Pageable pageable);
+    Page<Follow> findByStatusIn(List<RadioStatus> statusList, Pageable pageable);
 
-    Page<Follow> findByFollowerAndStatusNot(User follower, RadioStatus notStatus, Pageable pageable);
+    Page<Follow> findByFollowerAndStatusIn(User follower, List<RadioStatus> statusList, Pageable pageable);
 
-    List<Follow> findByFollowerAndStatusNot(User follower, RadioStatus notStatus);
+    List<Follow> findByFollowerAndStatusIn(User follower, List<RadioStatus> statusList);
 
-    Page<Follow> findByFolloweeAndStatusNot(User followee, RadioStatus notStatus, Pageable pageable);
+    Page<Follow> findByFolloweeAndStatusIn(User followee, List<RadioStatus> statusList, Pageable pageable);
 
-    List<Follow> findByFolloweeAndStatusNot(User followee, RadioStatus notStatus);
+    List<Follow> findByFolloweeAndStatusIn(User followee, List<RadioStatus> statusList);
 }

@@ -53,11 +53,11 @@ public class GoalStoreService {
 	}
 	
 	public Page<Comment> getComments(Goal goal, Pageable pageable) {
-		return commentRepository.findByTypeAndParentIdAndStatusNot(ContentType.GOAL, goal.getId(), ContentStatus.DELETED, pageable);
+		return commentRepository.findByTypeAndParentIdAndStatusIn(ContentType.GOAL, goal.getId(), ContentStatus.visible(), pageable);
 	}
 
 	public List<Comment> getComments(Goal goal) {
-		return commentRepository.findByTypeAndParentIdAndStatusNot(ContentType.GOAL, goal.getId(), ContentStatus.DELETED);
+		return commentRepository.findByTypeAndParentIdAndStatusIn(ContentType.GOAL, goal.getId(), ContentStatus.visible());
 	}
 
 	public Page<Like> getLikes(Goal goal, Pageable pageable) {

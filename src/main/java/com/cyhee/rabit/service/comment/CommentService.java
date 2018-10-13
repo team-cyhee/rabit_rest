@@ -21,15 +21,15 @@ public class CommentService {
 	private CommentRepository repository;
 	
 	public Page<Comment> getComments(ContentType type, Long parentId, Pageable pageable) {
-		return repository.findByTypeAndParentIdAndStatusNot(type, parentId, ContentStatus.DELETED, pageable);
+		return repository.findByTypeAndParentIdAndStatusIn(type, parentId, ContentStatus.visible(), pageable);
 	}
 
 	public List<Comment> getComments(ContentType type, Long parentId) {
-		return repository.findByTypeAndParentIdAndStatusNot(type, parentId, ContentStatus.DELETED);
+		return repository.findByTypeAndParentIdAndStatusIn(type, parentId, ContentStatus.visible());
 	}
 
 	public Page<Comment> getComments(Pageable pageable) {
-		return repository.findByStatusNot(ContentStatus.DELETED, pageable);
+		return repository.findByStatusIn(ContentStatus.visible(), pageable);
 	}
 
 	public Comment getComment(long id) {

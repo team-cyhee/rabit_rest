@@ -22,11 +22,21 @@ public enum ContentStatus {
 	PENDING;
 	
 	private static List<ContentStatus> list;
+	private static List<ContentStatus> visibleList;
+	
 	
 	public static List<ContentStatus> all() {
-		if(ContentStatus.list == null) {
-			ContentStatus.list = new ArrayList<ContentStatus>(Arrays.asList(ContentStatus.values()));
+		if(list == null) {
+			list = new ArrayList<ContentStatus>(Arrays.asList(ContentStatus.values()));
 		}
 		return list;
+	}
+	
+	public static List<ContentStatus> visible() {
+		if(visibleList == null) {
+			visibleList = new ArrayList<>();
+			visibleList.add(ACTIVE);
+		}
+		return visibleList;
 	}
 }

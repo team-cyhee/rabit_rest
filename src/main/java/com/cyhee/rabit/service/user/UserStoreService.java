@@ -1,5 +1,6 @@
 package com.cyhee.rabit.service.user;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,27 +77,27 @@ public class UserStoreService {
 	}
 
 	public Page<Comment> getComments(Goal goal, Pageable pageable) {
-		return commentRepository.findByTypeAndParentIdAndStatusNot(ContentType.USER, goal.getId(), ContentStatus.DELETED, pageable);
+		return commentRepository.findByTypeAndParentIdAndStatusIn(ContentType.USER, goal.getId(), ContentStatus.visible(), pageable);
 	}
 
 	public List<Comment> getComments(Goal goal) {
-		return commentRepository.findByTypeAndParentIdAndStatusNot(ContentType.USER, goal.getId(), ContentStatus.DELETED);
+		return commentRepository.findByTypeAndParentIdAndStatusIn(ContentType.USER, goal.getId(), ContentStatus.visible());
 	}
 
-	public Page<Follow> getFollowers(User followee, Pageable pageable) {
-		return followRepository.findByFolloweeAndStatusNot(followee, RadioStatus.INACTIVE, pageable);
+	public Page<Follow> getFollowers(User followee, Pageable pageable) {		
+		return followRepository.findByFolloweeAndStatusIn(followee, Arrays.asList(RadioStatus.ACTIVE), pageable);
 	}
 
 	public List<Follow> getFollowers(User followee) {
-		return followRepository.findByFolloweeAndStatusNot(followee, RadioStatus.INACTIVE);
+		return followRepository.findByFolloweeAndStatusIn(followee, Arrays.asList(RadioStatus.INACTIVE));
 	}
 
 	public Page<Follow> getFollowees(User follower, Pageable pageable) {
-		return followRepository.findByFollowerAndStatusNot(follower, RadioStatus.INACTIVE, pageable);
+		return followRepository.findByFollowerAndStatusIn(follower, Arrays.asList(RadioStatus.INACTIVE), pageable);
 	}
 
 	public List<Follow> getFollowees(User follower) {
-		return followRepository.findByFollowerAndStatusNot(follower, RadioStatus.INACTIVE);
+		return followRepository.findByFollowerAndStatusIn(follower, Arrays.asList(RadioStatus.INACTIVE));
 	}
 
 	public void deleteAllUserStore(User user) {
