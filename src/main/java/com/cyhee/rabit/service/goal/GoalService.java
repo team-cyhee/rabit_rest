@@ -1,17 +1,19 @@
 package com.cyhee.rabit.service.goal;
 
+import java.util.List;
 import java.util.Optional;
 
-import com.cyhee.rabit.model.cmm.ContentStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.cyhee.rabit.model.cmm.ContentType;
-import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.dao.goal.GoalRepository;
+import com.cyhee.rabit.exception.cmm.NoSuchContentException;
+import com.cyhee.rabit.model.cmm.ContentStatus;
+import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.goal.Goal;
+import com.cyhee.rabit.model.user.User;
 
 @Service("goalService")
 public class GoalService {
@@ -19,7 +21,15 @@ public class GoalService {
 	private GoalRepository goalRepository;
 
 	public Page<Goal> getGoals(Pageable pageable) {
-		return goalRepository.findByStatusNot(ContentStatus.DELETED, pageable);
+		return goalRepository.findAll(pageable);
+	}
+	
+	public List<Goal> getGoalsByAuthor(User author) {
+		return goalRepository.findAllByAuthor(author);
+	}
+	
+	public Page<Goal> getGoalsByAuthorStatusIn(User author, List<ContentStatus> statusList, Pageable pageable) {
+		return goalRepository.findAllByAuthorAndStatusIn(author, statusList, pageable);
 	}
 
 	public void addGoal(Goal goal) {
@@ -36,11 +46,13 @@ public class GoalService {
 	public void updateGoal(long id, Goal goalForm) {
 		Goal goal = getGoal(id);
 		setGoalProps(goal, goalForm);
+		goalRepository.save(goal);
 	}
 
 	public Goal deleteGoal(long id) {
 		Goal goal = getGoal(id);
 		goal.setStatus(ContentStatus.DELETED);
+		goalRepository.save(goal);
 		return goal;
 	}
 	

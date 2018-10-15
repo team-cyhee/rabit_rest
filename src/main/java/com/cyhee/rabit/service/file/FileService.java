@@ -37,7 +37,7 @@ public class FileService {
     private FileRepository repository;
 
     public Page<FileInfo> getFiles(Pageable pageable) {
-        return repository.findByStatusNot(FileStatus.DELETED, pageable);
+        return repository.findByStatusIn(Arrays.asList(FileStatus.ACTIVE), pageable);
     }
 
     public void addFile(MultipartFile file) throws IOException, InvalidFileException {
@@ -72,11 +72,13 @@ public class FileService {
     public void updateFile(long id, FileInfo source) {
         FileInfo file = getFile(id);
         setFileProps(file, source);
+        repository.save(file);
     }
 
     public void deleteFile(long id) {
         FileInfo file = getFile(id);
         file.setStatus(FileStatus.DELETED);
+        repository.save(file);
     }
 
     private void setFileProps(FileInfo target, FileInfo source) {

@@ -2,6 +2,7 @@ package com.cyhee.rabit.web.user;
 
 import javax.annotation.Resource;
 
+import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.follow.Follow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,7 +31,7 @@ public class UserStoreController {
 	@GetMapping("/goals")
 	public ResponseEntity<Page<Goal>> getGoals(@PathVariable long id, Pageable pageable) {
 		User author = userService.getUser(id);
-		return new ResponseEntity<>(userStoreService.getGoals(author, pageable), HttpStatus.OK);
+		return new ResponseEntity<>(userStoreService.getGoals(author, ContentStatus.all(), pageable), HttpStatus.OK);
 	}
 
 	@GetMapping("/followers")

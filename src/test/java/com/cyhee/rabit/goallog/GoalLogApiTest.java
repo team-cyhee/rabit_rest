@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 
-import com.cyhee.rabit.service.goallog.GoalLogService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.cyhee.rabit.cmm.ApiTestUtil;
 import com.cyhee.rabit.model.goallog.GoalLog;
+import com.cyhee.rabit.service.goallog.GoalLogService;
+import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 import com.cyhee.rabit.web.goallog.GoalLogController;
 
 @RunWith(SpringRunner.class)
@@ -30,6 +31,8 @@ public class GoalLogApiTest {
 	private MockMvc mvc;
 	@MockBean(name="goalLogService")
     private GoalLogService goalLogService;
+	@MockBean(name="goalLogStoreService")
+    private GoalLogStoreService goalLogStoreService;
 	
 	private static final String url = "/rest/v1/goallogs";
 	

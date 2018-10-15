@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,15 +21,15 @@ public class LikeService {
 	private LikeRepository repository;
 	
 	public Page<Like> getLikes(ContentType type, Long parentId, Pageable pageable) {
-		return repository.findByTypeAndParentIdAndStatusNot(type, parentId, RadioStatus.INACTIVE, pageable);
+		return repository.findByTypeAndParentIdAndStatusIn(type, parentId, Arrays.asList(RadioStatus.ACTIVE), pageable);
 	}
 
 	public List<Like> getLikes(ContentType type, Long parentId) {
-		return repository.findByTypeAndParentIdAndStatusNot(type, parentId, RadioStatus.INACTIVE);
+		return repository.findByTypeAndParentIdAndStatusIn(type, parentId, Arrays.asList(RadioStatus.ACTIVE));
 	}
 
 	public Page<Like> getLikes(Pageable pageable) {
-		return repository.findByStatusNot(RadioStatus.INACTIVE, pageable);
+		return repository.findByStatusIn(Arrays.asList(RadioStatus.ACTIVE), pageable);
 	}
 
 	public Like getLike(long id) {
@@ -45,11 +46,13 @@ public class LikeService {
 	public void updateLike(long id, Like source) {
 		Like like = getLike(id);
 		setLikeProps(like, source);
+		repository.save(like);
 	}
 
 	public void deleteLike(long id) {
 		Like like = getLike(id);
 		like.setStatus(RadioStatus.INACTIVE);
+		repository.save(like);
 	}
 	
 	private void setLikeProps(Like target, Like source) {

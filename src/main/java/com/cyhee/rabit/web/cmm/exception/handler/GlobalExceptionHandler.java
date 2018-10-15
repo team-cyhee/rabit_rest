@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cyhee.rabit.exception.cmm.NoSuchContentException;
+import com.cyhee.rabit.web.cmm.exception.UnAuthorizedException;
 import com.cyhee.rabit.web.cmm.model.ApiError;
 import com.cyhee.rabit.web.cmm.model.ApiErrorCode;
 
@@ -48,5 +49,11 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ApiError> dataIntegrityViolationException(DataIntegrityViolationException e) {
 		logger.debug(e);
 		return new ResponseEntity<>(new ApiError(ApiErrorCode.INVALID_INPUT_TYPE, e), HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(value=UnAuthorizedException.class)
+	public ResponseEntity<ApiError> unAuthorizedException(UnAuthorizedException e) {
+		logger.debug(e);
+		return new ResponseEntity<>(new ApiError(e.getApiErrorCode(), e), e.getStatus());
 	}
 }

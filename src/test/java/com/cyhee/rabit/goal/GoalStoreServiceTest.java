@@ -2,11 +2,6 @@ package com.cyhee.rabit.goal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.cyhee.rabit.model.cmm.RadioStatus;
-import com.cyhee.rabit.model.like.Like;
-import com.cyhee.rabit.service.comment.CommentStoreService;
-import com.cyhee.rabit.service.goallog.GoalLogStoreService;
-import com.cyhee.rabit.service.like.LikeService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,14 +18,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
+import com.cyhee.rabit.model.cmm.RadioStatus;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
+import com.cyhee.rabit.model.like.Like;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.comment.CommentService;
+import com.cyhee.rabit.service.comment.CommentStoreService;
 import com.cyhee.rabit.service.goal.GoalService;
 import com.cyhee.rabit.service.goal.GoalStoreService;
 import com.cyhee.rabit.service.goallog.GoalLogService;
+import com.cyhee.rabit.service.goallog.GoalLogStoreService;
+import com.cyhee.rabit.service.like.LikeService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -97,12 +97,12 @@ public class GoalStoreServiceTest {
 	@Test
 	public void getGls() {
 		Pageable pageable = PageRequest.of(0, 10);
-		Page<GoalLog> gls = goalStoreService.getGoalLogs(goal1, pageable);
+		Page<GoalLog> gls = goalStoreService.getGoalLogs(goal1, ContentStatus.all(), pageable);
 		
 		assertThat(gls.getContent())
 			.hasSize(1).contains(goalLogInGoal1);
 		
-		gls = goalStoreService.getGoalLogs(goal2, pageable);
+		gls = goalStoreService.getGoalLogs(goal2, ContentStatus.all(), pageable);
 		
 		assertThat(gls.getContent())
 			.hasSize(1).contains(gl2);
