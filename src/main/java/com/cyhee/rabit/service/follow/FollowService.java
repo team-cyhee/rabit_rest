@@ -21,7 +21,7 @@ public class FollowService {
     private FollowRepository followRepository;
 
     public Page<Follow> getFollows(Pageable pageable) {
-        return followRepository.findByStatusIn(Arrays.asList(RadioStatus.ACTIVE), pageable);
+        return followRepository.findByStatusIn(RadioStatus.visible(), pageable);
     }
 
     public void addFollow(Follow follow) {

@@ -63,7 +63,7 @@ public class GoalLogStoreService {
 	}
 
 	public Integer getLikeNum(GoalLog goalLog) {
-		return likeRepository.findNumByParentAndStatusIn(ContentType.GOALLOG, goalLog.getId(), Arrays.asList(ContentStatus.ACTIVE));
+		return likeRepository.findNumByParentAndStatusIn(ContentType.GOALLOG, goalLog.getId(), ContentStatus.visible());
 	}
 
 	public void deleteAllGoalLogStore(GoalLog goalLog) {
