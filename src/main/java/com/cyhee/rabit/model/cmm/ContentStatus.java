@@ -27,7 +27,7 @@ public enum ContentStatus {
 	
 	public static List<ContentStatus> all() {
 		if(list == null) {
-			list = new ArrayList<ContentStatus>(Arrays.asList(ContentStatus.values()));
+			list = new ArrayList<>(Arrays.asList(ContentStatus.values()));
 		}
 		return list;
 	}

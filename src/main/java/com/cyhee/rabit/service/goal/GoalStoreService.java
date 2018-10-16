@@ -1,7 +1,9 @@
 package com.cyhee.rabit.service.goal;
 
+import java.util.Arrays;
 import java.util.List;
 
+import com.cyhee.rabit.dao.like.LikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +39,9 @@ public class GoalStoreService {
 	LikeService likeService;
 
 	@Autowired
+	LikeRepository likeRepository;
+
+	@Autowired
 	GoalLogStoreService goalLogStoreService;
 
 	public void deleteGoal(long id) {
@@ -60,12 +65,20 @@ public class GoalStoreService {
 		return commentRepository.findByTypeAndParentIdAndStatusIn(ContentType.GOAL, goal.getId(), ContentStatus.visible());
 	}
 
+	public Integer getCommentNum(Goal goal) {
+		return commentRepository.findNumByParentIdAndStatusIn(ContentType.GOAL, goal.getId(), ContentStatus.visible());
+	}
+
 	public Page<Like> getLikes(Goal goal, Pageable pageable) {
 		return likeService.getLikes(ContentType.GOAL, goal.getId(), pageable);
 	}
 
 	public List<Like> getLikes(Goal goal) {
 		return likeService.getLikes(ContentType.GOAL, goal.getId());
+	}
+
+	public Integer getLikeNum(Goal goal) {
+		return likeRepository.findNumByParentIdAndStatusIn(ContentType.GOAL, goal.getId(), ContentStatus.visible());
 	}
 
 	public void deleteAllGoalStore(Goal goal) {

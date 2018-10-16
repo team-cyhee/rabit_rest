@@ -1,16 +1,14 @@
 package com.cyhee.rabit.web.goal;
 
 import com.cyhee.rabit.model.like.Like;
+import com.cyhee.rabit.service.goallog.GoalLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.comment.Comment;
@@ -26,13 +24,15 @@ public class GoalStoreController {
 	private GoalService goalService;
 	@Autowired
 	private GoalStoreService goalStoreService;
+	@Autowired
+	private GoalLogService goalLogService;
 	
 	@GetMapping("/goallogs")
 	public ResponseEntity<Page<GoalLog>> getGoalLogs(@PathVariable Long id, @PageableDefault Pageable pageable) {
 		Goal goal = goalService.getGoal(id);
         return new ResponseEntity<>(goalStoreService.getGoalLogs(goal, ContentStatus.all(), pageable), HttpStatus.OK);
     }
-	
+
 	@GetMapping("/comments")
 	public ResponseEntity<Page<Comment>> getComments(@PathVariable Long id, @PageableDefault Pageable pageable) {
 		Goal goal = goalService.getGoal(id);

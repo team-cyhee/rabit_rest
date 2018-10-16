@@ -85,19 +85,19 @@ public class UserStoreService {
 	}
 
 	public Page<Follow> getFollowers(User followee, Pageable pageable) {		
-		return followRepository.findByFolloweeAndStatusIn(followee, Arrays.asList(RadioStatus.ACTIVE), pageable);
+		return followRepository.findByFolloweeAndStatusIn(followee, RadioStatus.visible(), pageable);
 	}
 
 	public List<Follow> getFollowers(User followee) {
-		return followRepository.findByFolloweeAndStatusIn(followee, Arrays.asList(RadioStatus.INACTIVE));
+		return followRepository.findByFolloweeAndStatusIn(followee, RadioStatus.visible());
 	}
 
 	public Page<Follow> getFollowees(User follower, Pageable pageable) {
-		return followRepository.findByFollowerAndStatusIn(follower, Arrays.asList(RadioStatus.INACTIVE), pageable);
+		return followRepository.findByFollowerAndStatusIn(follower, RadioStatus.visible(), pageable);
 	}
 
 	public List<Follow> getFollowees(User follower) {
-		return followRepository.findByFollowerAndStatusIn(follower, Arrays.asList(RadioStatus.INACTIVE));
+		return followRepository.findByFollowerAndStatusIn(follower, RadioStatus.visible());
 	}
 
 	public void deleteAllUserStore(User user) {
