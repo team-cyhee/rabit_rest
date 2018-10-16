@@ -1,6 +1,7 @@
 package com.cyhee.rabit.web.goal;
 
-import com.cyhee.rabit.model.like.Like;
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,15 +10,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
+import com.cyhee.rabit.model.goallog.GoalLog;
+import com.cyhee.rabit.model.like.Like;
+import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.goal.GoalService;
 import com.cyhee.rabit.service.goal.GoalStoreService;
-import com.cyhee.rabit.model.goallog.GoalLog;
+import com.cyhee.rabit.service.user.UserService;
 
 @RestController
 @RequestMapping("rest/v1/goals/{id}")
@@ -26,6 +31,8 @@ public class GoalStoreController {
 	private GoalService goalService;
 	@Autowired
 	private GoalStoreService goalStoreService;
+	@Autowired
+	private UserService userService;
 	
 	@GetMapping("/goallogs")
 	public ResponseEntity<Page<GoalLog>> getGoalLogs(@PathVariable Long id, @PageableDefault Pageable pageable) {
@@ -43,5 +50,14 @@ public class GoalStoreController {
 	public ResponseEntity<Page<Like>> getLikes(@PathVariable Long id, @PageableDefault Pageable pageable) {
 		Goal goal = goalService.getGoal(id);
 		return new ResponseEntity<>(goalStoreService.getLikes(goal, pageable), HttpStatus.OK);
+	}
+    
+    @PostMapping("/likes")
+    public ResponseEntity<Void> getLikes(@PathVariable Long id, Principal principal) {
+    	String username = principal.getName();
+    	User liker = userService.getUserByUsername(username);
+		Goal goal = goalService.getGoal(id);
+		goalStoreService.addLike(goal, liker);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 }
