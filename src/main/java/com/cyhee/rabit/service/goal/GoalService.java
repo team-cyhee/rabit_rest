@@ -23,7 +23,7 @@ public class GoalService {
 	public Page<Goal> getGoals(Pageable pageable) {
 		return goalRepository.findAll(pageable);
 	}
-	
+
 	public List<Goal> getGoalsByAuthor(User author) {
 		return goalRepository.findAllByAuthor(author);
 	}

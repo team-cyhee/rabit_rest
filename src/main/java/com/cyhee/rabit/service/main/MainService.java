@@ -55,6 +55,6 @@ public class MainService {
 			mainInfo.add(new GoalInfo(goal, likeNum, commentNum, comments));
 		}
 		mainInfo.sort(new MainInfo.DateSort());
-		return mainInfo;
+		return mainInfo.subList(0, mainInfo.size());
 	}
 }

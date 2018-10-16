@@ -66,7 +66,7 @@ public class GoalStoreService {
 	}
 
 	public Integer getCommentNum(Goal goal) {
-		return commentRepository.findNumByParentAndStatusIn(ContentType.GOAL, goal.getId(), ContentStatus.visible());
+		return commentRepository.findNumByParentIdAndStatusIn(ContentType.GOAL, goal.getId(), ContentStatus.visible());
 	}
 
 	public Page<Like> getLikes(Goal goal, Pageable pageable) {
@@ -78,7 +78,7 @@ public class GoalStoreService {
 	}
 
 	public Integer getLikeNum(Goal goal) {
-		return likeRepository.findNumByParentAndStatusIn(ContentType.GOAL, goal.getId(), ContentStatus.visible());
+		return likeRepository.findNumByParentIdAndStatusIn(ContentType.GOAL, goal.getId(), ContentStatus.visible());
 	}
 
 	public void deleteAllGoalStore(Goal goal) {

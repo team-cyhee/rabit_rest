@@ -28,9 +28,9 @@ public class GoalController {
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<Page<Goal>> getGoals(@PageableDefault Pageable pageable) {
-        return new ResponseEntity<Page<Goal>>(goalService.getGoals(pageable), HttpStatus.OK);
+        return new ResponseEntity<>(goalService.getGoals(pageable), HttpStatus.OK);
     }
-	
+
 	@RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<Void> addGoal(@RequestBody Goal goal) {    	
     	goalService.addGoal(goal);

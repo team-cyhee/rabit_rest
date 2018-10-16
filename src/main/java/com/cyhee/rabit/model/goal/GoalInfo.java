@@ -1,6 +1,7 @@
 
 package com.cyhee.rabit.model.goal;
 
+import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.file.FileInfo;
 import com.cyhee.rabit.model.goal.Goal;
@@ -30,7 +31,7 @@ public class GoalInfo extends MainInfo {
 	private List<FileInfo> files;
 
 	public GoalInfo(Goal from, Integer likeNum, Integer commentNum, Page<Comment> comments) {
-		super(likeNum, commentNum, comments, from.getLastUpdated());
+		super(ContentType.GOAL, likeNum, commentNum, comments, from.getLastUpdated());
 		this.id = from.getId();
 		this.author = from.getAuthor();
 		this.parent = from.getParent();

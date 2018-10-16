@@ -1,5 +1,6 @@
 package com.cyhee.rabit.model.main;
 
+import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MainInfo {
+    private ContentType type;
     private Integer likeNum;
     private Integer commentNum;
     private Page<Comment> comments;

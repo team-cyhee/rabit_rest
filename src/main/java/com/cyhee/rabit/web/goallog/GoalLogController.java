@@ -30,7 +30,7 @@ public class GoalLogController {
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<Page<GoalLog>> getGoalLogs(@PageableDefault Pageable pageable) {
 		Page<GoalLog> logPage = goallogService.getGoalLogs(pageable);
-        return new ResponseEntity<Page<GoalLog>>(logPage, HttpStatus.OK);
+        return new ResponseEntity<>(logPage, HttpStatus.OK);
     }
 	
 	@RequestMapping(method=RequestMethod.POST)

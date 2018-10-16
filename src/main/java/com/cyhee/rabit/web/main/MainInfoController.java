@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-@RequestMapping("rest/v1/main")
+@RequestMapping("rest/v1/maininfos")
 public class MainInfoController {
     @Resource(name="mainService")
     private MainService mainService;

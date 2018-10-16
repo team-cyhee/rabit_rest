@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -22,6 +23,6 @@ public interface LikeRepository extends PagingAndSortingRepository<Like, Long> {
 
 	Page<Like> findByStatusIn(List<RadioStatus> statusList, Pageable pageable);
 
-	@Query("Select count(n) From GoalLog n Where n.contentType = type AND n.parentId = parentId AND n.status In :statusList")
-	Integer findNumByParentAndStatusIn(ContentType type, Long parentId, List<ContentStatus> contentStatusList);
+	@Query("Select count(n) From Like n Where :cType = n.type AND n.parentId = :parentId AND n.status In :statusList")
+	Integer findNumByParentIdAndStatusIn(@Param("cType") ContentType cType, @Param("parentId") Long parentId, @Param("statusList") List<ContentStatus> statusList);
 }
