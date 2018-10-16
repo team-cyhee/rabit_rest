@@ -1,41 +1,42 @@
 package com.cyhee.rabit.service.user;
 
-import com.cyhee.rabit.dao.comment.CommentRepository;
-import com.cyhee.rabit.dao.follow.FollowRepository;
-import com.cyhee.rabit.model.cmm.ContentStatus;
-import com.cyhee.rabit.model.cmm.ContentType;
-import com.cyhee.rabit.model.comment.Comment;
-import com.cyhee.rabit.model.follow.Follow;
-import com.cyhee.rabit.model.cmm.RadioStatus;
-import com.cyhee.rabit.service.follow.FollowService;
-import com.cyhee.rabit.service.goal.GoalStoreService;
-import com.cyhee.rabit.service.goallog.GoalLogStoreService;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.cyhee.rabit.dao.goal.GoalRepository;
+import com.cyhee.rabit.dao.comment.CommentRepository;
+import com.cyhee.rabit.dao.follow.FollowRepository;
+import com.cyhee.rabit.model.cmm.ContentStatus;
+import com.cyhee.rabit.model.cmm.ContentType;
+import com.cyhee.rabit.model.cmm.RadioStatus;
+import com.cyhee.rabit.model.comment.Comment;
+import com.cyhee.rabit.model.follow.Follow;
 import com.cyhee.rabit.model.goal.Goal;
-import com.cyhee.rabit.dao.goallog.GoalLogRepository;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.model.user.User;
-
-import java.util.List;
+import com.cyhee.rabit.service.follow.FollowService;
+import com.cyhee.rabit.service.goal.GoalService;
+import com.cyhee.rabit.service.goal.GoalStoreService;
+import com.cyhee.rabit.service.goallog.GoalLogService;
+import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 
 @Service
 public class UserStoreService {
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private GoalService goalService;
+	
+	@Autowired
+	private GoalLogService goalLogService;
 
 	@Autowired
 	private FollowRepository followRepository;
-
-	@Autowired
-	private GoalRepository goalRepository;
-	
-	@Autowired
-	private GoalLogRepository goalLogRepository;
 
 	@Autowired
 	private GoalStoreService goalStoreService;
@@ -58,45 +59,45 @@ public class UserStoreService {
 		User user = userService.deleteUser(id);
 		deleteAllUserStore(user);
 	}
-
-	public Page<Goal> getGoals(User author, Pageable pageable) {
-		return goalRepository.findByAuthorAndStatusNot(author, ContentStatus.DELETED, pageable);
-	}
-
-	public List<Goal> getGoals(User author) {
-		return goalRepository.findByAuthorAndStatusNot(author, ContentStatus.DELETED);
-	}
 	
-	public Page<GoalLog> getGoalLogs(User author, Pageable pageable) {
-		return goalLogRepository.findByAuthorAndStatusNot(author, ContentStatus.DELETED, pageable);
+	public List<Goal> getGoals(User author) {
+		return goalService.getGoalsByAuthor(author);
+	}
+
+	public Page<Goal> getGoals(User author, List<ContentStatus> statusList, Pageable pageable) {
+		return goalService.getGoalsByAuthorStatusIn(author, statusList, pageable);
 	}
 
 	public List<GoalLog> getGoalLogs(User author) {
-		return goalLogRepository.findByAuthorAndStatusNot(author, ContentStatus.DELETED);
+		return goalLogService.getGoalLogsByAuthor(author);
+	}
+	
+	public Page<GoalLog> getGoalLogs(User author, List<ContentStatus> statusList, Pageable pageable) {
+		return goalLogService.getGoalLogsByAuthorAndStatusIn(author, statusList, pageable);
 	}
 
 	public Page<Comment> getComments(Goal goal, Pageable pageable) {
-		return commentRepository.findByTypeAndParentIdAndStatusNot(ContentType.USER, goal.getId(), ContentStatus.DELETED, pageable);
+		return commentRepository.findByTypeAndParentIdAndStatusIn(ContentType.USER, goal.getId(), ContentStatus.visible(), pageable);
 	}
 
 	public List<Comment> getComments(Goal goal) {
-		return commentRepository.findByTypeAndParentIdAndStatusNot(ContentType.USER, goal.getId(), ContentStatus.DELETED);
+		return commentRepository.findByTypeAndParentIdAndStatusIn(ContentType.USER, goal.getId(), ContentStatus.visible());
 	}
 
-	public Page<Follow> getFollowers(User followee, Pageable pageable) {
-		return followRepository.findByFolloweeAndStatusNot(followee, RadioStatus.INACTIVE, pageable);
+	public Page<Follow> getFollowers(User followee, Pageable pageable) {		
+		return followRepository.findByFolloweeAndStatusIn(followee, Arrays.asList(RadioStatus.ACTIVE), pageable);
 	}
 
 	public List<Follow> getFollowers(User followee) {
-		return followRepository.findByFolloweeAndStatusNot(followee, RadioStatus.INACTIVE);
+		return followRepository.findByFolloweeAndStatusIn(followee, Arrays.asList(RadioStatus.INACTIVE));
 	}
 
 	public Page<Follow> getFollowees(User follower, Pageable pageable) {
-		return followRepository.findByFollowerAndStatusNot(follower, RadioStatus.INACTIVE, pageable);
+		return followRepository.findByFollowerAndStatusIn(follower, Arrays.asList(RadioStatus.INACTIVE), pageable);
 	}
 
 	public List<Follow> getFollowees(User follower) {
-		return followRepository.findByFollowerAndStatusNot(follower, RadioStatus.INACTIVE);
+		return followRepository.findByFollowerAndStatusIn(follower, Arrays.asList(RadioStatus.INACTIVE));
 	}
 
 	public void deleteAllUserStore(User user) {

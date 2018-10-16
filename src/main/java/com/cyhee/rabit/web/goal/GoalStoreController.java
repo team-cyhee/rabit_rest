@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.service.goal.GoalService;
@@ -29,7 +30,7 @@ public class GoalStoreController {
 	@GetMapping("/goallogs")
 	public ResponseEntity<Page<GoalLog>> getGoalLogs(@PathVariable Long id, @PageableDefault Pageable pageable) {
 		Goal goal = goalService.getGoal(id);
-        return new ResponseEntity<>(goalStoreService.getGoalLogs(goal, pageable), HttpStatus.OK);
+        return new ResponseEntity<>(goalStoreService.getGoalLogs(goal, ContentStatus.all(), pageable), HttpStatus.OK);
     }
 	
 	@GetMapping("/comments")

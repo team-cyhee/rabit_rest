@@ -16,11 +16,11 @@ import java.util.List;
 // CRUD refers Create, Read, Update, Delete
 
 public interface LikeRepository extends PagingAndSortingRepository<Like, Long> {
-	Page<Like> findByTypeAndParentIdAndStatusNot(ContentType type, Long parentId, RadioStatus notStatus, Pageable pageable);
+	Page<Like> findByTypeAndParentIdAndStatusIn(ContentType type, Long parentId, List<RadioStatus> statusList, Pageable pageable);
 
-	List<Like> findByTypeAndParentIdAndStatusNot(ContentType type, Long parentId, RadioStatus notStatus);
+	List<Like> findByTypeAndParentIdAndStatusIn(ContentType type, Long parentId, List<RadioStatus> statusList);
 
-	Page<Like> findByStatusNot(RadioStatus notStatus, Pageable pageable);
+	Page<Like> findByStatusIn(List<RadioStatus> statusList, Pageable pageable);
 
 	@Query("Select count(n) From GoalLog n Where n.contentType = type AND n.parentId = parentId AND n.status In :statusList")
 	Integer findNumByParentAndStatusIn(ContentType type, Long parentId, List<ContentStatus> contentStatusList);

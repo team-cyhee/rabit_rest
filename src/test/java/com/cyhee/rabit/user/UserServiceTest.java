@@ -2,8 +2,8 @@ package com.cyhee.rabit.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Arrays;
 import java.util.Date;
-import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +20,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.cyhee.rabit.dao.user.UserRepository;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.model.user.UserStatus;
 import com.cyhee.rabit.service.user.UserService;
@@ -32,15 +31,14 @@ import com.cyhee.rabit.service.user.UserService;
 @Import({UserService.class, BCryptPasswordEncoder.class})
 public class UserServiceTest {
 	@Autowired
-	private TestEntityManager entityManger;
-	@Autowired
-	private UserRepository repository;	
+	private TestEntityManager entityManger;	
 	@Autowired
 	private UserService userService;
 	
 	User user1;
 	User user2;
 	User user3;
+	User user4;
 	Date now;
 	Date after;
 	
@@ -50,20 +48,24 @@ public class UserServiceTest {
 		user1 = new User().setEmail("email1@a").setUsername("username");		
 		user2 = new User().setEmail("email2@a").setUsername("testuser2");
 		user3 = new User().setEmail("email23@a").setUsername("testuser3");
-		
+
+		entityManger.persist(user1);
+		entityManger.persist(user2);
+		entityManger.persist(user3);
 	}
 
 	@Test
-	public void createAndGet() throws InterruptedException {
+	public void get() throws InterruptedException {
+		String email = "thisEmail@com";
+		User base = new User().setEmail(email).setUsername("testuser4");
 		now = new Date();
-		entityManger.persist(user1);
+		entityManger.persist(base);
 		after = new Date(now.getTime() + 1000);
 		
-		Optional<User> userOpt = repository.findByEmailAndStatusNot("email1@a", UserStatus.DELETED);
+		User user = userService.getUserByEmail(email);
 		
-		User user = userOpt.get();
 		assertThat(user)
-			.isEqualTo(user1)
+			.isEqualTo(base)
 			.extracting(User::getId, User::getCreateDate, User::getLastUpdated, User::getStatus)
 				.doesNotContainNull()
 				.contains(UserStatus.PENDING);
@@ -76,17 +78,11 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void createAndGetAll() {
-		entityManger.persist(user1);
-		entityManger.persist(user2);
-		entityManger.persist(user3);
+	public void getPage() {
 		
-		Iterable<User> userList = repository.findAll();
-		assertThat(userList)
-			.hasSize(3);
-
 		Pageable pageable = PageRequest.of(1, 2);
-		Page<User> userPage = repository.findAll(pageable);
+
+		Page<User> userPage = userService.getUsers(pageable);
 		assertThat(userPage)
 			.hasSize(1)
 			.containsExactly(user3);
@@ -94,22 +90,32 @@ public class UserServiceTest {
 	
 	@Test
 	public void update() {
-		entityManger.persist(user1);
-		entityManger.persist(user2);
-		
-		entityManger.flush();
-		entityManger.clear();
-		
 		user1.setName("updatedName");
 		userService.updateUser(user1.getId(), user1);
-		
-		entityManger.flush();
-		entityManger.clear();
-		
-		Optional<User> userOpt = repository.findByEmailAndStatusNot("email1@a", UserStatus.DELETED);		
-		User user = userOpt.get();
+				
+		User user = userService.getUserByUsername(user1.getUsername());
 		
 		assertThat(user.getName())
 			.isEqualTo("updatedName");
+	}
+	
+	@Test
+	public void delete() {
+		userService.deleteUser(user1.getId());
+		
+		assertThat(user1.getStatus())
+			.isEqualTo(UserStatus.DELETED);
+	}
+	
+	@Test
+	public void getByStatus() {
+		user1.setStatus(UserStatus.ACTIVE);
+		user2.setStatus(UserStatus.FORBIDDEN);
+		user3.setStatus(UserStatus.PENDING);
+		
+		Page<User> userPage = userService.getUsersByStatusIn(Arrays.asList(UserStatus.FORBIDDEN, UserStatus.ACTIVE), PageRequest.of(0, 100));
+		assertThat(userPage)
+			.hasSize(2)
+			.containsAll(Arrays.asList(user1, user2));
 	}
 }

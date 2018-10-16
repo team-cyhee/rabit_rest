@@ -40,10 +40,11 @@ public class FollowServiceTest {
     public void setup() {
         user1 = new User().setEmail("email1@com").setUsername("user1");
         user2 = new User().setEmail("email2@com").setUsername("user2");
-        user2 = new User().setEmail("email3@com").setUsername("user3");
+        user3 = new User().setEmail("email3@com").setUsername("user3");
         
     	entityManger.persist(user1);
     	entityManger.persist(user2);
+    	entityManger.persist(user3);
 
         follow1 = new Follow().setFollower(user1).setFollowee(user2);
     }
@@ -61,14 +62,13 @@ public class FollowServiceTest {
     @Test
     public void update() {
         followService.addFollow(follow1);
-
-        Follow form = new Follow().setFollowee(user3);
-
+        Follow form = new Follow().setStatus(RadioStatus.INACTIVE);
+        
         followService.updateFollow(follow1.getId(), form);
 
         assertThat(follow1)
-            .extracting(Follow::getFollowee)
-            .containsExactly(form.getFollowee());
+            .extracting(Follow::getStatus)
+            .containsExactly(form.getStatus());
     }
 
     @Test

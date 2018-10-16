@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.cyhee.rabit.cmm.ApiTestUtil;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.service.goal.GoalService;
+import com.cyhee.rabit.service.goal.GoalStoreService;
 import com.cyhee.rabit.web.goal.GoalController;
 
 	@RunWith(SpringRunner.class)
@@ -24,6 +25,8 @@ import com.cyhee.rabit.web.goal.GoalController;
 		private MockMvc mvc;
 		@MockBean(name="goalService")
 		private GoalService goalService;
+		@MockBean(name="goalStoreService")
+		private GoalStoreService goalStoreService;
 
 		private static final String url = "/rest/v1/goals";
 	

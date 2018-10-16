@@ -43,15 +43,15 @@ public class GoalLogStoreService {
 	}
 
 	public Page<Comment> getComments(GoalLog goalLog, Pageable pageable) {
-		return commentRepository.findByTypeAndParentIdAndStatusNot(ContentType.GOALLOG, goalLog.getId(), ContentStatus.DELETED, pageable);
+		return commentRepository.findByTypeAndParentIdAndStatusIn(ContentType.GOALLOG, goalLog.getId(), ContentStatus.visible(), pageable);
 	}
 
 	public List<Comment> getComments(GoalLog goalLog) {
-		return commentRepository.findByTypeAndParentIdAndStatusNot(ContentType.GOALLOG, goalLog.getId(), ContentStatus.DELETED);
+		return commentRepository.findByTypeAndParentIdAndStatusIn(ContentType.GOALLOG, goalLog.getId(), ContentStatus.visible());
 	}
 
 	public Integer getCommentNum(GoalLog goalLog) {
-		return commentRepository.findNumByParentAndStatusIn(ContentType.GOALLOG, goalLog.getId(), Arrays.asList(ContentStatus.ACTIVE));
+		return commentRepository.findNumByParentAndStatusIn(ContentType.GOALLOG, goalLog.getId(), ContentStatus.visible());
 	}
 
 	public Page<Like> getLikes(GoalLog goalLog, Pageable pageable) {

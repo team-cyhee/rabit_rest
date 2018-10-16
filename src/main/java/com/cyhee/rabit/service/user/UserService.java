@@ -1,5 +1,6 @@
 package com.cyhee.rabit.service.user;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,10 @@ public class UserService {
 		return userRepository.findAll(pageable);
 	}
 	
+	public Page<User> getUsersByStatusIn(List<UserStatus> statusList, Pageable pageable) {
+		return userRepository.findAllByStatusIn(statusList, pageable);
+	}
+	
 	public User getUser(Long id) {
 		Optional<User> userOpt = userRepository.findById(id);
     	if(!userOpt.isPresent())
@@ -32,47 +37,30 @@ public class UserService {
 	}
 	
 	public User getUserByUsername(String username) {
-		Optional<User> userOpt = userRepository.findByUsernameAndStatusNot(username, UserStatus.DELETED);
+		Optional<User> userOpt = userRepository.findByUsername(username);
     	if(!userOpt.isPresent())
     		throw new NoSuchContentException(ContentType.USER, "username", username);    	
     	return userOpt.get();
 	}
 
 	public User getUserByEmail(String email) {
-		Optional<User> userOpt = userRepository.findByEmailAndStatusNot(email, UserStatus.DELETED);
+		Optional<User> userOpt = userRepository.findByEmail(email);
     	if(!userOpt.isPresent())
     		throw new NoSuchContentException(ContentType.USER, "email", email);    	
     	return userOpt.get();
 	}
 	
-	public void updateUser(Long id, User userForm) {    	
-    	updateUser(getUser(id), userForm);
-	}
-	
-	public void updateUserByUsername(String username, User userForm) {
-		updateUser(getUserByUsername(username), userForm);
+	public void updateUser(Long id, User userForm) {
+		User user = getUser(id);
+		setUserProps(user, userForm);
+		userRepository.save(user);
 	}
 	
 	public User deleteUser(Long id) {
         User user = getUser(id);
         user.setStatus(UserStatus.DELETED);
+		userRepository.save(user);
         return user;
-	}
-	
-	public User deleteUserByUsername(String username) {
-		User user = getUserByUsername(username);
-		user.setStatus(UserStatus.DELETED);
-		return user;
-	}
-	
-	private void updateUser(User user, User userForm) {
-		setUserProps(user, userForm);
-    	
-        try {
-			userRepository.save(user);
-		} catch (DataIntegrityViolationException e) {
-			throw new MalformedUserException(e.getMessage());
-		} 
 	}
 	
 	private void setUserProps(User user, User userForm) {
