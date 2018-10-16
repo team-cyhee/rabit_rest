@@ -11,11 +11,12 @@ public class AuthHelper {
 	/**
 	 * 인증된 경우 token의 username
 	 * 인증되지 않았을 경우 null
+	 * @throws UnAuthorizedException
 	 */
 	public static String getUsername() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication == null)
-			return null;
+		if(authentication == null || authentication.getPrincipal() == null || authentication.getPrincipal().equals("anonymousUser"))
+			throw new UnAuthorizedException();
 		return authentication.getPrincipal().toString();
 	}
 	

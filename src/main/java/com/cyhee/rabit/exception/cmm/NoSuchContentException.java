@@ -19,7 +19,7 @@ public class NoSuchContentException extends RuntimeException implements ApiExcep
 	}
 	
 	public NoSuchContentException(ContentType type, Long id) {
-		super(String.format("No such %s with id '%lld'.", type.toString().toLowerCase(), id));
+		super(String.format("No such %s with id '%d'.", type.toString().toLowerCase(), id));
 	}
 	
 	public NoSuchContentException(ContentType type, Integer id) {

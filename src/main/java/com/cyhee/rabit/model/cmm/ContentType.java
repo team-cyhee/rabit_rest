@@ -1,5 +1,8 @@
 package com.cyhee.rabit.model.cmm;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.file.FileInfo;
 import com.cyhee.rabit.model.follow.Follow;
@@ -20,6 +23,13 @@ public enum ContentType {
 	
 	private Class<?> clazz;
 	
+	private static final Map<Class<?>,ContentType> map;
+    static {
+        map = new HashMap<>();
+        for (ContentType v : ContentType.values())
+            map.put(v.clazz, v);
+    }
+	
 	ContentType(Class<?> clazz) {
 		this.clazz = clazz;
 	}
@@ -27,5 +37,9 @@ public enum ContentType {
 	public Class<?> getClazz() {
 		return this.clazz;
 	}
+    
+    public static ContentType findByKey(Class<?> clazz) {
+        return map.get(clazz);
+    }
 
 }

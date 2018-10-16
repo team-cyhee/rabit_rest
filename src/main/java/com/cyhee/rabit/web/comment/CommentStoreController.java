@@ -1,7 +1,5 @@
 package com.cyhee.rabit.web.comment;
 
-import java.security.Principal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,11 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cyhee.rabit.model.comment.Comment;
-import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.like.Like;
 import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.cmm.AuthHelper;
 import com.cyhee.rabit.service.comment.CommentService;
 import com.cyhee.rabit.service.comment.CommentStoreService;
+import com.cyhee.rabit.service.like.LikeService;
 import com.cyhee.rabit.service.user.UserService;
 
 @RestController
@@ -32,6 +31,8 @@ public class CommentStoreController {
 	private CommentStoreService commentStoreService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private LikeService likeService;
 	
 	@GetMapping("/likes")
 	public ResponseEntity<Page<Like>> getLikes(@PathVariable Long id, @PageableDefault Pageable pageable) {
@@ -40,11 +41,13 @@ public class CommentStoreController {
     }
     
     @PostMapping("/likes")
-    public ResponseEntity<Void> getLikes(@PathVariable Long id, Principal principal) {
-    	String username = principal.getName();
-    	User liker = userService.getUserByUsername(username);
+    public ResponseEntity<Void> getLikes(@PathVariable Long id) {
 		Comment comment = commentService.getComment(id);
-		commentStoreService.addLike(comment, liker);
+    	
+    	String username = AuthHelper.getUsername();
+    	User liker = userService.getUserByUsername(username);
+    	
+		likeService.addLike(comment, liker);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 }

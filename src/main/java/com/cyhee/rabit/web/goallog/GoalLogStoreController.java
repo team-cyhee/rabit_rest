@@ -1,7 +1,5 @@
 package com.cyhee.rabit.web.goallog;
 
-import java.security.Principal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,12 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cyhee.rabit.model.comment.Comment;
-import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.model.like.Like;
 import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.cmm.AuthHelper;
 import com.cyhee.rabit.service.goallog.GoalLogService;
 import com.cyhee.rabit.service.goallog.GoalLogStoreService;
+import com.cyhee.rabit.service.like.LikeService;
 import com.cyhee.rabit.service.user.UserService;
 
 @RestController
@@ -32,6 +31,8 @@ public class GoalLogStoreController {
 	private GoalLogStoreService goalLogStoreService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private LikeService likeService;
 	
 	@GetMapping("/comments")
 	public ResponseEntity<Page<Comment>> getComments(@PathVariable Long id, @PageableDefault Pageable pageable) {
@@ -46,11 +47,13 @@ public class GoalLogStoreController {
 	}
     
     @PostMapping("/likes")
-    public ResponseEntity<Void> getLikes(@PathVariable Long id, Principal principal) {
-    	String username = principal.getName();
-    	User liker = userService.getUserByUsername(username);
+    public ResponseEntity<Void> addLike(@PathVariable Long id) {
 		GoalLog goalLog = goalLogService.getGoalLog(id);
-		goalLogStoreService.addLike(goalLog, liker);
+		
+    	String username = AuthHelper.getUsername();
+    	User liker = userService.getUserByUsername(username);
+    	
+    	likeService.addLike(goalLog, liker);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 }

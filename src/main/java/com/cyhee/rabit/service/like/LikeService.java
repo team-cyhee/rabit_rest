@@ -1,19 +1,24 @@
 
 package com.cyhee.rabit.service.like;
 
-import com.cyhee.rabit.dao.like.LikeRepository;
-import com.cyhee.rabit.exception.cmm.NoSuchContentException;
-import com.cyhee.rabit.model.cmm.ContentType;
-import com.cyhee.rabit.model.cmm.RadioStatus;
-import com.cyhee.rabit.model.like.Like;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import com.cyhee.rabit.dao.like.LikeRepository;
+import com.cyhee.rabit.exception.cmm.NoSuchContentException;
+import com.cyhee.rabit.model.cmm.BaseEntity;
+import com.cyhee.rabit.model.cmm.ContentType;
+import com.cyhee.rabit.model.cmm.RadioStatus;
+import com.cyhee.rabit.model.goal.Goal;
+import com.cyhee.rabit.model.like.Like;
+import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.cmm.ContentHelper;
 
 @Service("likeService")
 public class LikeService {
@@ -41,6 +46,14 @@ public class LikeService {
 
 	public void addLike(Like like) {
 		repository.save(like);
+	}
+	
+	public void addLike(BaseEntity content, User liker) {
+		if(ContentHelper.getAuthor(content).equals(liker))
+			throw new RuntimeException();
+		ContentType contentType = ContentType.findByKey(content.getClass());
+		Like like = new Like().setAuthor(liker).setType(contentType).setParentId(content.getId());
+		addLike(like);
 	}
 
 	public void updateLike(long id, Like source) {
