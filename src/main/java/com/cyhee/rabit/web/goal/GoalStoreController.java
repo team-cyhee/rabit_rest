@@ -22,6 +22,7 @@ import com.cyhee.rabit.model.like.Like;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.cmm.AuthHelper;
 import com.cyhee.rabit.service.comment.CommentService;
+import com.cyhee.rabit.service.goal.CompanionService;
 import com.cyhee.rabit.service.goal.GoalService;
 import com.cyhee.rabit.service.goal.GoalStoreService;
 import com.cyhee.rabit.service.goallog.GoalLogService;
@@ -43,7 +44,20 @@ public class GoalStoreController {
 	private CommentService commentService;
 	@Autowired
 	private GoalLogService goalLogService;
+	@Autowired
+	private CompanionService companionService;
 	
+	@GetMapping("/companions")
+	public ResponseEntity<Page<User>> getCompanions(@PathVariable Long id, @PageableDefault Pageable pageable) {
+		Goal goal = goalService.getGoal(id);
+		return ResponseEntity.ok(companionService.getCompanions(goal, pageable));
+	}
+	
+	@GetMapping("/companion-goals")
+	public ResponseEntity<Page<Goal>> getCompanionGoals(@PathVariable Long id, @PageableDefault Pageable pageable) {
+		Goal goal = goalService.getGoal(id);
+		return ResponseEntity.ok(companionService.getCompanionGoals(goal, pageable));
+	}
 	
 	@GetMapping("/goallogs")
 	public ResponseEntity<Page<GoalLog>> getGoalLogs(@PathVariable Long id, @PageableDefault Pageable pageable) {
