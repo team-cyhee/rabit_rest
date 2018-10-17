@@ -19,10 +19,12 @@ public class CompanionService {
 	CompanionGoalRepository companionGoalRepository;
 	
 	public Page<User> getCompanions(Goal goal, Pageable pageable) {		
-		return companionRepository.findAllByGoal(goal, ContentStatus.visible(), pageable);
+		//return companionRepository.findAllByGoal(goal, ContentStatus.visible(), pageable);
+		return null;
 	}
 	
 	public Page<Goal> getCompanionGoals(Goal goal, Pageable pageable) {
-		return companionGoalRepository.findAllByGoal(goal, ContentStatus.visible(), pageable);
+		//return companionGoalRepository.findAllByGoal(goal, ContentStatus.visible(), pageable);
+		return null;
 	}
 }
