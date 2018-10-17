@@ -58,7 +58,7 @@ public class LikeService {
 	public void updateLike(long id, Like source) {
 		Like like = getLike(id);
 		
-		AuthHelper.isAuthor(like);
+		AuthHelper.isAuthorOrAdmin(like);
 		
 		setLikeProps(like, source);
 		repository.save(like);
@@ -67,7 +67,7 @@ public class LikeService {
 	public void deleteLike(long id) {
 		Like like = getLike(id);
 		
-		AuthHelper.isAuthor(like);
+		AuthHelper.isAuthorOrAdmin(like);
 		
 		like.setStatus(RadioStatus.INACTIVE);
 		repository.save(like);

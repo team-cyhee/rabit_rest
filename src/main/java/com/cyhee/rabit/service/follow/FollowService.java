@@ -39,7 +39,7 @@ public class FollowService {
     public void updateFollow(long id, Follow followForm) {
         Follow follow = getFollow(id);
 		
-		AuthHelper.isAuthor(follow);
+		AuthHelper.isAuthorOrAdmin(follow);
 		
         setFollowProps(follow, followForm);
         followRepository.save(follow);
@@ -48,7 +48,7 @@ public class FollowService {
     public void deleteFollow(long id) {
         Follow follow = getFollow(id);
 		
-		AuthHelper.isAuthor(follow);
+		AuthHelper.isAuthorOrAdmin(follow);
 		
         follow.setStatus(RadioStatus.INACTIVE);
         followRepository.save(follow);

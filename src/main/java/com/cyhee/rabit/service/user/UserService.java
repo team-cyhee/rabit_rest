@@ -52,7 +52,7 @@ public class UserService {
 	public void updateUser(Long id, User userForm) {
 		User user = getUser(id);
 		
-		AuthHelper.isAuthor(user);
+		AuthHelper.isAuthorOrAdmin(user);
 		
 		setUserProps(user, userForm);
 		userRepository.save(user);
@@ -61,7 +61,7 @@ public class UserService {
 	public User deleteUser(Long id) {
         User user = getUser(id);
 		
-		AuthHelper.isAuthor(user);
+		AuthHelper.isAuthorOrAdmin(user);
 		
         user.setStatus(UserStatus.DELETED);
 		userRepository.save(user);

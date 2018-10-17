@@ -1,6 +1,7 @@
 package com.cyhee.rabit.service.cmm;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.cyhee.rabit.exception.cmm.UnAuthorizedException;
@@ -15,6 +16,8 @@ public class AuthHelper {
 	 */
 	public static String getUsername() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println("@@@@@@@@@@@@@@@@@@@@@");
+		System.out.println(authentication);
 		if(authentication == null || authentication.getPrincipal() == null || authentication.getPrincipal().equals("anonymousUser"))
 			throw new UnAuthorizedException("Not authorized user");
 		return authentication.getPrincipal().toString();
@@ -25,6 +28,10 @@ public class AuthHelper {
 	 * @throws UnAuthorizedException
 	 */
 	public static void isAuthorOrAdmin(Object content) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if(authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")))
+			return;
+		
 		User author = ContentHelper.getOwner(content);
 		String username = AuthHelper.getUsername();
 		

@@ -59,7 +59,7 @@ public class GoalLogService {
 	public void updateGoalLog(long id, GoalLog goalLogForm) {
 		GoalLog log = getGoalLog(id);
 		
-		AuthHelper.isAuthor(log);
+		AuthHelper.isAuthorOrAdmin(log);
 		
 		setGoalLogProps(log, goalLogForm);
 		goalLogRepository.save(log);
@@ -68,7 +68,7 @@ public class GoalLogService {
 	public GoalLog deleteGoalLog(long id) {
 		GoalLog log = getGoalLog(id);
 		
-		AuthHelper.isAuthor(log);
+		AuthHelper.isAuthorOrAdmin(log);
 		
 		log.setStatus(ContentStatus.DELETED);
 		goalLogRepository.save(log);

@@ -47,7 +47,7 @@ public class CommentService {
 	public void updateComment(long id, Comment source) {
 		Comment comment = getComment(id);
 		
-		AuthHelper.isAuthor(comment);
+		AuthHelper.isAuthorOrAdmin(comment);
 		
 		setCommentProps(comment, source);
 		repository.save(comment);
@@ -56,7 +56,7 @@ public class CommentService {
 	public Comment deleteComment(long id) {
 		Comment comment = getComment(id);
 		
-		AuthHelper.isAuthor(comment);
+		AuthHelper.isAuthorOrAdmin(comment);
 		
 		comment.setStatus(ContentStatus.DELETED);
 		repository.save(comment);

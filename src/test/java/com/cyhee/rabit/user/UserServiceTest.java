@@ -3,6 +3,7 @@ package com.cyhee.rabit.user;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 
 import org.junit.Before;
@@ -16,10 +17,15 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.cyhee.rabit.cmm.AuthTestUtil;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.model.user.UserStatus;
 import com.cyhee.rabit.service.user.UserService;
@@ -44,6 +50,8 @@ public class UserServiceTest {
 	
 	@Before
 	public void setup() {
+		AuthTestUtil.setAdmin();
+		
 		now = new Date();
 		user1 = new User().setEmail("email1@a").setUsername("username");		
 		user2 = new User().setEmail("email2@a").setUsername("testuser2");
