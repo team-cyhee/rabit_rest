@@ -4,17 +4,16 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.cyhee.rabit.dao.user.UserRepository;
 import com.cyhee.rabit.exception.cmm.NoSuchContentException;
-import com.cyhee.rabit.exception.user.MalformedUserException;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.model.user.UserStatus;
+import com.cyhee.rabit.service.cmm.AuthHelper;
 
 @Service("userService")
 public class UserService {
@@ -52,12 +51,18 @@ public class UserService {
 	
 	public void updateUser(Long id, User userForm) {
 		User user = getUser(id);
+		
+		AuthHelper.isAuthorOrAdmin(user);
+		
 		setUserProps(user, userForm);
 		userRepository.save(user);
 	}
 	
 	public User deleteUser(Long id) {
         User user = getUser(id);
+		
+		AuthHelper.isAuthorOrAdmin(user);
+		
         user.setStatus(UserStatus.DELETED);
 		userRepository.save(user);
         return user;

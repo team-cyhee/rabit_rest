@@ -10,9 +10,9 @@ import org.springframework.data.repository.query.Param;
 
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.goal.Goal;
-import com.cyhee.rabit.model.user.User;
 
 public interface CompanionGoalRepository extends Repository<Goal, Long> {
-	@Query("FROM Goal g WHERE (g.parent = :root OR g.parent = :root.parent) AND g.status In :statusList")
-	Page<Goal> findAllByGoal(@Param("goal") Goal goal, @Param("statusList") List<ContentStatus> statusList, Pageable pageable);
+	@Query("FROM Goal g WHERE (g.parent = :root OR g = :root) AND g <> :goal AND g.status In :statusList")
+	Page<Goal> findAllByGoal(@Param("root") Goal root, @Param("goal") Goal goal,
+			@Param("statusList") List<ContentStatus> statusList, Pageable pageable);
 }

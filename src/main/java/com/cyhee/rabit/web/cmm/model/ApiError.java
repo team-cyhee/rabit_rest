@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
-import com.cyhee.rabit.web.cmm.exception.ApiException;
+import com.cyhee.rabit.exception.ApiException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

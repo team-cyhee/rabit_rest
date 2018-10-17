@@ -60,6 +60,17 @@ public class GoalStoreController {
 		return ResponseEntity.ok(companionService.getCompanionGoals(goal, pageable));
 	}
 	
+	@PostMapping("/companion-goals")
+	public ResponseEntity<Void> addCompanionGoal(@PathVariable Long id, @RequestBody Goal companionGoal) {
+		Goal goal = goalService.getGoal(id);
+		Goal root = goal.getParent();
+		if(root == null) root = goal;
+		
+		User author = userService.getUserByUsername(AuthHelper.getUsername());
+		companionGoal.setAuthor(author).setParent(root);
+		return ResponseEntity.ok().build();
+	}	
+	
 	@GetMapping("/goallogs")
 	public ResponseEntity<Page<GoalLog>> getGoalLogs(@PathVariable Long id, @PageableDefault Pageable pageable) {
 		Goal goal = goalService.getGoal(id);

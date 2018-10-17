@@ -1,6 +1,5 @@
 package com.cyhee.rabit.service.follow;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.cmm.RadioStatus;
 import com.cyhee.rabit.model.follow.Follow;
+import com.cyhee.rabit.service.cmm.AuthHelper;
 
 @Service("followService")
 public class FollowService {
@@ -38,12 +38,18 @@ public class FollowService {
 
     public void updateFollow(long id, Follow followForm) {
         Follow follow = getFollow(id);
+		
+		AuthHelper.isAuthorOrAdmin(follow);
+		
         setFollowProps(follow, followForm);
         followRepository.save(follow);
     }
 
     public void deleteFollow(long id) {
         Follow follow = getFollow(id);
+		
+		AuthHelper.isAuthorOrAdmin(follow);
+		
         follow.setStatus(RadioStatus.INACTIVE);
         followRepository.save(follow);
     }

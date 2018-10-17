@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service;
 
 import com.cyhee.rabit.dao.goallog.GoalLogRepository;
 import com.cyhee.rabit.exception.cmm.NoSuchContentException;
+import com.cyhee.rabit.exception.cmm.UnAuthorizedException;
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.cmm.AuthHelper;
 
 @Service("goalLogService")
 public class GoalLogService {
@@ -56,12 +58,18 @@ public class GoalLogService {
 
 	public void updateGoalLog(long id, GoalLog goalLogForm) {
 		GoalLog log = getGoalLog(id);
+		
+		AuthHelper.isAuthorOrAdmin(log);
+		
 		setGoalLogProps(log, goalLogForm);
 		goalLogRepository.save(log);
 	}
 
 	public GoalLog deleteGoalLog(long id) {
 		GoalLog log = getGoalLog(id);
+		
+		AuthHelper.isAuthorOrAdmin(log);
+		
 		log.setStatus(ContentStatus.DELETED);
 		goalLogRepository.save(log);
 		return log;

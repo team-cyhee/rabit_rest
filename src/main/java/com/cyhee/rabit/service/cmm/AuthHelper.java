@@ -1,10 +1,11 @@
 package com.cyhee.rabit.service.cmm;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.cyhee.rabit.exception.cmm.UnAuthorizedException;
 import com.cyhee.rabit.model.user.User;
-import com.cyhee.rabit.web.cmm.exception.UnAuthorizedException;
 
 public class AuthHelper {
 
@@ -15,14 +16,26 @@ public class AuthHelper {
 	 */
 	public static String getUsername() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println("@@@@@@@@@@@@@@@@@@@@@");
+		System.out.println(authentication);
 		if(authentication == null || authentication.getPrincipal() == null || authentication.getPrincipal().equals("anonymousUser"))
-			throw new UnAuthorizedException();
+			throw new UnAuthorizedException("Not authorized user");
 		return authentication.getPrincipal().toString();
 	}
 	
-	public static void isAuthor(User author) {
+	/**
+	 * content의 작성자인지 확인
+	 * @throws UnAuthorizedException
+	 */
+	public static void isAuthorOrAdmin(Object content) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication == null || author.getUsername().equals(authentication.getPrincipal()))
-			throw new UnAuthorizedException();
+		if(authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")))
+			return;
+		
+		User author = ContentHelper.getOwner(content);
+		String username = AuthHelper.getUsername();
+		
+		if(!author.getUsername().equals(username))
+			throw new UnAuthorizedException("User is not a owner of the content");
 	}
 }

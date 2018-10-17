@@ -1,8 +1,8 @@
 package com.cyhee.rabit.exception.cmm;
 
-import com.cyhee.rabit.web.cmm.exception.ApiException;
 import org.springframework.http.HttpStatus;
 
+import com.cyhee.rabit.exception.ApiException;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.web.cmm.model.ApiErrorCode;
 
@@ -11,7 +11,7 @@ import com.cyhee.rabit.web.cmm.model.ApiErrorCode;
  * @author chy
  *
  */
-public class NoSuchContentException extends RuntimeException implements ApiException {
+public class NoSuchContentException extends ApiException {
 	private static final long serialVersionUID = 1L;
 	
 	public NoSuchContentException(ContentType type) {

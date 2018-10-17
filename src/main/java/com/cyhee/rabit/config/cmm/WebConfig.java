@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
-	//static ���ҽ� ó��
+	// static page mapping
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**")

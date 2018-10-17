@@ -13,6 +13,7 @@ import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.user.User;
 
 public interface CompanionRepository extends Repository<User, Long> {
-	@Query("SELECT g.author FROM Goal g WHERE (g.parent = :root OR g.parent = :root.parent) AND g.status In :statusList")
-	Page<User> findAllByGoal(@Param("root") Goal goal, @Param("statusList") List<ContentStatus> statusList, Pageable pageable);
+	@Query("SELECT g.author FROM Goal g WHERE (g.parent = :root OR g = :root) AND g <> :goal AND g.status In :statusList")
+	Page<User> findAllByGoal(@Param("root") Goal root, @Param("goal") Goal goal,
+			@Param("statusList") List<ContentStatus> statusList, Pageable pageable);
 }

@@ -2,10 +2,6 @@ package com.cyhee.rabit.goallog;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.cyhee.rabit.model.cmm.RadioStatus;
-import com.cyhee.rabit.model.like.Like;
-import com.cyhee.rabit.service.comment.CommentStoreService;
-import com.cyhee.rabit.service.like.LikeService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,15 +18,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
+import com.cyhee.rabit.model.cmm.RadioStatus;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
+import com.cyhee.rabit.model.like.Like;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.comment.CommentService;
+import com.cyhee.rabit.service.comment.CommentStoreService;
 import com.cyhee.rabit.service.goallog.GoalLogService;
 import com.cyhee.rabit.service.goallog.GoalLogStoreService;
-
-import java.util.List;
+import com.cyhee.rabit.service.like.LikeService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
