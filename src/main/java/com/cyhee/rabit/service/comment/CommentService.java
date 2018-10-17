@@ -14,6 +14,7 @@ import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
+import com.cyhee.rabit.service.cmm.AuthHelper;
 
 @Service("commentService")
 public class CommentService {
@@ -45,12 +46,18 @@ public class CommentService {
 
 	public void updateComment(long id, Comment source) {
 		Comment comment = getComment(id);
+		
+		AuthHelper.isAuthor(comment);
+		
 		setCommentProps(comment, source);
 		repository.save(comment);
 	}
 
 	public Comment deleteComment(long id) {
 		Comment comment = getComment(id);
+		
+		AuthHelper.isAuthor(comment);
+		
 		comment.setStatus(ContentStatus.DELETED);
 		repository.save(comment);
 		return comment;

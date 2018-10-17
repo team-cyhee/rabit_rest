@@ -8,6 +8,13 @@ import com.cyhee.rabit.web.cmm.model.ApiErrorCode;
 public class UnAuthorizedException extends ApiException {
 
 	private static final long serialVersionUID = 2701283839580016197L;
+	
+	public UnAuthorizedException() {
+	}
+	
+	public UnAuthorizedException(String msg) {
+		super(msg);
+	}
 
 	@Override
 	public ApiErrorCode getApiErrorCode() {

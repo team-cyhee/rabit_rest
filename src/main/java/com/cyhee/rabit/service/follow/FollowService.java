@@ -12,6 +12,7 @@ import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.cmm.RadioStatus;
 import com.cyhee.rabit.model.follow.Follow;
+import com.cyhee.rabit.service.cmm.AuthHelper;
 
 @Service("followService")
 public class FollowService {
@@ -37,12 +38,18 @@ public class FollowService {
 
     public void updateFollow(long id, Follow followForm) {
         Follow follow = getFollow(id);
+		
+		AuthHelper.isAuthor(follow);
+		
         setFollowProps(follow, followForm);
         followRepository.save(follow);
     }
 
     public void deleteFollow(long id) {
         Follow follow = getFollow(id);
+		
+		AuthHelper.isAuthor(follow);
+		
         follow.setStatus(RadioStatus.INACTIVE);
         followRepository.save(follow);
     }

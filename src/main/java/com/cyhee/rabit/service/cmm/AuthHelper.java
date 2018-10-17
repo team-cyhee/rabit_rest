@@ -16,13 +16,19 @@ public class AuthHelper {
 	public static String getUsername() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if(authentication == null || authentication.getPrincipal() == null || authentication.getPrincipal().equals("anonymousUser"))
-			throw new UnAuthorizedException();
+			throw new UnAuthorizedException("Not authorized user");
 		return authentication.getPrincipal().toString();
 	}
 	
-	public static void isAuthor(User author) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication == null || author.getUsername().equals(authentication.getPrincipal()))
-			throw new UnAuthorizedException();
+	/**
+	 * content의 작성자인지 확인
+	 * @throws UnAuthorizedException
+	 */
+	public static void isAuthorOrAdmin(Object content) {
+		User author = ContentHelper.getOwner(content);
+		String username = AuthHelper.getUsername();
+		
+		if(!author.getUsername().equals(username))
+			throw new UnAuthorizedException("User is not a owner of the content");
 	}
 }

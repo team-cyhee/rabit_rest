@@ -16,6 +16,7 @@ import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.cmm.RadioStatus;
 import com.cyhee.rabit.model.like.Like;
 import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.cmm.AuthHelper;
 import com.cyhee.rabit.service.cmm.ContentHelper;
 
 @Service("likeService")
@@ -47,7 +48,7 @@ public class LikeService {
 	}
 	
 	public void addLike(BaseEntity content, User liker) {
-		if(ContentHelper.getAuthor(content).equals(liker))
+		if(ContentHelper.getOwner(content).equals(liker))
 			throw new RuntimeException();
 		ContentType contentType = ContentType.findByKey(content.getClass());
 		Like like = new Like().setAuthor(liker).setType(contentType).setParentId(content.getId());
@@ -56,12 +57,18 @@ public class LikeService {
 
 	public void updateLike(long id, Like source) {
 		Like like = getLike(id);
+		
+		AuthHelper.isAuthor(like);
+		
 		setLikeProps(like, source);
 		repository.save(like);
 	}
 
 	public void deleteLike(long id) {
 		Like like = getLike(id);
+		
+		AuthHelper.isAuthor(like);
+		
 		like.setStatus(RadioStatus.INACTIVE);
 		repository.save(like);
 	}

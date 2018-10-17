@@ -13,6 +13,7 @@ import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.model.user.UserStatus;
+import com.cyhee.rabit.service.cmm.AuthHelper;
 
 @Service("userService")
 public class UserService {
@@ -50,12 +51,18 @@ public class UserService {
 	
 	public void updateUser(Long id, User userForm) {
 		User user = getUser(id);
+		
+		AuthHelper.isAuthor(user);
+		
 		setUserProps(user, userForm);
 		userRepository.save(user);
 	}
 	
 	public User deleteUser(Long id) {
         User user = getUser(id);
+		
+		AuthHelper.isAuthor(user);
+		
         user.setStatus(UserStatus.DELETED);
 		userRepository.save(user);
         return user;

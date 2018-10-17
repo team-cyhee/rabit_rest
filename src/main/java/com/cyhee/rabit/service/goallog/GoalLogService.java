@@ -58,12 +58,18 @@ public class GoalLogService {
 
 	public void updateGoalLog(long id, GoalLog goalLogForm) {
 		GoalLog log = getGoalLog(id);
+		
+		AuthHelper.isAuthor(log);
+		
 		setGoalLogProps(log, goalLogForm);
 		goalLogRepository.save(log);
 	}
 
 	public GoalLog deleteGoalLog(long id) {
 		GoalLog log = getGoalLog(id);
+		
+		AuthHelper.isAuthor(log);
+		
 		log.setStatus(ContentStatus.DELETED);
 		goalLogRepository.save(log);
 		return log;
@@ -71,13 +77,5 @@ public class GoalLogService {
 	
 	private void setGoalLogProps(GoalLog target, GoalLog source) {
 		target.setContent(source.getContent());
-	}
-	
-	private void isAuthor(GoalLog goalLog) {
-		User author = goalLog.getGoal().getAuthor();
-		String username = AuthHelper.getUsername();
-		
-		if(!author.getUsername().equals(username)) 
-			throw new UnAuthorizedException();
 	}
 }
