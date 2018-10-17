@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.cyhee.rabit.dao.like.LikeRepository;
+import com.cyhee.rabit.model.cmm.RadioStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -87,7 +88,7 @@ public class GoalStoreService {
 	}
 
 	public Integer getLikeNum(Goal goal) {
-		return likeRepository.findNumByParentIdAndStatusIn(ContentType.GOAL, goal.getId(), ContentStatus.visible());
+		return likeRepository.findNumByParentIdAndStatusIn(ContentType.GOAL, goal.getId(), RadioStatus.visible());
 	}
 
 	public void deleteAllGoalStore(Goal goal) {
