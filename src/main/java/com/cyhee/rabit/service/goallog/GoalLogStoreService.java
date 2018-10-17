@@ -1,6 +1,7 @@
 package com.cyhee.rabit.service.goallog;
 
 import com.cyhee.rabit.dao.comment.CommentRepository;
+import com.cyhee.rabit.dao.like.LikeRepository;
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.like.Like;
 import com.cyhee.rabit.model.user.User;
@@ -17,6 +18,7 @@ import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.service.comment.CommentService;
 import com.cyhee.rabit.model.goallog.GoalLog;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -34,6 +36,9 @@ public class GoalLogStoreService {
 	@Autowired
 	LikeService likeService;
 
+	@Autowired
+	LikeRepository likeRepository;
+
 	public void deleteGoalLog(long id) {
 		GoalLog gl = goalLogService.deleteGoalLog(id);
 		deleteAllGoalLogStore(gl);
@@ -45,6 +50,10 @@ public class GoalLogStoreService {
 
 	public List<Comment> getComments(GoalLog goalLog) {
 		return commentRepository.findByTypeAndParentIdAndStatusIn(ContentType.GOALLOG, goalLog.getId(), ContentStatus.visible());
+	}
+
+	public Integer getCommentNum(GoalLog goalLog) {
+		return commentRepository.findNumByParentIdAndStatusIn(ContentType.GOALLOG, goalLog.getId(), ContentStatus.visible());
 	}
 
 	public Page<Like> getLikes(GoalLog goalLog, Pageable pageable) {
@@ -61,6 +70,10 @@ public class GoalLogStoreService {
 			throw new RuntimeException("Self like is not allowed");
 		Like like = new Like().setAuthor(liker).setType(ContentType.GOALLOG).setParentId(goalLog.getId());
 		likeService.addLike(like);
+	}
+
+	public Integer getLikeNum(GoalLog goalLog) {
+		return likeRepository.findNumByParentIdAndStatusIn(ContentType.GOALLOG, goalLog.getId(), ContentStatus.visible());
 	}
 
 	public void deleteAllGoalLogStore(GoalLog goalLog) {

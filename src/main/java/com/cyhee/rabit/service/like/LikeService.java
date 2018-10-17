@@ -26,15 +26,15 @@ public class LikeService {
 	private LikeRepository repository;
 	
 	public Page<Like> getLikes(ContentType type, Long parentId, Pageable pageable) {
-		return repository.findByTypeAndParentIdAndStatusIn(type, parentId, Arrays.asList(RadioStatus.ACTIVE), pageable);
+		return repository.findByTypeAndParentIdAndStatusIn(type, parentId, RadioStatus.visible(), pageable);
 	}
 
 	public List<Like> getLikes(ContentType type, Long parentId) {
-		return repository.findByTypeAndParentIdAndStatusIn(type, parentId, Arrays.asList(RadioStatus.ACTIVE));
+		return repository.findByTypeAndParentIdAndStatusIn(type, parentId, RadioStatus.visible());
 	}
 
 	public Page<Like> getLikes(Pageable pageable) {
-		return repository.findByStatusIn(Arrays.asList(RadioStatus.ACTIVE), pageable);
+		return repository.findByStatusIn(RadioStatus.visible(), pageable);
 	}
 
 	public Like getLike(long id) {
