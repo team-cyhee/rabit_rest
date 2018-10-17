@@ -1,4 +1,4 @@
-package com.cyhee.rabit.validation.exception;
+package com.cyhee.rabit.exception.cmm;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
-import com.cyhee.rabit.web.cmm.exception.ApiException;
+import com.cyhee.rabit.exception.ApiException;
 import com.cyhee.rabit.web.cmm.model.ApiErrorCode;
 
 import lombok.Getter;
@@ -18,7 +18,7 @@ import lombok.Getter;
  *
  */
 @Getter
-public class ValidationFailException extends RuntimeException implements ApiException {
+public class ValidationFailException extends ApiException {
 	
 	private static final long serialVersionUID = -6740715409616958417L;
 	
@@ -45,7 +45,7 @@ public class ValidationFailException extends RuntimeException implements ApiExce
 		// remove last ','
 		return msg.delete(msg.length()-2, msg.length()-1).toString();
 	}
-
+	
 	@Override
 	public ApiErrorCode getApiErrorCode() {
 		return ApiErrorCode.INVALID_INPUT_TYPE;

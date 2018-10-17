@@ -16,16 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.cyhee.rabit.model.cmm.ContentStatus;
-import com.cyhee.rabit.model.cmm.ContentType;
-import com.cyhee.rabit.model.cmm.RadioStatus;
-import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
-import com.cyhee.rabit.model.goallog.GoalLog;
-import com.cyhee.rabit.model.like.Like;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.goal.CompanionService;
-import com.cyhee.rabit.service.goal.GoalStoreService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

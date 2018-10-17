@@ -3,8 +3,8 @@ package com.cyhee.rabit.service.cmm;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.cyhee.rabit.exception.cmm.UnAuthorizedException;
 import com.cyhee.rabit.model.user.User;
-import com.cyhee.rabit.web.cmm.exception.UnAuthorizedException;
 
 public class AuthHelper {
 

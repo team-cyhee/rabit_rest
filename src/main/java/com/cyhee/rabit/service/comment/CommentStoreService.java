@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
-import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.like.Like;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.like.LikeService;

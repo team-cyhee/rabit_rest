@@ -2,6 +2,7 @@ package com.cyhee.rabit.exception.user;
 
 import org.springframework.http.HttpStatus;
 
+import com.cyhee.rabit.exception.ApiException;
 import com.cyhee.rabit.web.cmm.model.ApiErrorCode;
 
 /**
@@ -10,7 +11,7 @@ import com.cyhee.rabit.web.cmm.model.ApiErrorCode;
  *
  */
 @SuppressWarnings("serial")
-public class DuplicateUserException extends UserException{
+public class DuplicateUserException extends ApiException {
 	public DuplicateUserException() {
 		super("User duplicated!");
 	}

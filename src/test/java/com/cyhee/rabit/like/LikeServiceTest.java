@@ -1,17 +1,7 @@
 package com.cyhee.rabit.like;
 
-import com.cyhee.rabit.model.cmm.ContentType;
-import com.cyhee.rabit.model.cmm.RadioStatus;
-import com.cyhee.rabit.model.comment.Comment;
-import com.cyhee.rabit.model.goal.Goal;
-import com.cyhee.rabit.model.goallog.GoalLog;
-import com.cyhee.rabit.model.like.Like;
-import com.cyhee.rabit.model.user.User;
-import com.cyhee.rabit.service.comment.CommentService;
-import com.cyhee.rabit.service.goal.GoalService;
-import com.cyhee.rabit.service.goallog.GoalLogService;
-import com.cyhee.rabit.service.like.LikeService;
-import com.cyhee.rabit.service.user.UserService;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,9 +17,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import com.cyhee.rabit.model.cmm.ContentType;
+import com.cyhee.rabit.model.cmm.RadioStatus;
+import com.cyhee.rabit.model.comment.Comment;
+import com.cyhee.rabit.model.goal.Goal;
+import com.cyhee.rabit.model.goallog.GoalLog;
+import com.cyhee.rabit.model.like.Like;
+import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.comment.CommentService;
+import com.cyhee.rabit.service.goal.GoalService;
+import com.cyhee.rabit.service.goallog.GoalLogService;
+import com.cyhee.rabit.service.like.LikeService;
+import com.cyhee.rabit.service.user.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

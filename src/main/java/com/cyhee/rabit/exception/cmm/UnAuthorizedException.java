@@ -1,10 +1,11 @@
-package com.cyhee.rabit.web.cmm.exception;
+package com.cyhee.rabit.exception.cmm;
 
 import org.springframework.http.HttpStatus;
 
+import com.cyhee.rabit.exception.ApiException;
 import com.cyhee.rabit.web.cmm.model.ApiErrorCode;
 
-public class UnAuthorizedException extends RuntimeException implements ApiException {
+public class UnAuthorizedException extends ApiException {
 
 	private static final long serialVersionUID = 2701283839580016197L;
 

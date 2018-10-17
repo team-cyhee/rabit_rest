@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cyhee.rabit.exception.cmm.ValidationFailException;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.user.UserService;
 import com.cyhee.rabit.service.user.UserStoreService;
-import com.cyhee.rabit.validation.exception.ValidationFailException;
 
 @RestController
 @RequestMapping("rest/v1/users")

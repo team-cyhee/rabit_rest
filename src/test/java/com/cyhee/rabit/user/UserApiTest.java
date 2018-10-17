@@ -27,7 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.cyhee.rabit.cmm.ApiTestUtil;
-import com.cyhee.rabit.exception.user.NoSuchUserException;
+import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.user.UserService;
 import com.cyhee.rabit.service.user.UserStoreService;
@@ -73,11 +73,11 @@ public class UserApiTest {
 		User user = new User().setEmail("user@email.com").setUsername("username");
 		
 		given(userService.getUser(1L)).willReturn(user);
-		given(userService.getUser(2L)).willThrow(NoSuchUserException.class);
-		Mockito.doThrow(NoSuchUserException.class)
+		given(userService.getUser(2L)).willThrow(NoSuchContentException.class);
+		Mockito.doThrow(NoSuchContentException.class)
 			.when(userStoreService)
 			.deleteUser(2L);
-		Mockito.doThrow(NoSuchUserException.class)
+		Mockito.doThrow(NoSuchContentException.class)
 			.when(userService)
 			.updateUser(eq(2L), any());
 		

@@ -2,9 +2,6 @@ package com.cyhee.rabit.comment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.cyhee.rabit.service.comment.CommentService;
-import com.cyhee.rabit.service.goal.GoalService;
-import com.cyhee.rabit.service.user.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,11 +17,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.comment.CommentService;
+import com.cyhee.rabit.service.goal.GoalService;
+import com.cyhee.rabit.service.user.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

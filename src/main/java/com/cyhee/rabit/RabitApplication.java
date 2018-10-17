@@ -1,17 +1,9 @@
 package com.cyhee.rabit;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import com.cyhee.rabit.service.user.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-
-import com.cyhee.rabit.exception.cmm.NoSuchContentException;
-import com.cyhee.rabit.model.user.User;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy

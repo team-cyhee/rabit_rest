@@ -1,6 +1,5 @@
 package com.cyhee.rabit.service.follow;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;

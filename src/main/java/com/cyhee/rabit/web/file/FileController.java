@@ -1,15 +1,14 @@
 package com.cyhee.rabit.web.file;
 
 import java.io.IOException;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-import com.cyhee.rabit.model.file.FileInfo;
-import com.cyhee.rabit.service.file.FileService;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
@@ -20,7 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
+import com.cyhee.rabit.model.file.FileInfo;
+import com.cyhee.rabit.service.file.FileService;
 
 
 @Controller
@@ -30,16 +30,10 @@ public class FileController {
 	
 	@RequestMapping(value="/rest/files/{id}", method=RequestMethod.GET)
 	@ResponseBody
-	ResponseEntity<InputStreamResource> downloadFile(@PathVariable Integer id) throws IOException {
+	ResponseEntity<InputStreamResource> downloadFile(@PathVariable Integer id, HttpServletRequest request) throws IOException {
 		FileInfo file = fileService.getFile(id);
-		Path filePath = Paths.get(file.getPath(), file.getName());
-		return ResponseEntity.ok()
-				.contentLength(Files.size(filePath))
-				.contentType(MediaType.parseMediaType(URLConnection.guessContentTypeFromName(file.getOrgName())))
-				.header("Content-Disposition", "attachment; filename=" + file.getOrgName())
-				.body(new InputStreamResource(Files.newInputStream(filePath, StandardOpenOption.READ)));
+		return fileResponse(file, request);
 	}
-
 
 	/**
 	 * 브라우저 구분 얻기.
