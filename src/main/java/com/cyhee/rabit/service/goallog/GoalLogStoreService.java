@@ -3,6 +3,7 @@ package com.cyhee.rabit.service.goallog;
 import com.cyhee.rabit.dao.comment.CommentRepository;
 import com.cyhee.rabit.dao.like.LikeRepository;
 import com.cyhee.rabit.model.cmm.ContentStatus;
+import com.cyhee.rabit.model.cmm.RadioStatus;
 import com.cyhee.rabit.model.like.Like;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.comment.CommentStoreService;
@@ -73,7 +74,7 @@ public class GoalLogStoreService {
 	}
 
 	public Integer getLikeNum(GoalLog goalLog) {
-		return likeRepository.findNumByParentIdAndStatusIn(ContentType.GOALLOG, goalLog.getId(), ContentStatus.visible());
+		return likeRepository.findNumByParentIdAndStatusIn(ContentType.GOALLOG, goalLog.getId(), RadioStatus.visible());
 	}
 
 	public void deleteAllGoalLogStore(GoalLog goalLog) {

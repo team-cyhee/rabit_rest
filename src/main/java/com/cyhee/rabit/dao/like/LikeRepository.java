@@ -24,5 +24,5 @@ public interface LikeRepository extends PagingAndSortingRepository<Like, Long> {
 	Page<Like> findByStatusIn(List<RadioStatus> statusList, Pageable pageable);
 
 	@Query("Select count(n) From Like n Where :cType = n.type AND n.parentId = :parentId AND n.status In :statusList")
-	Integer findNumByParentIdAndStatusIn(@Param("cType") ContentType cType, @Param("parentId") Long parentId, @Param("statusList") List<ContentStatus> statusList);
+	Integer findNumByParentIdAndStatusIn(@Param("cType") ContentType cType, @Param("parentId") Long parentId, @Param("statusList") List<RadioStatus> statusList);
 }
