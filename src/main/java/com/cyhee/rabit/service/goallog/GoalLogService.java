@@ -21,49 +21,49 @@ import com.cyhee.rabit.model.user.User;
 public class GoalLogService {
 
 	@Autowired
-	private GoalLogRepository goallogRepository;
+	private GoalLogRepository goalLogRepository;
 
 	public Page<GoalLog> getGoalLogs(Pageable pageable) {
-		return goallogRepository.findAll(pageable);
+		return goalLogRepository.findAll(pageable);
 	}
 
 	public GoalLog getGoalLog(long id) {
-		Optional<GoalLog> log = goallogRepository.findById(id);
+		Optional<GoalLog> log = goalLogRepository.findById(id);
 		if(!log.isPresent())
 			throw new NoSuchContentException(ContentType.GOALLOG, id);
 		return log.get();
 	}
 	
 	public List<GoalLog> getGoalLogsByAuthor(User author) {
-		return goallogRepository.findAllByAuthor(author);
+		return goalLogRepository.findAllByAuthor(author);
 	}
 		
 	public Page<GoalLog> getGoalLogsByAuthorAndStatusIn(User author, List<ContentStatus> statusList, Pageable pageable) {
-		return goallogRepository.findAllByAuthorAndStatusIn(author, statusList, pageable);
+		return goalLogRepository.findAllByAuthorAndStatusIn(author, statusList, pageable);
 	}
 
 	public List<GoalLog> getGoalLogsByGoal(Goal goal) {
-		return goallogRepository.findAllByGoal(goal);
+		return goalLogRepository.findAllByGoal(goal);
 	}	
 
 	public Page<GoalLog> getGoalLogsByGoalAndStatusIn(Goal goal, List<ContentStatus> statusList, Pageable pageable) {
-		return goallogRepository.findAllByGoalAndStatusIn(goal, statusList, pageable);
+		return goalLogRepository.findAllByGoalAndStatusIn(goal, statusList, pageable);
 	}
 
-	public void addGoalLog(GoalLog goallog) {
-		goallogRepository.save(goallog);
+	public void addGoalLog(GoalLog goalLog) {
+		goalLogRepository.save(goalLog);
 	}
 
-	public void updateGoalLog(long id, GoalLog goallogForm) {
+	public void updateGoalLog(long id, GoalLog goalLogForm) {
 		GoalLog log = getGoalLog(id);
-		setGoalLogProps(log, goallogForm);
-		goallogRepository.save(log);
+		setGoalLogProps(log, goalLogForm);
+		goalLogRepository.save(log);
 	}
 
 	public GoalLog deleteGoalLog(long id) {
 		GoalLog log = getGoalLog(id);
 		log.setStatus(ContentStatus.DELETED);
-		goallogRepository.save(log);
+		goalLogRepository.save(log);
 		return log;
 	}
 	

@@ -4,6 +4,7 @@ import com.cyhee.rabit.dao.comment.CommentRepository;
 import com.cyhee.rabit.dao.like.LikeRepository;
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.like.Like;
+import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.comment.CommentStoreService;
 import com.cyhee.rabit.service.like.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
+import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.service.comment.CommentService;
 import com.cyhee.rabit.model.goallog.GoalLog;
 
@@ -60,6 +62,14 @@ public class GoalLogStoreService {
 
 	public List<Like> getLikes(GoalLog goalLog) {
 		return likeService.getLikes(ContentType.GOALLOG, goalLog.getId());
+	}
+	
+	public void addLike(GoalLog goalLog, User liker) {
+		// TODO specific exception
+		if(goalLog.getGoal().getAuthor().equals(liker))
+			throw new RuntimeException("Self like is not allowed");
+		Like like = new Like().setAuthor(liker).setType(ContentType.GOALLOG).setParentId(goalLog.getId());
+		likeService.addLike(like);
 	}
 
 	public Integer getLikeNum(GoalLog goalLog) {

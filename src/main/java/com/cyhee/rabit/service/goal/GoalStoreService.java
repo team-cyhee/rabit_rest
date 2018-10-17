@@ -16,6 +16,7 @@ import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.model.like.Like;
+import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.comment.CommentStoreService;
 import com.cyhee.rabit.service.goallog.GoalLogService;
 import com.cyhee.rabit.service.goallog.GoalLogStoreService;
@@ -75,6 +76,14 @@ public class GoalStoreService {
 
 	public List<Like> getLikes(Goal goal) {
 		return likeService.getLikes(ContentType.GOAL, goal.getId());
+	}
+	
+	public void addLike(Goal goal, User user) {
+		// TODO specific exception
+		if(goal.getAuthor().equals(user))
+			throw new RuntimeException("Self like is not allowed");
+		Like like = new Like().setAuthor(user).setType(ContentType.GOAL).setParentId(goal.getId());
+		likeService.addLike(like);
 	}
 
 	public Integer getLikeNum(Goal goal) {
