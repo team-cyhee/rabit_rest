@@ -52,8 +52,8 @@ public class CompanionServiceTest {
 	public void setup() {
 		user1 = new User().setEmail("email1@com").setUsername("user1");		
 		user2 = new User().setEmail("email2@com").setUsername("user2");
-		user3 = new User().setEmail("email2@com").setUsername("user3");
-		user4 = new User().setEmail("email2@com").setUsername("user4");
+		user3 = new User().setEmail("email3@com").setUsername("user3");
+		user4 = new User().setEmail("email4@com").setUsername("user4");
 		
 		goal1 = new Goal().setAuthor(user1).setContent("content1");
 		goal2 = new Goal().setAuthor(user2).setContent("content2").setParent(goal1);

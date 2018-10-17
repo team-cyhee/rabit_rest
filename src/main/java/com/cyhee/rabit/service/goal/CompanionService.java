@@ -18,13 +18,15 @@ public class CompanionService {
 	@Autowired
 	CompanionGoalRepository companionGoalRepository;
 	
-	public Page<User> getCompanions(Goal goal, Pageable pageable) {		
-		//return companionRepository.findAllByGoal(goal, ContentStatus.visible(), pageable);
-		return null;
+	public Page<User> getCompanions(Goal goal, Pageable pageable) {
+		Goal root = goal.getParent();
+		if(root == null) root = goal;
+		return companionRepository.findAllByGoal(root, goal, ContentStatus.visible(), pageable);
 	}
 	
 	public Page<Goal> getCompanionGoals(Goal goal, Pageable pageable) {
-		//return companionGoalRepository.findAllByGoal(goal, ContentStatus.visible(), pageable);
-		return null;
+		Goal root = goal.getParent();
+		if(root == null) root = goal;
+		return companionGoalRepository.findAllByGoal(root, goal, ContentStatus.visible(), pageable);
 	}
 }
