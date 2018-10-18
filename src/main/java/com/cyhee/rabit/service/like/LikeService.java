@@ -48,8 +48,8 @@ public class LikeService {
 	}
 	
 	public void addLike(BaseEntity content, User liker) {
-		if(ContentHelper.getOwner(content).equals(liker))
-			throw new RuntimeException();
+		//if (ContentHelper.getOwner(content).equals(liker))
+		//	throw new RuntimeException();
 		ContentType contentType = ContentType.findByKey(content.getClass());
 		Like like = new Like().setAuthor(liker).setType(contentType).setParentId(content.getId());
 		addLike(like);
