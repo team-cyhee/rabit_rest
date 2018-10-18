@@ -21,38 +21,38 @@ import com.cyhee.rabit.model.goallog.GoalLog;
 @RestController
 @RequestMapping("rest/v1/goallogs")
 public class GoalLogController {
-	@Resource(name="goalLogService")
-	private GoalLogService goallogService;
+    @Resource(name="goalLogService")
+    private GoalLogService goalLogService;
 
-	@Resource(name="goalLogStoreService")
+    @Resource(name="goalLogStoreService")
     private GoalLogStoreService goallogStoreService;
-	
-	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<Page<GoalLog>> getGoalLogs(@PageableDefault Pageable pageable) {
-		Page<GoalLog> logPage = goallogService.getGoalLogs(pageable);
+
+    @RequestMapping(method=RequestMethod.GET)
+    public ResponseEntity<Page<GoalLog>> getGoalLogs(@PageableDefault Pageable pageable) {
+        Page<GoalLog> logPage = goalLogService.getGoalLogs(pageable);
         return new ResponseEntity<>(logPage, HttpStatus.OK);
     }
-	
-	@RequestMapping(method=RequestMethod.POST)
+
+    @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<Void> addGoalLog(@RequestBody GoalLog goallog) {
-    	goallogService.addGoalLog(goallog);
+        goalLogService.addGoalLog(goallog);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-    
+
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
     public ResponseEntity<GoalLog> getGoalLog(@PathVariable long id) {
-    	return new ResponseEntity<>(goallogService.getGoalLog(id), HttpStatus.OK);
+        return new ResponseEntity<>(goalLogService.getGoalLog(id), HttpStatus.OK);
     }
-    
+
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
     public ResponseEntity<Void> updateGoalLog(@PathVariable long id, @RequestBody GoalLog goallogForm) {
-    	goallogService.updateGoalLog(id, goallogForm);
-        return new ResponseEntity<>(HttpStatus.OK); 
+        goalLogService.updateGoalLog(id, goallogForm);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
     public ResponseEntity<Void> deleteGoalLog(@PathVariable long id) {
-    	goallogStoreService.deleteGoalLog(id);
-        return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
+        goallogStoreService.deleteGoalLog(id);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }
