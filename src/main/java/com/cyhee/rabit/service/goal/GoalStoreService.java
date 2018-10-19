@@ -80,6 +80,10 @@ public class GoalStoreService {
 		return likeService.getLikes(ContentType.GOAL, goal.getId(), pageable);
 	}
 
+    public Page<User> getLikers(Goal goal, Pageable pageable) {
+        return likeService.getLikers(ContentType.GOAL, goal.getId(), pageable);
+    }
+
 	public List<Like> getLikes(Goal goal) {
 		return likeService.getLikes(ContentType.GOAL, goal.getId());
 	}

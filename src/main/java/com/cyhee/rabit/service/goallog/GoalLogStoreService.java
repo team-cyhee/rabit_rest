@@ -61,6 +61,10 @@ public class GoalLogStoreService {
 	public List<Like> getLikes(GoalLog goalLog) {
 		return likeService.getLikes(ContentType.GOALLOG, goalLog.getId());
 	}
+
+	public Page<User> getLikers(GoalLog goalLog, Pageable pageable) {
+		return likeService.getLikers(ContentType.GOALLOG, goalLog.getId(), pageable);
+	}
 	
 	public void addLike(GoalLog goalLog, User liker) {
 		// TODO specific exception

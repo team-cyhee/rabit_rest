@@ -32,6 +32,10 @@ public class LikeService {
 		return repository.findByTypeAndParentIdAndStatusIn(type, parentId, RadioStatus.visible());
 	}
 
+	public Page<User> getLikers(ContentType type, Long parentId, Pageable pageable) {
+		return repository.findLikers(type, parentId, RadioStatus.visible(), pageable);
+	}
+
 	public Page<Like> getLikes(Pageable pageable) {
 		return repository.findByStatusIn(RadioStatus.visible(), pageable);
 	}

@@ -118,9 +118,9 @@ public class GoalStoreController {
 	}
 
     @GetMapping("/likes")
-	public ResponseEntity<Page<Like>> getLikes(@PathVariable Long id, @PageableDefault Pageable pageable) {
+	public ResponseEntity<Page<User>> getLikes(@PathVariable Long id, @PageableDefault Pageable pageable) {
 		Goal goal = goalService.getGoal(id);
-		return new ResponseEntity<>(goalStoreService.getLikes(goal, pageable), HttpStatus.OK);
+		return new ResponseEntity<>(goalStoreService.getLikers(goal, pageable), HttpStatus.OK);
 	}
     
     @PostMapping("/likes")
