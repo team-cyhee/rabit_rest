@@ -16,4 +16,8 @@ public interface CompanionRepository extends Repository<User, Long> {
 	@Query("SELECT g.author FROM Goal g WHERE (g.parent = :root OR g = :root) AND g <> :goal AND g.status In :statusList")
 	Page<User> findAllByGoal(@Param("root") Goal root, @Param("goal") Goal goal,
 			@Param("statusList") List<ContentStatus> statusList, Pageable pageable);
+
+	@Query("SELECT count(g) FROM Goal g WHERE (g.parent = :root OR g = :root) AND g <> :goal AND g.status In :statusList")
+	Integer findNumByGoal(@Param("root") Goal root, @Param("goal") Goal goal,
+						  @Param("statusList") List<ContentStatus> statusList);
 }
