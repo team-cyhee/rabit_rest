@@ -1,7 +1,10 @@
 package com.cyhee.rabit.service.goal;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.cyhee.rabit.model.goallog.GoalLogInfo;
+import com.cyhee.rabit.service.goallog.GoalLogInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,6 +48,9 @@ public class GoalStoreService {
 	@Autowired
 	GoalLogStoreService goalLogStoreService;
 
+	@Autowired
+	GoalLogInfoService goalLogInfoService;
+
 	public void deleteGoal(long id) {
 		Goal goal = goalService.deleteGoal(id);
 		deleteAllGoalStore(goal);
@@ -74,6 +80,10 @@ public class GoalStoreService {
 		return likeService.getLikes(ContentType.GOAL, goal.getId(), pageable);
 	}
 
+    public Page<User> getLikers(Goal goal, Pageable pageable) {
+        return likeService.getLikers(ContentType.GOAL, goal.getId(), pageable);
+    }
+
 	public List<Like> getLikes(Goal goal) {
 		return likeService.getLikes(ContentType.GOAL, goal.getId());
 	}
@@ -88,6 +98,17 @@ public class GoalStoreService {
 
 	public Integer getLikeNum(Goal goal) {
 		return likeRepository.findNumByParentIdAndStatusIn(ContentType.GOAL, goal.getId(), RadioStatus.visible());
+	}
+
+	public List<GoalLogInfo> getGoalLogInfos(Goal goal, Pageable pageable) {
+		List<GoalLogInfo> goalLogInfos = new ArrayList<>();
+
+		Page<GoalLog> goalLogs = getGoalLogs(goal, ContentStatus.visible(), pageable);
+
+		for (GoalLog goalLog : goalLogs) {
+			goalLogInfos.add(goalLogInfoService.goalLogToGoalLogInfo(goalLog));
+		}
+		return goalLogInfos;
 	}
 
 	public void deleteAllGoalStore(Goal goal) {

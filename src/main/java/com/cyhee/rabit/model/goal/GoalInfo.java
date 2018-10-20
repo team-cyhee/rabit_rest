@@ -30,8 +30,8 @@ public class GoalInfo extends MainInfo {
 	private GoalCycle selectedDays;
 	private List<FileInfo> files;
 
-	public GoalInfo(Goal from, Integer likeNum, Integer commentNum, Page<Comment> comments) {
-		super(ContentType.GOAL, likeNum, commentNum, comments, from.getLastUpdated());
+	public GoalInfo(Goal from, Integer likeNum, Integer commentNum, Integer companionNum, Page<Comment> comments) {
+		super(ContentType.GOAL, likeNum, commentNum, companionNum, comments, from.getLastUpdated());
 		this.id = from.getId();
 		this.author = from.getAuthor();
 		this.parent = from.getParent();

@@ -20,13 +20,19 @@ public class CompanionService {
 	
 	public Page<User> getCompanions(Goal goal, Pageable pageable) {
 		Goal root = goal.getParent();
-		if(root == null) root = goal;
+		if (root == null) root = goal;
 		return companionRepository.findAllByGoal(root, goal, ContentStatus.visible(), pageable);
 	}
 	
 	public Page<Goal> getCompanionGoals(Goal goal, Pageable pageable) {
 		Goal root = goal.getParent();
-		if(root == null) root = goal;
+		if (root == null) root = goal;
 		return companionGoalRepository.findAllByGoal(root, goal, ContentStatus.visible(), pageable);
+	}
+
+	public Integer getCompanionNum(Goal goal) {
+		Goal root = goal.getParent();
+		if (root == null) root = goal;
+		return companionRepository.findNumByGoal(root, goal, ContentStatus.visible());
 	}
 }

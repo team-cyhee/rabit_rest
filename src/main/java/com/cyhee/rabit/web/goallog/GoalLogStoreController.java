@@ -61,9 +61,9 @@ public class GoalLogStoreController {
 	}
 
 	@GetMapping("/likes")
-	public ResponseEntity<Page<Like>> getLikes(@PathVariable Long id, @PageableDefault Pageable pageable) {
+	public ResponseEntity<Page<User>> getLikes(@PathVariable Long id, @PageableDefault Pageable pageable) {
 		GoalLog goalLog = goalLogService.getGoalLog(id);
-		return new ResponseEntity<>(goalLogStoreService.getLikes(goalLog, pageable), HttpStatus.OK);
+		return new ResponseEntity<>(goalLogStoreService.getLikers(goalLog, pageable), HttpStatus.OK);
 	}
     
     @PostMapping("/likes")
@@ -72,7 +72,6 @@ public class GoalLogStoreController {
 		
     	String username = AuthHelper.getUsername();
     	User liker = userService.getUserByUsername(username);
-    	
     	likeService.addLike(goalLog, liker);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
