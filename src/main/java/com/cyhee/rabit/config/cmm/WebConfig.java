@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
 @Configuration
 @EnableWebMvc
@@ -42,7 +43,7 @@ public class WebConfig implements WebMvcConfigurer {
 	public ObjectMapper jacksonObjectMapper() {
 		ObjectMapper objectMapper = new ObjectMapper();
 		//objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		//objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+		objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
 		return objectMapper;
 	}
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.cyhee.rabit.dao.comment.CommentRepository;
 import com.cyhee.rabit.exception.cmm.NoSuchContentException;
+import com.cyhee.rabit.model.cmm.BaseEntity;
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
@@ -58,12 +59,16 @@ public class CommentService {
 		
 		AuthHelper.isAuthorOrAdmin(comment);
 		
-		comment.setStatus(ContentStatus.DELETED);
-		repository.save(comment);
+		delete(comment);
 		return comment;
 	}
 	
 	private void setCommentProps(Comment target, Comment source) {
 		target.setContent(source.getContent());
+	}
+	
+	void delete(Comment comment) {
+		comment.setStatus(ContentStatus.DELETED);
+		repository.save(comment);		
 	}
 }

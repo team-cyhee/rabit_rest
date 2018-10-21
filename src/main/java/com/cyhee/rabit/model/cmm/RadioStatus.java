@@ -1,6 +1,7 @@
 package com.cyhee.rabit.model.cmm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ public enum RadioStatus {
     FORBIDDEN;
 
 
+    private static List<RadioStatus> list;
     private static List<RadioStatus> visibleList;
 
     public static List<RadioStatus> visible() {
@@ -25,5 +27,12 @@ public enum RadioStatus {
             visibleList.add(ACTIVE);
         }
         return visibleList;
+    }
+    
+    public static List<RadioStatus> all() {
+    	if (list == null) {
+    		list = new ArrayList<>(Arrays.asList(values())); 
+    	}
+    	return list;
     }
 }

@@ -63,9 +63,13 @@ public class UserService {
 		
 		AuthHelper.isAuthorOrAdmin(user);
 		
-        user.setStatus(UserStatus.DELETED);
-		userRepository.save(user);
+		delete(user);
         return user;
+	}
+	
+	void delete(User user) {
+		user.setStatus(UserStatus.DELETED);
+		userRepository.save(user);
 	}
 	
 	private void setUserProps(User user, User userForm) {

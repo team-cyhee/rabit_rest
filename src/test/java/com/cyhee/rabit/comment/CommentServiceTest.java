@@ -17,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.cyhee.rabit.cmm.AuthTestUtil;
+import com.cyhee.rabit.cmm.CmmTestUtil;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
@@ -31,8 +33,6 @@ import com.cyhee.rabit.service.user.UserService;
 @TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
 @Import({UserService.class, BCryptPasswordEncoder.class, GoalService.class, CommentService.class})
 public class CommentServiceTest {
-	@Autowired
-	private GoalService goalService;
 	@Autowired
 	private CommentService commentService;
 	@Autowired
@@ -49,6 +49,8 @@ public class CommentServiceTest {
 
 	@Before
 	public void setup() {
+    	AuthTestUtil.setAdmin();
+    	
 		user1 = new User().setEmail("user@email.com").setUsername("username");		
 		user2 = new User().setEmail("email2@a").setUsername("testuser2");
 
@@ -84,11 +86,21 @@ public class CommentServiceTest {
 
 	@Test
 	public void update() {
-		Comment source = new Comment().setContent("new Content");
-		commentService.updateComment(comment1.getId(), source);
-		
-		assertThat(comment1)
-			.extracting(Comment::getContent)
-			.containsExactly(source.getContent());
+		try {
+			CmmTestUtil.updateWithAuthentication(comment1, long.class, commentService, "content");
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert(false);
+		}
+	}
+	
+	@Test
+	public void delete() {
+		try {
+			CmmTestUtil.deleteWithAuthentication(comment1, long.class, commentService);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert(false);
+		}
 	}
 }

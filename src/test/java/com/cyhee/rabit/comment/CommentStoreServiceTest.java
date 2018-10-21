@@ -1,5 +1,7 @@
 package com.cyhee.rabit.comment;
 
+import com.cyhee.rabit.cmm.AuthTestUtil;
+import com.cyhee.rabit.cmm.CmmTestUtil;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.cmm.RadioStatus;
 import com.cyhee.rabit.model.comment.Comment;
@@ -47,6 +49,8 @@ public class CommentStoreServiceTest {
 		
 	@Before
 	public void setup() {
+    	AuthTestUtil.setAdmin();
+    	
 		user1 = new User().setEmail("email1@com").setUsername("user1");		
 		user2 = new User().setEmail("email2@com").setUsername("user2");
 		
@@ -79,8 +83,12 @@ public class CommentStoreServiceTest {
 
 	@Test
 	public void deleteAndGet() {
-
-		commentStoreService.deleteComment(comment1.getId());
+		try {
+			CmmTestUtil.deleteWithAuthentication(comment1, long.class, commentStoreService);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert(false);
+		}
 
 		assertThat(like1)
 				.extracting(Like::getStatus)

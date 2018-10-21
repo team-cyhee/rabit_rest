@@ -1,5 +1,6 @@
 package com.cyhee.rabit.cmm;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -16,9 +17,29 @@ public class AuthTestUtil {
 		sc.setAuthentication(new TestAuthentication());		
 	}
 	
+	public static void setPrincipal(Object principal) {
+		SecurityContext sc = SecurityContextHolder.getContext();
+		sc.setAuthentication(new TestAuthentication(principal));		
+	}
+	
+	public static void setAnonymous() {
+		SecurityContext sc = SecurityContextHolder.getContext();
+		sc.setAuthentication(null);		
+	}
+	
 	private static class TestAuthentication implements Authentication {
 		
 		private static final long serialVersionUID = 1L;
+		private Object principal;
+		private Collection<GrantedAuthority> authorities = new ArrayList<>();
+		
+		public TestAuthentication() {
+			this.authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		}
+		
+		public TestAuthentication(Object principal) {
+			this.principal = principal;
+		}
 
 		@Override
 		public String getName() {
@@ -27,7 +48,7 @@ public class AuthTestUtil {
 
 		@Override
 		public Collection<? extends GrantedAuthority> getAuthorities() {
-			return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+			return authorities;
 		}
 
 		@Override
@@ -42,7 +63,7 @@ public class AuthTestUtil {
 
 		@Override
 		public Object getPrincipal() {
-			return null;
+			return principal;
 		}
 
 		@Override
