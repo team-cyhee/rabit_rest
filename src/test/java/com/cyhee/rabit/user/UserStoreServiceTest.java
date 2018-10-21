@@ -103,12 +103,12 @@ public class UserStoreServiceTest {
 	@Test
 	public void getFollows() {
 		Pageable pageable = PageRequest.of(0, 10);
-		Page<Follow> follows = userStoreService.getFollowees(user1, pageable);
+		Page<User> follows = userStoreService.getFollowees(user1, pageable);
 
 		assertThat(follows.getContent())
 			.hasSize(2)
-			.contains(follow1)
-			.contains(follow2);
+			.contains(follow1.getFollowee())
+			.contains(follow2.getFollowee());
 	}
 
 	@Test
