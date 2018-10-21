@@ -19,6 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.cyhee.rabit.cmm.AuthTestUtil;
+import com.cyhee.rabit.cmm.CmmTestUtil;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.service.goal.GoalService;
 import com.cyhee.rabit.model.goallog.GoalLog;
@@ -46,6 +48,8 @@ public class GoalLogServiceTest {
 		
 	@Before
 	public void setup() {
+		AuthTestUtil.setAdmin();
+		
 		user1 = new User().setEmail("email1@com").setUsername("user1");		
 		user2 = new User().setEmail("email2@com").setUsername("user2");
 		
@@ -91,13 +95,22 @@ public class GoalLogServiceTest {
 	@Test
 	public void update() {
 		goalLogService.addGoalLog(gl1);
-		
-		GoalLog form = new GoalLog().setContent("new Content");
-		
-		goalLogService.updateGoalLog(gl1.getId(), form);
-		
-		assertThat(gl1)
-			.extracting(GoalLog::getContent)
-			.containsExactly(form.getContent());
+		try {
+			CmmTestUtil.updateWithAuthentication(gl1, long.class, goalLogService, "content");
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert(false);
+		}
+	}
+	
+	@Test
+	public void delete() {
+		goalLogService.addGoalLog(gl1);
+		try {
+			CmmTestUtil.deleteWithAuthentication(gl1, long.class, goalLogService);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert(false);
+		}
 	}
 }

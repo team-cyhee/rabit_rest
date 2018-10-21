@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.cyhee.rabit.cmm.AuthTestUtil;
+import com.cyhee.rabit.cmm.CmmTestUtil;
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.cmm.RadioStatus;
@@ -54,6 +56,8 @@ public class GoalLogStoreServiceTest {
 		
 	@Before
 	public void setup() {
+		AuthTestUtil.setAdmin();
+		
 		user1 = new User().setEmail("email1@com").setUsername("user1");		
 		user2 = new User().setEmail("email2@com").setUsername("user2");
 		
@@ -107,8 +111,12 @@ public class GoalLogStoreServiceTest {
 
 	@Test
 	public void deleteAndGet() {
-
-		goalLogStoreService.deleteGoalLog(gl1.getId());
+		try {
+			CmmTestUtil.deleteWithAuthentication(gl1, long.class, goalLogStoreService);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert(false);
+		}
 
 		assertThat(gl1)
 				.extracting(GoalLog::getStatus)

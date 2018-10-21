@@ -73,6 +73,15 @@ public class LikeService {
 		
 		AuthHelper.isAuthorOrAdmin(like);
 		
+		delete(like);
+	}
+	
+	public void deleteByParent(BaseEntity parent) {
+		for(Like like : getLikes(ContentType.findByKey(parent.getClass()), parent.getId()))
+			delete(like);
+	}
+	
+	void delete(Like like) {
 		like.setStatus(RadioStatus.INACTIVE);
 		repository.save(like);
 	}

@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.cyhee.rabit.cmm.AuthTestUtil;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.goal.CompanionService;
@@ -43,6 +44,8 @@ public class CompanionServiceTest {
 		
 	@Before
 	public void setup() {
+		AuthTestUtil.setAdmin();
+		
 		user1 = new User().setEmail("email1@com").setUsername("user1");		
 		user2 = new User().setEmail("email2@com").setUsername("user2");
 		user3 = new User().setEmail("email3@com").setUsername("user3");

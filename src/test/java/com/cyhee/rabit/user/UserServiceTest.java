@@ -1,9 +1,9 @@
 package com.cyhee.rabit.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 
 import org.junit.Before;
@@ -17,15 +17,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cyhee.rabit.cmm.AuthTestUtil;
+import com.cyhee.rabit.cmm.CmmTestUtil;
+import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.model.user.UserStatus;
 import com.cyhee.rabit.service.user.UserService;
@@ -61,32 +59,38 @@ public class UserServiceTest {
 		entityManger.persist(user2);
 		entityManger.persist(user3);
 	}
-
+	
 	@Test
-	public void get() throws InterruptedException {
-		String email = "thisEmail@com";
-		User base = new User().setEmail(email).setUsername("testuser4");
-		now = new Date();
-		entityManger.persist(base);
-		after = new Date(now.getTime() + 1000);
+	public void get() {		
+		assertThat(userService.getUser(user1.getId()))
+			.isEqualTo(user1);
+		assertThat(userService.getUserByUsername(user2.getUsername()))
+			.isEqualTo(user2);
+		assertThat(userService.getUserByEmail(user3.getEmail()))
+			.isEqualTo(user3);
 		
-		User user = userService.getUserByEmail(email);
 		
-		assertThat(user)
-			.isEqualTo(base)
-			.extracting(User::getId, User::getCreateDate, User::getLastUpdated, User::getStatus)
-				.doesNotContainNull()
-				.contains(UserStatus.PENDING);
-		assertThat(user)
-			.extracting(User::getCreateDate, User::getLastUpdated)
-			.allSatisfy(date -> {
-                assertThat(now.compareTo((Date) date)).isNotPositive();
-                assertThat(after.compareTo((Date) date)).isPositive();
-              });
+		assertThatThrownBy(() -> {
+			userService.getUser(1000L);
+		})
+			.isInstanceOf(NoSuchContentException.class)
+			.hasMessage("No such user with id '1000'.");
+					
+		assertThatThrownBy(() -> {
+			userService.getUserByUsername("no_username");
+		})
+			.isInstanceOf(NoSuchContentException.class)
+			.hasMessage("No such user with username 'no_username'.");
+		
+		assertThatThrownBy(() -> {
+			userService.getUserByEmail("no_email");
+		})
+			.isInstanceOf(NoSuchContentException.class)
+			.hasMessage("No such user with email 'no_email'.");
 	}
 	
 	@Test
-	public void getPage() {
+	public void getList() {
 		
 		Pageable pageable = PageRequest.of(1, 2);
 
@@ -94,36 +98,35 @@ public class UserServiceTest {
 		assertThat(userPage)
 			.hasSize(1)
 			.containsExactly(user3);
-	}
-	
-	@Test
-	public void update() {
-		user1.setName("updatedName");
-		userService.updateUser(user1.getId(), user1);
-				
-		User user = userService.getUserByUsername(user1.getUsername());
 		
-		assertThat(user.getName())
-			.isEqualTo("updatedName");
-	}
-	
-	@Test
-	public void delete() {
-		userService.deleteUser(user1.getId());
 		
-		assertThat(user1.getStatus())
-			.isEqualTo(UserStatus.DELETED);
-	}
-	
-	@Test
-	public void getByStatus() {
 		user1.setStatus(UserStatus.ACTIVE);
 		user2.setStatus(UserStatus.FORBIDDEN);
 		user3.setStatus(UserStatus.PENDING);
 		
-		Page<User> userPage = userService.getUsersByStatusIn(Arrays.asList(UserStatus.FORBIDDEN, UserStatus.ACTIVE), PageRequest.of(0, 100));
+		userPage = userService.getUsersByStatusIn(Arrays.asList(UserStatus.FORBIDDEN, UserStatus.ACTIVE), PageRequest.of(0, 100));
 		assertThat(userPage)
 			.hasSize(2)
 			.containsAll(Arrays.asList(user1, user2));
+	}
+	
+	@Test
+	public void update() {
+		try {
+			CmmTestUtil.updateWithAuthentication(user1, Long.class, userService, "name", "phone", "status", "birth");
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert(false);
+		}
+	}
+	
+	@Test
+	public void delete() {
+		try {
+			CmmTestUtil.deleteWithAuthentication(user1, Long.class, userService);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert(false);
+		}
 	}
 }

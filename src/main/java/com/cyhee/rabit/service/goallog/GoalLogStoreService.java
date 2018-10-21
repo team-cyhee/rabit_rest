@@ -2,6 +2,8 @@ package com.cyhee.rabit.service.goallog;
 
 import java.util.List;
 
+import javax.activation.UnsupportedDataTypeException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,13 +11,17 @@ import org.springframework.stereotype.Service;
 
 import com.cyhee.rabit.dao.comment.CommentRepository;
 import com.cyhee.rabit.dao.like.LikeRepository;
+import com.cyhee.rabit.exception.cmm.UnsupportedContentException;
+import com.cyhee.rabit.model.cmm.BaseEntity;
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.cmm.RadioStatus;
 import com.cyhee.rabit.model.comment.Comment;
+import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.model.like.Like;
 import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.cmm.AuthHelper;
 import com.cyhee.rabit.service.comment.CommentStoreService;
 import com.cyhee.rabit.service.like.LikeService;
 
@@ -38,8 +44,33 @@ public class GoalLogStoreService {
 	LikeRepository likeRepository;
 
 	public void deleteGoalLog(long id) {
-		GoalLog gl = goalLogService.deleteGoalLog(id);
+		GoalLog gl = goalLogService.getGoalLog(id);
+		
+		AuthHelper.isAuthorOrAdmin(gl);
+		
+		goalLogService.delete(gl);
 		deleteAllGoalLogStore(gl);
+	}
+	
+	public void deleteByParent(BaseEntity parent) {
+		ContentType type = ContentType.findByKey(parent.getClass());		
+
+		List<GoalLog> list = null;
+		switch(type) {
+			case GOAL:
+				list = goalLogService.getGoalLogsByGoal((Goal)parent);
+				break;
+			case USER:
+				list = goalLogService.getGoalLogsByAuthor((User)parent);
+				break;
+			default:
+				new UnsupportedContentException("This paremeter should be GOAL or USER");
+		}
+		
+		for(GoalLog gl : list) {
+			goalLogService.delete(gl);
+			deleteAllGoalLogStore(gl);
+		}
 	}
 
 	public Page<Comment> getComments(GoalLog goalLog, Pageable pageable) {
@@ -68,8 +99,8 @@ public class GoalLogStoreService {
 	
 	public void addLike(GoalLog goalLog, User liker) {
 		// TODO specific exception
-		if(goalLog.getGoal().getAuthor().equals(liker))
-			throw new RuntimeException("Self like is not allowed");
+		/*if(goalLog.getGoal().getAuthor().equals(liker))
+			throw new RuntimeException("Self like is not allowed");*/
 		Like like = new Like().setAuthor(liker).setType(ContentType.GOALLOG).setParentId(goalLog.getId());
 		likeService.addLike(like);
 	}
@@ -78,12 +109,8 @@ public class GoalLogStoreService {
 		return likeRepository.findNumByParentIdAndStatusIn(ContentType.GOALLOG, goalLog.getId(), RadioStatus.visible());
 	}
 
-	public void deleteAllGoalLogStore(GoalLog goalLog) {
-        for (Comment cmt : getComments(goalLog)) {
-            commentStoreService.deleteComment(cmt.getId());
-        }
-		for (Like like : getLikes(goalLog)) {
-			likeService.deleteLike(like.getId());
-		}
+	private void deleteAllGoalLogStore(GoalLog goalLog) {
+        commentStoreService.deleteByParent(goalLog);
+        likeService.deleteByParent(goalLog);
 	}
 }

@@ -44,6 +44,8 @@ dependencies {
 	// swagger
 	compile('io.springfox:springfox-swagger2:2.6.1')
 	compile('io.springfox:springfox-swagger-ui:2.6.1')
+	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+	compile('org.apache.commons:commons-lang3:3.7')	
 	//compile('org.springframework.session:spring-session-jdbc')	
 	runtime('mysql:mysql-connector-java')
 	testCompile('org.springframework.boot:spring-boot-starter-test')

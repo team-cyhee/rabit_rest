@@ -2,11 +2,6 @@ package com.cyhee.rabit.follow;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.cyhee.rabit.model.follow.Follow;
-import com.cyhee.rabit.model.cmm.RadioStatus;
-import com.cyhee.rabit.model.user.User;
-import com.cyhee.rabit.service.follow.FollowService;
-import com.cyhee.rabit.service.user.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +13,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.cyhee.rabit.cmm.AuthTestUtil;
+import com.cyhee.rabit.cmm.CmmTestUtil;
+import com.cyhee.rabit.model.follow.Follow;
+import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.follow.FollowService;
+import com.cyhee.rabit.service.user.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -38,6 +40,8 @@ public class FollowServiceTest {
 
     @Before
     public void setup() {
+    	AuthTestUtil.setAdmin();
+    	
         user1 = new User().setEmail("email1@com").setUsername("user1");
         user2 = new User().setEmail("email2@com").setUsername("user2");
         user3 = new User().setEmail("email3@com").setUsername("user3");
@@ -62,25 +66,22 @@ public class FollowServiceTest {
     @Test
     public void update() {
         followService.addFollow(follow1);
-        Follow form = new Follow().setStatus(RadioStatus.INACTIVE);
-        
-        followService.updateFollow(follow1.getId(), form);
-
-        assertThat(follow1)
-            .extracting(Follow::getStatus)
-            .containsExactly(form.getStatus());
+		try {
+			CmmTestUtil.updateWithAuthentication(follow1, long.class, followService, "status");
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert(false);
+		}
     }
 
     @Test
     public void deleteAndGet() {
-        Follow source = new Follow().setStatus(RadioStatus.INACTIVE);
-        
         followService.addFollow(follow1);
-
-        followService.deleteFollow(follow1.getId());
-
-        assertThat(follow1)
-            .extracting(Follow::getStatus)
-            .containsExactly(source.getStatus());
+		try {
+			CmmTestUtil.deleteWithAuthentication(follow1, long.class, followService);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert(false);
+		}
     }
 }
