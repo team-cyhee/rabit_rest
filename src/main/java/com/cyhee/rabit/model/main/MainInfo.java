@@ -18,6 +18,7 @@ public class MainInfo {
     private Integer likeNum;
     private Integer commentNum;
     private Page<Comment> comments;
+    private Date createDate;
     private Date lastUpdated;
 
     public static class DateSort implements Comparator<MainInfo> {

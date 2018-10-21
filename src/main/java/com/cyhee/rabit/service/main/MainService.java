@@ -49,10 +49,11 @@ public class MainService {
 
 		Page<Goal> goals = goalService.getGoals(pageable);
 		for (Goal goal : goals) {
+			Integer logNum = goalStoreService.getLogNum(goal);
 			Integer likeNum = goalStoreService.getLikeNum(goal);
 			Integer commentNum = goalStoreService.getCommentNum(goal);
 			Page<Comment> comments = goalStoreService.getComments(goal, PageRequest.of(1, 2));
-			mainInfo.add(new GoalInfo(goal, likeNum, commentNum, comments));
+			mainInfo.add(new GoalInfo(goal, logNum, likeNum, commentNum, comments));
 		}
 		mainInfo.sort(new MainInfo.DateSort());
 		return mainInfo.subList(0, mainInfo.size());

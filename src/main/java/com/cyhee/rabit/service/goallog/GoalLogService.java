@@ -52,6 +52,10 @@ public class GoalLogService {
 		return goalLogRepository.findAllByGoalAndStatusIn(goal, statusList, pageable);
 	}
 
+	public Integer getLogNumByGoalAndStatusIn(Goal goal, List<ContentStatus> statusList) {
+		return goalLogRepository.findNumByGoalAndStatusIn(goal, statusList);
+	}
+
 	public void addGoalLog(GoalLog goalLog) {
 		goalLogRepository.save(goalLog);
 	}

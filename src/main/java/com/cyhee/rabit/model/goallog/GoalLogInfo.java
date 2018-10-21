@@ -25,7 +25,7 @@ public class GoalLogInfo extends MainInfo {
 	private List<FileInfo> file;
 
 	public GoalLogInfo(GoalLog from, Integer likeNum, Integer commentNum, Page<Comment> comments) {
-		super(ContentType.GOALLOG, likeNum, commentNum, comments, from.getLastUpdated());
+		super(ContentType.GOALLOG, likeNum, commentNum, comments, from.getCreateDate(), from.getLastUpdated());
 		this.id = from.getId();
 		this.author = from.getGoal().getAuthor();
 		this.goal = from.getGoal();

@@ -2,6 +2,7 @@ package com.cyhee.rabit.config.cmm;
 
 import java.util.List;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -42,7 +43,7 @@ public class WebConfig implements WebMvcConfigurer {
 	public ObjectMapper jacksonObjectMapper() {
 		ObjectMapper objectMapper = new ObjectMapper();
 		//objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		//objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+		objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
 		return objectMapper;
 	}
 
