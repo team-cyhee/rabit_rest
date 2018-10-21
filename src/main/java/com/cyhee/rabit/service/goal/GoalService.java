@@ -25,6 +25,10 @@ public class GoalService {
 		return goalRepository.findAll(pageable);
 	}
 
+	public Page<Goal> getGoalsByStatusIn(List<ContentStatus> statusList, Pageable pageable) {
+		return goalRepository.findAllByStatusIn(statusList, pageable);
+	}
+
 	public List<Goal> getGoalsByAuthor(User author) {
 		return goalRepository.findAllByAuthor(author);
 	}

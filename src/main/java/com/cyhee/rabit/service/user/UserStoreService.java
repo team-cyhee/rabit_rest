@@ -83,7 +83,7 @@ public class UserStoreService {
 		return commentRepository.findByTypeAndParentIdAndStatusIn(ContentType.USER, goal.getId(), ContentStatus.visible());
 	}
 
-	public Page<Follow> getFollowers(User followee, Pageable pageable) {		
+	public Page<User> getFollowers(User followee, Pageable pageable) {
 		return followRepository.findByFolloweeAndStatusIn(followee, RadioStatus.visible(), pageable);
 	}
 
@@ -91,7 +91,11 @@ public class UserStoreService {
 		return followRepository.findByFolloweeAndStatusIn(followee, RadioStatus.visible());
 	}
 
-	public Page<Follow> getFollowees(User follower, Pageable pageable) {
+	public Integer getFollowerNum(User followee) {
+		return followRepository.findNumByFolloweeAndStatusIn(followee, RadioStatus.visible());
+	}
+
+	public Page<User> getFollowees(User follower, Pageable pageable) {
 		return followRepository.findByFollowerAndStatusIn(follower, RadioStatus.visible(), pageable);
 	}
 
@@ -99,6 +103,9 @@ public class UserStoreService {
 		return followRepository.findByFollowerAndStatusIn(follower, RadioStatus.visible());
 	}
 
+	public Integer getFolloweeNum(User follower) {
+		return followRepository.findNumByFollowerAndStatusIn(follower, RadioStatus.visible());
+	}
 	private void deleteAllUserStore(User user) {
 		goalStoreService.deleteByParent(user);
 		goalLogStoreService.deleteByParent(user);

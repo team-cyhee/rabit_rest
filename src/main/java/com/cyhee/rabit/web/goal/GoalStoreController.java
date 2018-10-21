@@ -1,7 +1,7 @@
 package com.cyhee.rabit.web.goal;
 
 
-import com.cyhee.rabit.model.goallog.GoalLogInfo;
+import com.cyhee.rabit.model.page.GoalLogInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +20,6 @@ import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
-import com.cyhee.rabit.model.like.Like;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.cmm.AuthHelper;
 import com.cyhee.rabit.service.comment.CommentService;

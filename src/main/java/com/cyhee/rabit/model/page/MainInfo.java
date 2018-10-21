@@ -1,4 +1,4 @@
-package com.cyhee.rabit.model.main;
+package com.cyhee.rabit.model.page;
 
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
