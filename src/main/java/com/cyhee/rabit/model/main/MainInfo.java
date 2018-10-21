@@ -17,6 +17,7 @@ public class MainInfo {
     private ContentType type;
     private Integer likeNum;
     private Integer commentNum;
+    private Integer companionNum;
     private Page<Comment> comments;
     private Date createDate;
     private Date lastUpdated;

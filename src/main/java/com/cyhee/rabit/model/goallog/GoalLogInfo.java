@@ -11,6 +11,7 @@ import com.cyhee.rabit.model.user.User;
 import lombok.*;
 import org.springframework.data.domain.Page;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -24,8 +25,8 @@ public class GoalLogInfo extends MainInfo {
 	private String content;
 	private List<FileInfo> file;
 
-	public GoalLogInfo(GoalLog from, Integer likeNum, Integer commentNum, Page<Comment> comments) {
-		super(ContentType.GOALLOG, likeNum, commentNum, comments, from.getCreateDate(), from.getLastUpdated());
+	public GoalLogInfo(GoalLog from, Integer likeNum, Integer commentNum, Integer companionNum, Page<Comment> comments) {
+		super(ContentType.GOALLOG, likeNum, commentNum, companionNum, comments, from.getCreateDate(), from.getLastUpdated());
 		this.id = from.getId();
 		this.author = from.getGoal().getAuthor();
 		this.goal = from.getGoal();

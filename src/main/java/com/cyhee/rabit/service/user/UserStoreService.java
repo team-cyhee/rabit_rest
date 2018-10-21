@@ -17,6 +17,7 @@ import com.cyhee.rabit.model.follow.Follow;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.cmm.AuthHelper;
 import com.cyhee.rabit.service.follow.FollowService;
 import com.cyhee.rabit.service.goal.GoalService;
 import com.cyhee.rabit.service.goal.GoalStoreService;
@@ -50,12 +51,11 @@ public class UserStoreService {
 	private FollowService followService;
 
 	public void deleteUser(Long id) {
-		User user = userService.deleteUser(id);
-		deleteAllUserStore(user);
-	}
-
-	public void deleteUserByUsername(Long id) {
-		User user = userService.deleteUser(id);
+		User user = userService.getUser(id);
+		
+		AuthHelper.isAuthorOrAdmin(user);
+		
+		userService.delete(user);
 		deleteAllUserStore(user);
 	}
 	
@@ -99,18 +99,9 @@ public class UserStoreService {
 		return followRepository.findByFollowerAndStatusIn(follower, RadioStatus.visible());
 	}
 
-	public void deleteAllUserStore(User user) {
-		for (Goal g : getGoals(user)) {
-			goalStoreService.deleteGoal(g.getId());
-		}
-		for (GoalLog gl : getGoalLogs(user)) {
-			goalLogStoreService.deleteGoalLog(gl.getId());
-		}
-		for (Follow fee : getFollowees(user)) {
-			followService.deleteFollow(fee.getId());
-		}
-		for (Follow fer :getFollowers(user)) {
-			followService.deleteFollow(fer.getId());
-		}
+	private void deleteAllUserStore(User user) {
+		goalStoreService.deleteByParent(user);
+		goalLogStoreService.deleteByParent(user);
+		followService.deleteByParent(user);
 	}
 }

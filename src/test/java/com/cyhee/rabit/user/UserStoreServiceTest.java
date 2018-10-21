@@ -1,6 +1,7 @@
 package com.cyhee.rabit.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.cyhee.rabit.cmm.AuthTestUtil;
+import com.cyhee.rabit.exception.cmm.UnauthorizedException;
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
@@ -27,8 +30,10 @@ import com.cyhee.rabit.model.user.UserStatus;
 import com.cyhee.rabit.service.comment.CommentService;
 import com.cyhee.rabit.service.comment.CommentStoreService;
 import com.cyhee.rabit.service.follow.FollowService;
+import com.cyhee.rabit.service.goal.CompanionService;
 import com.cyhee.rabit.service.goal.GoalService;
 import com.cyhee.rabit.service.goal.GoalStoreService;
+import com.cyhee.rabit.service.goallog.GoalLogInfoService;
 import com.cyhee.rabit.service.goallog.GoalLogService;
 import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 import com.cyhee.rabit.service.like.LikeService;
@@ -39,7 +44,9 @@ import com.cyhee.rabit.service.user.UserStoreService;
 @SpringBootTest
 @DataJpaTest
 @TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
-@Import({UserStoreService.class, UserService.class, GoalService.class, GoalLogService.class, GoalStoreService.class, GoalLogStoreService.class, FollowService.class, CommentService.class, CommentStoreService.class, LikeService.class})
+@Import({UserStoreService.class, UserService.class, GoalService.class, GoalLogService.class, GoalStoreService.class,
+	GoalLogStoreService.class, FollowService.class, CommentService.class, CommentStoreService.class, LikeService.class,
+	GoalLogInfoService.class, CompanionService.class})
 public class UserStoreServiceTest {
 	@Autowired
 	private UserStoreService userStoreService;
@@ -61,6 +68,8 @@ public class UserStoreServiceTest {
 		
 	@Before
 	public void setup() {
+		AuthTestUtil.setAdmin();
+		
 		user1 = new User().setEmail("email1@com").setUsername("user1");		
 		user2 = new User().setEmail("email2@com").setUsername("user2");
 
@@ -91,7 +100,7 @@ public class UserStoreServiceTest {
 		entityManger.persist(commentInGoal2ByUser1);
 	}
 
-	//@Test
+	@Test
 	public void getFollows() {
 		Pageable pageable = PageRequest.of(0, 10);
 		Page<Follow> follows = userStoreService.getFollowees(user1, pageable);
@@ -132,6 +141,7 @@ public class UserStoreServiceTest {
 
 	@Test
 	public void deleteAndGet() {
+		AuthTestUtil.setPrincipal(user1.getUsername());
 
 		userStoreService.deleteUser(user1.getId());
 
@@ -163,6 +173,11 @@ public class UserStoreServiceTest {
 		assertThat(commentInGoal2ByUser1)
 				.extracting(Comment::getStatus)
 				.containsExactly(ContentStatus.ACTIVE);
+		
+		assertThatThrownBy(() -> {
+			userStoreService.deleteUser(user2.getId());
+		})
+			.isInstanceOf(UnauthorizedException.class);
 	}
 	
 }

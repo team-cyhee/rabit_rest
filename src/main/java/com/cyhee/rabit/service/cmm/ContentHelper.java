@@ -1,5 +1,7 @@
 package com.cyhee.rabit.service.cmm;
 
+import com.cyhee.rabit.exception.cmm.UnsupportedContentException;
+import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.follow.Follow;
 import com.cyhee.rabit.model.goal.Goal;
@@ -25,6 +27,7 @@ public class ContentHelper {
 			return ((Like)content).getAuthor();
 		if(content instanceof User)
 			return (User)content;
-		return null;
+		
+		throw new UnsupportedContentException();
 	}
 }

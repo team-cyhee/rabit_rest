@@ -10,8 +10,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.nio.charset.Charset;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,10 +17,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -32,7 +27,6 @@ import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.user.UserService;
 import com.cyhee.rabit.service.user.UserStoreService;
 import com.cyhee.rabit.web.user.UserController;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers=UserController.class, secure=false)
@@ -44,8 +38,7 @@ public class UserApiTest {
     private UserService userService;
 	@MockBean(name="userStoreService")
     private UserStoreService userStoreService;
-	private ObjectMapper mapper;
-	private MediaType contentType;
+	private ApiTestUtil apiTester;
 	
 	private static final String url = "/rest/v1/users";
 	
@@ -59,17 +52,11 @@ public class UserApiTest {
 	
 	@Before
 	public void setup() {
-		mapper = new ObjectMapper();
-		contentType = new MediaType(
-			MediaType.APPLICATION_JSON.getType(),
-			MediaType.APPLICATION_JSON.getSubtype(),
-			Charset.forName("utf8")
-		);		
+		apiTester = new ApiTestUtil(mvc, url);
 	}
 	
 	@Test
 	public void CRUD() throws Exception {
-		Pageable pageable = PageRequest.of(0, 10);
 		User user = new User().setEmail("user@email.com").setUsername("username");
 		
 		given(userService.getUser(1L)).willReturn(user);
@@ -80,9 +67,8 @@ public class UserApiTest {
 		Mockito.doThrow(NoSuchContentException.class)
 			.when(userService)
 			.updateUser(eq(2L), any());
-		
-		ApiTestUtil testUtil = new ApiTestUtil(mvc, url);
-		testUtil.simpleRUDTest(1L, user);
+
+		apiTester.simpleRUDTest(1L, user);
 
 		mvc.perform(get(getUrl(1L)))
 			.andExpect(status().isOk())
@@ -94,7 +80,8 @@ public class UserApiTest {
 		mvc.perform(delete(getUrl(2L)))
 			.andExpect(status().isNotFound());
 		
-		mvc.perform(put(getUrl(2L)).contentType(contentType).content(mapper.writeValueAsString(user)))
+		mvc.perform(put(getUrl(2L)).contentType(apiTester.getMediaType())
+			.content(apiTester.getMapper().writeValueAsString(user)))
 			.andExpect(status().isNotFound());
 		
 	}

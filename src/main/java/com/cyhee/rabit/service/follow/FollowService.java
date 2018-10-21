@@ -1,5 +1,6 @@
 package com.cyhee.rabit.service.follow;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.cmm.RadioStatus;
 import com.cyhee.rabit.model.follow.Follow;
+import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.cmm.AuthHelper;
 
 @Service("followService")
@@ -50,11 +52,23 @@ public class FollowService {
 		
 		AuthHelper.isAuthorOrAdmin(follow);
 		
-        follow.setStatus(RadioStatus.INACTIVE);
-        followRepository.save(follow);
+        delete(follow);
+    }
+    
+    public void deleteByParent(User parent) {
+    	List<Follow> followees = followRepository.findByFolloweeAndStatusIn(parent, RadioStatus.all());
+    	List<Follow> followers = followRepository.findByFollowerAndStatusIn(parent, RadioStatus.all());
+    	
+    	for(Follow follow : followers) delete(follow);
+    	for(Follow follow : followees) delete(follow);
     }
 
     private void setFollowProps(Follow target, Follow source) {
         target.setStatus(source.getStatus());
+    }
+    
+    void delete(Follow follow) {
+    	follow.setStatus(RadioStatus.INACTIVE);
+        followRepository.save(follow);
     }
 }

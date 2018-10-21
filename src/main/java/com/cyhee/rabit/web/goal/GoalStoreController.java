@@ -1,6 +1,7 @@
 package com.cyhee.rabit.web.goal;
 
 
+import com.cyhee.rabit.model.goallog.GoalLogInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,8 @@ import com.cyhee.rabit.service.goal.GoalStoreService;
 import com.cyhee.rabit.service.goallog.GoalLogService;
 import com.cyhee.rabit.service.like.LikeService;
 import com.cyhee.rabit.service.user.UserService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("rest/v1/goals/{id}")
@@ -86,6 +89,12 @@ public class GoalStoreController {
     	goalLogService.addGoalLog(goalLog);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
+
+	@GetMapping("/goallogs/info")
+	public ResponseEntity<List<GoalLogInfo>> getGoalLogInfos(@PathVariable Long id, @PageableDefault Pageable pageable) {
+		Goal goal = goalService.getGoal(id);
+		return new ResponseEntity<>(goalStoreService.getGoalLogInfos(goal, pageable), HttpStatus.OK);
+	}
 	
 	@GetMapping("/comments")
 	public ResponseEntity<Page<Comment>> getComments(@PathVariable Long id, @PageableDefault Pageable pageable) {
@@ -109,9 +118,9 @@ public class GoalStoreController {
 	}
 
     @GetMapping("/likes")
-	public ResponseEntity<Page<Like>> getLikes(@PathVariable Long id, @PageableDefault Pageable pageable) {
+	public ResponseEntity<Page<User>> getLikes(@PathVariable Long id, @PageableDefault Pageable pageable) {
 		Goal goal = goalService.getGoal(id);
-		return new ResponseEntity<>(goalStoreService.getLikes(goal, pageable), HttpStatus.OK);
+		return new ResponseEntity<>(goalStoreService.getLikers(goal, pageable), HttpStatus.OK);
 	}
     
     @PostMapping("/likes")

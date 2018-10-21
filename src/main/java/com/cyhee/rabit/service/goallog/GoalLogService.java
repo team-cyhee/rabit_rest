@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.cyhee.rabit.dao.goallog.GoalLogRepository;
 import com.cyhee.rabit.exception.cmm.NoSuchContentException;
-import com.cyhee.rabit.exception.cmm.UnAuthorizedException;
+import com.cyhee.rabit.exception.cmm.UnauthorizedException;
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.goal.Goal;
@@ -74,9 +74,13 @@ public class GoalLogService {
 		
 		AuthHelper.isAuthorOrAdmin(log);
 		
-		log.setStatus(ContentStatus.DELETED);
-		goalLogRepository.save(log);
+		delete(log);
 		return log;
+	}
+	
+	void delete(GoalLog goalLog) {		
+		goalLog.setStatus(ContentStatus.DELETED);
+		goalLogRepository.save(goalLog);		
 	}
 	
 	private void setGoalLogProps(GoalLog target, GoalLog source) {

@@ -17,8 +17,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.cyhee.rabit.cmm.AuthTestUtil;
+import com.cyhee.rabit.cmm.CmmTestUtil;
 import com.cyhee.rabit.model.cmm.ContentType;
-import com.cyhee.rabit.model.cmm.RadioStatus;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
@@ -61,6 +62,8 @@ public class LikeServiceTest {
 
 	@Before
 	public void setup() {
+		AuthTestUtil.setAdmin();
+		
 		user1 = new User().setEmail("user@email.com").setUsername("username");		
 		user2 = new User().setEmail("email2@a").setUsername("testuser2");
 
@@ -120,14 +123,24 @@ public class LikeServiceTest {
 				.containsExactlyInAnyOrder(likeForCommentInGoal);
 	}
 
+	@Test
+	public void update() {
+		try {
+			CmmTestUtil.updateWithAuthentication(likeForGoal, long.class, likeService, "status");
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert(false);
+		}		
+	}
 
 	@Test
 	public void deleteAndGet() {
-		likeService.deleteLike(likeForGoal.getId());
-		
-		assertThat(likeForGoal)
-			.extracting(Like::getStatus)
-			.containsExactly(RadioStatus.INACTIVE);
+		try {
+			CmmTestUtil.deleteWithAuthentication(likeForGoal, long.class, likeService);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert(false);
+		}
 	}
 
 }

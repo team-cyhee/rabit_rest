@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.cyhee.rabit.cmm.AuthTestUtil;
+import com.cyhee.rabit.cmm.CmmTestUtil;
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.cmm.RadioStatus;
@@ -26,8 +28,10 @@ import com.cyhee.rabit.model.like.Like;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.comment.CommentService;
 import com.cyhee.rabit.service.comment.CommentStoreService;
+import com.cyhee.rabit.service.goal.CompanionService;
 import com.cyhee.rabit.service.goal.GoalService;
 import com.cyhee.rabit.service.goal.GoalStoreService;
+import com.cyhee.rabit.service.goallog.GoalLogInfoService;
 import com.cyhee.rabit.service.goallog.GoalLogService;
 import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 import com.cyhee.rabit.service.like.LikeService;
@@ -36,7 +40,8 @@ import com.cyhee.rabit.service.like.LikeService;
 @SpringBootTest
 @DataJpaTest
 @TestPropertySource(properties="spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect")
-@Import({GoalStoreService.class, GoalService.class, GoalLogService.class, GoalLogStoreService.class, CommentService.class, CommentStoreService.class, LikeService.class})
+@Import({GoalStoreService.class, GoalService.class, GoalLogService.class, GoalLogStoreService.class, CommentService.class, CommentStoreService.class, LikeService.class,
+	GoalLogInfoService.class, CompanionService.class})
 public class GoalStoreServiceTest {
 	@Autowired
 	private GoalStoreService goalStoreService;
@@ -59,6 +64,8 @@ public class GoalStoreServiceTest {
 		
 	@Before
 	public void setup() {
+		AuthTestUtil.setAdmin();
+		
 		user1 = new User().setEmail("email1@com").setUsername("user1");		
 		user2 = new User().setEmail("email2@com").setUsername("user2");
 		
@@ -134,8 +141,12 @@ public class GoalStoreServiceTest {
 	
 	@Test
 	public void deleteGoal() {
-
-		goalStoreService.deleteGoal(goal1.getId());
+		try {
+			CmmTestUtil.deleteWithAuthentication(goal1, long.class, goalStoreService);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert(false);
+		}
 
 		assertThat(goal1)
 				.extracting(Goal::getStatus)

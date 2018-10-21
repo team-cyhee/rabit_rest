@@ -3,6 +3,7 @@ package com.cyhee.rabit.dao.like;
 
 import java.util.List;
 
+import com.cyhee.rabit.model.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -22,6 +23,9 @@ public interface LikeRepository extends PagingAndSortingRepository<Like, Long> {
 	List<Like> findByTypeAndParentIdAndStatusIn(ContentType type, Long parentId, List<RadioStatus> statusList);
 
 	Page<Like> findByStatusIn(List<RadioStatus> statusList, Pageable pageable);
+
+	@Query("Select l.author From Like l Where l.type = :cType AND l.parentId = :parentId AND l.status In :statusList")
+	Page<User> findLikers(@Param("cType") ContentType cType, @Param("parentId") Long parentId, @Param("statusList") List<RadioStatus> statusList, Pageable pageable);
 
 	@Query("Select count(n) From Like n Where :cType = n.type AND n.parentId = :parentId AND n.status In :statusList")
 	Integer findNumByParentIdAndStatusIn(@Param("cType") ContentType cType, @Param("parentId") Long parentId, @Param("statusList") List<RadioStatus> statusList);

@@ -5,25 +5,26 @@ import org.springframework.http.HttpStatus;
 import com.cyhee.rabit.exception.ApiException;
 import com.cyhee.rabit.web.cmm.model.ApiErrorCode;
 
-public class UnAuthorizedException extends ApiException {
+public class UnsupportedContentException extends ApiException {
 
 	private static final long serialVersionUID = 2701283839580016197L;
 	
-	public UnAuthorizedException() {
+	public UnsupportedContentException() {
+		super("Unsupported content");
 	}
 	
-	public UnAuthorizedException(String msg) {
+	public UnsupportedContentException(String msg) {
 		super(msg);
 	}
 
 	@Override
 	public ApiErrorCode getApiErrorCode() {
-		return ApiErrorCode.UNAUTHORIZED;
+		return ApiErrorCode.UNSUPPROTED_CONTENT_TYPE;
 	}
 
 	@Override
 	public HttpStatus getStatus() {
-		return HttpStatus.UNAUTHORIZED;
+		return HttpStatus.BAD_REQUEST;
 	}
 
 }

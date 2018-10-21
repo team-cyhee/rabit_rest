@@ -14,6 +14,7 @@ import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.cmm.AuthHelper;
 
 @Service("goalService")
 public class GoalService {
@@ -45,15 +46,25 @@ public class GoalService {
 
 	public void updateGoal(long id, Goal goalForm) {
 		Goal goal = getGoal(id);
+		
+		AuthHelper.isAuthorOrAdmin(goal);
+		
 		setGoalProps(goal, goalForm);
 		goalRepository.save(goal);
 	}
 
 	public Goal deleteGoal(long id) {
 		Goal goal = getGoal(id);
-		goal.setStatus(ContentStatus.DELETED);
-		goalRepository.save(goal);
+		
+		AuthHelper.isAuthorOrAdmin(goal);
+		
+		delete(goal);
 		return goal;
+	}
+	
+	void delete(Goal goal) {
+		goal.setStatus(ContentStatus.DELETED);
+		goalRepository.save(goal);		
 	}
 	
 	private void setGoalProps(Goal target, Goal source) {
