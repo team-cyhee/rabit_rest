@@ -2,6 +2,7 @@ package com.cyhee.rabit.config.cmm;
 
 import java.util.List;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;

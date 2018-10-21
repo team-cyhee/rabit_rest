@@ -28,10 +28,11 @@ public class GoalInfo extends MainInfo {
 	private Date startDate;
 	private Date endDate;
 	private GoalCycle selectedDays;
+	private Integer logNum;
 	private List<FileInfo> files;
 
-	public GoalInfo(Goal from, Integer likeNum, Integer commentNum, Integer companionNum, Page<Comment> comments) {
-		super(ContentType.GOAL, likeNum, commentNum, companionNum, comments, from.getLastUpdated());
+	public GoalInfo(Goal from, Integer logNum, Integer likeNum, Integer commentNum, Integer companionNum, Page<Comment> comments) {
+		super(ContentType.GOAL, likeNum, commentNum, companionNum, comments, from.getCreateDate(), from.getLastUpdated());
 		this.id = from.getId();
 		this.author = from.getAuthor();
 		this.parent = from.getParent();
@@ -39,6 +40,7 @@ public class GoalInfo extends MainInfo {
 		this.startDate = from.getStartDate();
 		this.endDate = from.getEndDate();
 		this.selectedDays = from.getSelectedDays();
+		this.logNum = logNum;
 		this.files = from.getFiles();
 	}
 }

@@ -40,10 +40,11 @@ public class GoalInfoService {
     }
 
     private GoalInfo goalToGoalInfo(Goal goal) {
+        Integer logNum = goalStoreService.getLogNum(goal);
         Integer likeNum = goalStoreService.getLikeNum(goal);
         Integer commentNum = goalStoreService.getCommentNum(goal);
         Integer companionNum = companionService.getCompanionNum(goal);
         Page<Comment> comments = goalStoreService.getComments(goal, PageRequest.of(0, 2));
-        return new GoalInfo(goal, likeNum, commentNum, companionNum, comments);
+        return new GoalInfo(goal, logNum, likeNum, commentNum, companionNum, comments);
     }
 }

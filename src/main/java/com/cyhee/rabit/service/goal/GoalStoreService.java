@@ -88,6 +88,10 @@ public class GoalStoreService {
 	public Page<GoalLog> getGoalLogs(Goal goal, List<ContentStatus> statusList, Pageable pageable) {
 		return goalLogService.getGoalLogsByGoalAndStatusIn(goal, statusList, pageable);
 	}
+
+	public Integer getLogNum(Goal goal) {
+		return goalLogService.getLogNumByGoalAndStatusIn(goal, ContentStatus.visible());
+	}
 	
 	public Page<Comment> getComments(Goal goal, Pageable pageable) {
 		return commentRepository.findByTypeAndParentIdAndStatusIn(ContentType.GOAL, goal.getId(), ContentStatus.visible(), pageable);
