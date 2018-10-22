@@ -72,6 +72,7 @@ public class UserStoreServiceTest {
 		
 		user1 = new User().setEmail("email1@com").setUsername("user1");		
 		user2 = new User().setEmail("email2@com").setUsername("user2");
+		user3 = new User().setEmail("email3@com").setUsername("user3");
 
 		follow1 = new Follow().setFollower(user1).setFollowee(user2);
 		follow2 = new Follow().setFollower(user1).setFollowee(user3);
@@ -84,6 +85,8 @@ public class UserStoreServiceTest {
 
 		entityManger.persist(user1);
 		entityManger.persist(user2);
+		entityManger.persist(user3);
+
 		entityManger.persist(follow1);
 		entityManger.persist(follow2);
 		entityManger.persist(goal1);

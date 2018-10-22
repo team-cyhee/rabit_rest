@@ -17,16 +17,10 @@ import java.util.List;
 public interface FollowRepository extends PagingAndSortingRepository<Follow, Long> {
     Page<Follow> findByStatusIn(List<RadioStatus> statusList, Pageable pageable);
 
-    @Query("Select f.followee From Follow f Where :followee = f.follower AND f.status In :statusList")
-    Page<User> findByFollowerAndStatusIn(User follower, List<RadioStatus> statusList, Pageable pageable);
-
     List<Follow> findByFollowerAndStatusIn(User follower, List<RadioStatus> statusList);
 
     @Query("Select count(f) From Follow f Where :follower = f.follower AND f.status In :statusList")
     Integer findNumByFollowerAndStatusIn(@Param("follower") User follower, @Param("statusList") List<RadioStatus> statusList);
-
-    @Query("Select f.follower From Follow f Where :followee = f.followee AND f.status In :statusList")
-    Page<User> findByFolloweeAndStatusIn(User followee, List<RadioStatus> statusList, Pageable pageable);
 
     List<Follow> findByFolloweeAndStatusIn(User followee, List<RadioStatus> statusList);
 
