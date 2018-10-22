@@ -90,7 +90,7 @@ public class GoalServiceTest {
 	@Test
 	public void update() {
 		try {
-			CmmTestUtil.updateWithAuthentication(goal1, long.class, goalService, "content", "startDate", "endDate", "status", "selectedDays");
+			CmmTestUtil.updateWithAuthentication(goal1, long.class, goalService, "content", "startDate", "endDate", "status", "doUnit", "doTimes");
 		} catch (Exception e) {
 			e.printStackTrace();
 			assert(false);

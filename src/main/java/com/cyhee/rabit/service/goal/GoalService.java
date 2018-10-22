@@ -76,6 +76,7 @@ public class GoalService {
 		target.setStartDate(source.getStartDate());
 		target.setEndDate(source.getEndDate());
 		target.setStatus(source.getStatus());
-		target.setSelectedDays(source.getSelectedDays());
+		target.setDoUnit(source.getDoUnit());
+		target.setDoTimes(source.getDoTimes());
 	}
 }

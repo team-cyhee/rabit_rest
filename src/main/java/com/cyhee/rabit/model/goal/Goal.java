@@ -46,7 +46,10 @@ public class Goal extends TimestampEntity {
 	private ContentStatus status = ContentStatus.ACTIVE;
 	
 	@Column
-	private GoalCycle selectedDays;
+	private GoalUnit doUnit;
+
+	@Column
+	private Integer doTimes;
 
 	@ManyToMany
 	private List<FileInfo> files;

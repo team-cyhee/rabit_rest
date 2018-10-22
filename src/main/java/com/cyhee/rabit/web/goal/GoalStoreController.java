@@ -70,7 +70,8 @@ public class GoalStoreController {
 		
 		User author = userService.getUserByUsername(AuthHelper.getUsername());
 		companionGoal.setAuthor(author).setParent(root);
-		return ResponseEntity.ok().build();
+		goalService.addGoal(companionGoal);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}	
 	
 	@GetMapping("/goallogs")

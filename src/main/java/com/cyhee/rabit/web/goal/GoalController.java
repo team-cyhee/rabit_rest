@@ -42,8 +42,10 @@ public class GoalController {
     }
 
 	@RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity<Void> addGoal(@RequestBody Goal goal) {    	
-    	goalService.addGoal(goal);
+    public ResponseEntity<Void> addGoal(@RequestBody Goal goal) {
+        User author = userService.getUserByUsername(AuthHelper.getUsername());
+        goal.setAuthor(author);
+	    goalService.addGoal(goal);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     
