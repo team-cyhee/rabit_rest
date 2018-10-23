@@ -52,7 +52,9 @@ public class GoalLogService {
 		return goalLogRepository.findAllByGoalAndStatusIn(goal, statusList, pageable);
 	}
 
-	public void addGoalLog(GoalLog goalLog) {
+	public void addGoalLog(GoalLog goalLog) {		
+		AuthHelper.isAuthorOrAdmin(goalLog);
+		
 		goalLogRepository.save(goalLog);
 	}
 
