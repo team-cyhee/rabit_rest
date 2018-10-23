@@ -29,6 +29,10 @@ public class GoalLogService {
 		return goalLogRepository.findAll(pageable);
 	}
 
+	public Page<GoalLog> getGoalLogsByStatusIn(List<ContentStatus> statusList, Pageable pageable) {
+		return goalLogRepository.findAllByStatusIn(statusList, pageable);
+	}
+
 	public GoalLog getGoalLog(long id) {
 		Optional<GoalLog> log = goalLogRepository.findById(id);
 		if(!log.isPresent())

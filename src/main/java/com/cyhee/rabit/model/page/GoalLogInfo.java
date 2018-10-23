@@ -1,17 +1,16 @@
 
-package com.cyhee.rabit.model.goallog;
+package com.cyhee.rabit.model.page;
 
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.file.FileInfo;
-import com.cyhee.rabit.model.main.MainInfo;
+import com.cyhee.rabit.model.goallog.GoalLog;
 
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.user.User;
 import lombok.*;
 import org.springframework.data.domain.Page;
 
-import java.util.Date;
 import java.util.List;
 
 @Data

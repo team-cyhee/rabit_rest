@@ -1,13 +1,11 @@
 
-package com.cyhee.rabit.model.goal;
+package com.cyhee.rabit.model.page;
 
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.file.FileInfo;
 import com.cyhee.rabit.model.goal.Goal;
-import com.cyhee.rabit.model.goal.GoalCycle;
-import com.cyhee.rabit.model.goallog.GoalLog;
-import com.cyhee.rabit.model.main.MainInfo;
+import com.cyhee.rabit.model.goal.GoalUnit;
 import com.cyhee.rabit.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +25,8 @@ public class GoalInfo extends MainInfo {
 	private String content;
 	private Date startDate;
 	private Date endDate;
-	private GoalCycle selectedDays;
+	private GoalUnit doUnit;
+	private Integer doTimes;
 	private Integer logNum;
 	private List<FileInfo> files;
 
@@ -39,7 +38,8 @@ public class GoalInfo extends MainInfo {
 		this.content = from.getContent();
 		this.startDate = from.getStartDate();
 		this.endDate = from.getEndDate();
-		this.selectedDays = from.getSelectedDays();
+		this.doUnit = from.getDoUnit();
+		this.doTimes = from.getDoTimes();
 		this.logNum = logNum;
 		this.files = from.getFiles();
 	}

@@ -1,7 +1,7 @@
-package com.cyhee.rabit.web.goallog;
+package com.cyhee.rabit.web.page;
 
-import com.cyhee.rabit.model.goallog.GoalLogInfo;
-import com.cyhee.rabit.service.goallog.GoalLogInfoService;
+import com.cyhee.rabit.model.page.GoalLogInfo;
+import com.cyhee.rabit.service.page.GoalLogInfoService;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;

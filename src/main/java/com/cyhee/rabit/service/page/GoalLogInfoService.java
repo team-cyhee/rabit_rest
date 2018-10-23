@@ -1,9 +1,13 @@
-package com.cyhee.rabit.service.goallog;
+package com.cyhee.rabit.service.page;
 
+import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goallog.GoalLog;
-import com.cyhee.rabit.model.goallog.GoalLogInfo;
+import com.cyhee.rabit.model.page.GoalLogInfo;
+import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.goal.CompanionService;
+import com.cyhee.rabit.service.goallog.GoalLogService;
+import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +31,18 @@ public class GoalLogInfoService {
     public List<GoalLogInfo> getGoalLogInfos(Pageable pageable) {
         List<GoalLogInfo> goalLogInfos = new ArrayList<>();
 
-        Page<GoalLog> goalLogs = goalLogService.getGoalLogs(pageable);
+        Page<GoalLog> goalLogs = goalLogService.getGoalLogsByStatusIn(ContentStatus.visible(), pageable);
+
+        for (GoalLog goalLog : goalLogs) {
+            goalLogInfos.add(goalLogToGoalLogInfo(goalLog));
+        }
+        return goalLogInfos;
+    }
+
+    public List<GoalLogInfo> getGoalLogInfosByUser(User user, Pageable pageable) {
+        List<GoalLogInfo> goalLogInfos = new ArrayList<>();
+
+        Page<GoalLog> goalLogs = goalLogService.getGoalLogsByAuthorAndStatusIn(user, ContentStatus.visible(), pageable);
 
         for (GoalLog goalLog : goalLogs) {
             goalLogInfos.add(goalLogToGoalLogInfo(goalLog));

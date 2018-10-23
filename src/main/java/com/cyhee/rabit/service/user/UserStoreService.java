@@ -2,6 +2,7 @@ package com.cyhee.rabit.service.user;
 
 import java.util.List;
 
+import com.cyhee.rabit.dao.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +35,9 @@ public class UserStoreService {
 	
 	@Autowired
 	private GoalLogService goalLogService;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Autowired
 	private FollowRepository followRepository;
@@ -83,22 +87,29 @@ public class UserStoreService {
 		return commentRepository.findByTypeAndParentIdAndStatusIn(ContentType.USER, goal.getId(), ContentStatus.visible());
 	}
 
-	public Page<Follow> getFollowers(User followee, Pageable pageable) {		
-		return followRepository.findByFolloweeAndStatusIn(followee, RadioStatus.visible(), pageable);
+	public Page<User> getFollowers(User followee, Pageable pageable) {
+		return userRepository.findByFolloweeAndStatusIn(followee, RadioStatus.visible(), pageable);
 	}
 
 	public List<Follow> getFollowers(User followee) {
 		return followRepository.findByFolloweeAndStatusIn(followee, RadioStatus.visible());
 	}
 
-	public Page<Follow> getFollowees(User follower, Pageable pageable) {
-		return followRepository.findByFollowerAndStatusIn(follower, RadioStatus.visible(), pageable);
+	public Integer getFollowerNum(User followee) {
+		return followRepository.findNumByFolloweeAndStatusIn(followee, RadioStatus.visible());
+	}
+
+	public Page<User> getFollowees(User follower, Pageable pageable) {
+		return userRepository.findByFollowerAndStatusIn(follower, RadioStatus.visible(), pageable);
 	}
 
 	public List<Follow> getFollowees(User follower) {
 		return followRepository.findByFollowerAndStatusIn(follower, RadioStatus.visible());
 	}
 
+	public Integer getFolloweeNum(User follower) {
+		return followRepository.findNumByFollowerAndStatusIn(follower, RadioStatus.visible());
+	}
 	private void deleteAllUserStore(User user) {
 		goalStoreService.deleteByParent(user);
 		goalLogStoreService.deleteByParent(user);

@@ -31,7 +31,7 @@ import com.cyhee.rabit.service.comment.CommentStoreService;
 import com.cyhee.rabit.service.goal.CompanionService;
 import com.cyhee.rabit.service.goal.GoalService;
 import com.cyhee.rabit.service.goal.GoalStoreService;
-import com.cyhee.rabit.service.goallog.GoalLogInfoService;
+import com.cyhee.rabit.service.page.GoalLogInfoService;
 import com.cyhee.rabit.service.goallog.GoalLogService;
 import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 import com.cyhee.rabit.service.like.LikeService;

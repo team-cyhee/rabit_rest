@@ -33,7 +33,7 @@ import com.cyhee.rabit.service.follow.FollowService;
 import com.cyhee.rabit.service.goal.CompanionService;
 import com.cyhee.rabit.service.goal.GoalService;
 import com.cyhee.rabit.service.goal.GoalStoreService;
-import com.cyhee.rabit.service.goallog.GoalLogInfoService;
+import com.cyhee.rabit.service.page.GoalLogInfoService;
 import com.cyhee.rabit.service.goallog.GoalLogService;
 import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 import com.cyhee.rabit.service.like.LikeService;
@@ -72,6 +72,7 @@ public class UserStoreServiceTest {
 		
 		user1 = new User().setEmail("email1@com").setUsername("user1");		
 		user2 = new User().setEmail("email2@com").setUsername("user2");
+		user3 = new User().setEmail("email3@com").setUsername("user3");
 
 		follow1 = new Follow().setFollower(user1).setFollowee(user2);
 		follow2 = new Follow().setFollower(user1).setFollowee(user3);
@@ -84,6 +85,8 @@ public class UserStoreServiceTest {
 
 		entityManger.persist(user1);
 		entityManger.persist(user2);
+		entityManger.persist(user3);
+
 		entityManger.persist(follow1);
 		entityManger.persist(follow2);
 		entityManger.persist(goal1);
@@ -103,12 +106,12 @@ public class UserStoreServiceTest {
 	@Test
 	public void getFollows() {
 		Pageable pageable = PageRequest.of(0, 10);
-		Page<Follow> follows = userStoreService.getFollowees(user1, pageable);
+		Page<User> follows = userStoreService.getFollowees(user1, pageable);
 
 		assertThat(follows.getContent())
 			.hasSize(2)
-			.contains(follow1)
-			.contains(follow2);
+			.contains(follow1.getFollowee())
+			.contains(follow2.getFollowee());
 	}
 
 	@Test
