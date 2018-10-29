@@ -2,24 +2,28 @@ package com.cyhee.rabit.web.goal;
 
 import javax.annotation.Resource;
 
+import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.cmm.AuthHelper;
 import com.cyhee.rabit.service.goal.GoalService;
 import com.cyhee.rabit.service.goal.GoalStoreService;
+import com.cyhee.rabit.service.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.cyhee.rabit.model.goal.Goal;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("rest/v1/goals")
 public class GoalController {
+    @Resource(name="userService")
+    private UserService userService;
+
 	@Resource(name="goalService")
 	private GoalService goalService;
 
@@ -31,9 +35,17 @@ public class GoalController {
         return new ResponseEntity<>(goalService.getGoals(pageable), HttpStatus.OK);
     }
 
+    @GetMapping("/by-user")
+    public ResponseEntity<List<Goal>> getGoalsByUser() {
+        User author = userService.getUserByUsername(AuthHelper.getUsername());
+        return new ResponseEntity<>(goalService.getGoalsByAuthor(author), HttpStatus.OK);
+    }
+
 	@RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity<Void> addGoal(@RequestBody Goal goal) {    	
-    	goalService.addGoal(goal);
+    public ResponseEntity<Void> addGoal(@RequestBody Goal goal) {
+        User author = userService.getUserByUsername(AuthHelper.getUsername());
+        goal.setAuthor(author);
+	    goalService.addGoal(goal);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     

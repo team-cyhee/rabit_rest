@@ -2,8 +2,10 @@ package com.cyhee.rabit.goal;
 
 import static org.mockito.BDDMockito.given;
 
+import com.cyhee.rabit.service.user.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,6 +25,8 @@ import com.cyhee.rabit.web.goal.GoalController;
 	public class GoalApiTest {
 		@Autowired
 		private MockMvc mvc;
+		@MockBean(name="userService")
+		private UserService userService;
 		@MockBean(name="goalService")
 		private GoalService goalService;
 		@MockBean(name="goalStoreService")

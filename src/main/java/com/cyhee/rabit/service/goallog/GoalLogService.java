@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.cyhee.rabit.dao.goallog.GoalLogRepository;
 import com.cyhee.rabit.exception.cmm.NoSuchContentException;
-import com.cyhee.rabit.exception.cmm.UnauthorizedException;
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.goal.Goal;
@@ -27,6 +26,10 @@ public class GoalLogService {
 
 	public Page<GoalLog> getGoalLogs(Pageable pageable) {
 		return goalLogRepository.findAll(pageable);
+	}
+
+	public Page<GoalLog> getGoalLogsByStatusIn(List<ContentStatus> statusList, Pageable pageable) {
+		return goalLogRepository.findAllByStatusIn(statusList, pageable);
 	}
 
 	public GoalLog getGoalLog(long id) {
@@ -54,8 +57,10 @@ public class GoalLogService {
 
 	public void addGoalLog(GoalLog goalLog) {		
 		AuthHelper.isAuthorOrAdmin(goalLog);
-		
 		goalLogRepository.save(goalLog);
+	}
+	public Integer getLogNumByGoalAndStatusIn(Goal goal, List<ContentStatus> statusList) {
+		return goalLogRepository.findNumByGoalAndStatusIn(goal, statusList);
 	}
 
 	public void updateGoalLog(long id, GoalLog goalLogForm) {

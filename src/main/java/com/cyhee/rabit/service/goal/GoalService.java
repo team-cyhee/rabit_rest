@@ -25,6 +25,10 @@ public class GoalService {
 		return goalRepository.findAll(pageable);
 	}
 
+	public Page<Goal> getGoalsByStatusIn(List<ContentStatus> statusList, Pageable pageable) {
+		return goalRepository.findAllByStatusIn(statusList, pageable);
+	}
+
 	public List<Goal> getGoalsByAuthor(User author) {
 		return goalRepository.findAllByAuthor(author);
 	}
@@ -72,6 +76,7 @@ public class GoalService {
 		target.setStartDate(source.getStartDate());
 		target.setEndDate(source.getEndDate());
 		target.setStatus(source.getStatus());
-		target.setSelectedDays(source.getSelectedDays());
+		target.setDoUnit(source.getDoUnit());
+		target.setDoTimes(source.getDoTimes());
 	}
 }

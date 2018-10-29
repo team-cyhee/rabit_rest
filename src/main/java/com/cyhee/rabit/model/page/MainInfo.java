@@ -1,4 +1,4 @@
-package com.cyhee.rabit.model.main;
+package com.cyhee.rabit.model.page;
 
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
@@ -19,6 +19,7 @@ public class MainInfo {
     private Integer commentNum;
     private Integer companionNum;
     private Page<Comment> comments;
+    private Date createDate;
     private Date lastUpdated;
 
     public static class DateSort implements Comparator<MainInfo> {

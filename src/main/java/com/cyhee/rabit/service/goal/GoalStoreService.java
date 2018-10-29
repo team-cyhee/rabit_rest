@@ -3,8 +3,8 @@ package com.cyhee.rabit.service.goal;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cyhee.rabit.model.goallog.GoalLogInfo;
-import com.cyhee.rabit.service.goallog.GoalLogInfoService;
+import com.cyhee.rabit.model.page.GoalLogInfo;
+import com.cyhee.rabit.service.page.GoalLogInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -87,6 +87,10 @@ public class GoalStoreService {
 
 	public Page<GoalLog> getGoalLogs(Goal goal, List<ContentStatus> statusList, Pageable pageable) {
 		return goalLogService.getGoalLogsByGoalAndStatusIn(goal, statusList, pageable);
+	}
+
+	public Integer getLogNum(Goal goal) {
+		return goalLogService.getLogNumByGoalAndStatusIn(goal, ContentStatus.visible());
 	}
 	
 	public Page<Comment> getComments(Goal goal, Pageable pageable) {
