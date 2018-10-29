@@ -23,6 +23,41 @@ repositories {
 	mavenCentral()
 }
 
+def queryDslOutput = file("src/main/generated")
+
+sourceSets {
+    main {
+        java {
+            srcDir "src/main/generated"
+        }
+    }
+}
+
+clean {
+    delete queryDslOutput
+}
+
+task generateQueryDSL(type: JavaCompile, group: 'build') {
+    doFirst {
+        if (!queryDslOutput.exists()) {
+            logger.info("Creating `$queryDslOutput` directory")
+
+            if (!queryDslOutput.mkdirs()) {
+                throw new InvalidUserDataException("Unable to create `$queryDslOutput` directory")
+            }
+        }
+    }
+
+    source = sourceSets.main.java
+    classpath = configurations.compile
+    options.compilerArgs = [
+            "-proc:only",
+			"-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor"//,lombok.launch.AnnotationProcessorHider$AnnotationProcessor"
+    ]
+    destinationDir = queryDslOutput
+}
+
+compileTestJava.dependsOn(generateQueryDSL)
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-aop')
@@ -44,6 +79,10 @@ dependencies {
 	// swagger
 	compile('io.springfox:springfox-swagger2:2.6.1')
 	compile('io.springfox:springfox-swagger-ui:2.6.1')
+	// querydsl
+	compile('com.querydsl:querydsl-jpa:4.2.1')
+	compile('com.querydsl:querydsl-apt:4.2.1')
+	compile('com.querydsl:querydsl-core:4.2.1')	
 	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
 	compile('org.apache.commons:commons-lang3:3.7')	
 	//compile('org.springframework.session:spring-session-jdbc')	
