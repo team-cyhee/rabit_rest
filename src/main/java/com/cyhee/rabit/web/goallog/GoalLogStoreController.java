@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
+import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.model.like.Like;
 import com.cyhee.rabit.model.user.User;
@@ -74,5 +76,16 @@ public class GoalLogStoreController {
     	User liker = userService.getUserByUsername(username);
     	likeService.addLike(goalLog, liker);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
+	}
+    
+    @DeleteMapping("/likes")
+    public ResponseEntity<Void> deleteLike(@PathVariable Long id) {
+		GoalLog goalLog = goalLogService.getGoalLog(id);
+		
+    	String username = AuthHelper.getUsername();
+    	User liker = userService.getUserByUsername(username);
+    	
+    	likeService.deleteLike(ContentType.GOALLOG, goalLog.getId(), liker);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 	}
 }

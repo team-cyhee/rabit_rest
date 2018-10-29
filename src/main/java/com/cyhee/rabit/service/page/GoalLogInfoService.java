@@ -1,21 +1,26 @@
 package com.cyhee.rabit.service.page;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import com.cyhee.rabit.model.cmm.ContentStatus;
+import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.model.page.GoalLogInfo;
 import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.cmm.AuthHelper;
 import com.cyhee.rabit.service.goal.CompanionService;
 import com.cyhee.rabit.service.goallog.GoalLogService;
 import com.cyhee.rabit.service.goallog.GoalLogStoreService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Pageable;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.cyhee.rabit.service.like.LikeService;
+import com.cyhee.rabit.service.user.UserService;
 
 @Service("goalLogInfoService")
 public class GoalLogInfoService {
@@ -27,6 +32,12 @@ public class GoalLogInfoService {
 
     @Autowired
     CompanionService companionService;
+    
+    @Autowired
+    LikeService likeService;
+    
+    @Autowired
+    UserService userService;
 
     public List<GoalLogInfo> getGoalLogInfos(Pageable pageable) {
         List<GoalLogInfo> goalLogInfos = new ArrayList<>();
@@ -56,10 +67,12 @@ public class GoalLogInfoService {
     }
 
     public GoalLogInfo goalLogToGoalLogInfo(GoalLog goalLog) {
+    	User user = userService.getUserByUsername(AuthHelper.getUsername());
         Integer likeNum = goalLogStoreService.getLikeNum(goalLog);
         Integer commentNum = goalLogStoreService.getCommentNum(goalLog);
         Integer companionNum = companionService.getCompanionNum(goalLog.getGoal());
         Page<Comment> comments = goalLogStoreService.getComments(goalLog, PageRequest.of(0, 2));
-        return new GoalLogInfo(goalLog, likeNum, commentNum, companionNum, comments);
+        boolean liked = likeService.existsByContentAndAuthor(ContentType.GOALLOG, goalLog.getId(), user);
+        return new GoalLogInfo(goalLog, likeNum, commentNum, companionNum, comments, liked);
     }
 }

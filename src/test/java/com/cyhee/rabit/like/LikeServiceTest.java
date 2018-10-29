@@ -142,5 +142,24 @@ public class LikeServiceTest {
 			assert(false);
 		}
 	}
+	
+	@Test
+	public void exists() {
+		assertThat(likeService.existsByContentAndAuthor(likeForGoal.getType(),
+				likeForGoal.getParentId(), likeForGoal.getAuthor()))
+			.isEqualTo(true);
+		
+		assertThat(likeService.existsByContentAndAuthor(ContentType.GOALLOG, 
+				likeForGoal.getParentId(), likeForGoal.getAuthor()))
+			.isEqualTo(false);
+		
+		assertThat(likeService.existsByContentAndAuthor(likeForGoal.getType(),
+				likeForGoal.getParentId()+1, likeForGoal.getAuthor()))
+			.isEqualTo(false);
+		
+		assertThat(likeService.existsByContentAndAuthor(likeForGoal.getType(),
+				likeForGoal.getParentId(), user1))
+			.isEqualTo(false);
+	}
 
 }

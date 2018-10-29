@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -132,5 +133,16 @@ public class GoalStoreController {
     	
     	likeService.addLike(goal, liker);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
+	}
+    
+    @DeleteMapping("/likes")
+    public ResponseEntity<Void> deleteLike(@PathVariable Long id) {
+		Goal goal = goalService.getGoal(id);
+		
+    	String username = AuthHelper.getUsername();
+    	User liker = userService.getUserByUsername(username);
+    	
+    	likeService.deleteLike(ContentType.GOAL, goal.getId(), liker);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 	}
 }
