@@ -129,4 +129,12 @@ public class UserServiceTest {
 			assert(false);
 		}
 	}
+	
+	@Test
+	public void search() {
+		Pageable pageable = PageRequest.of(0, 10);
+		assertThat(userService.search("tuser", Arrays.asList(UserStatus.ACTIVE), pageable))
+			.hasSize(2)
+			.contains(user2, user3);
+	}
 }

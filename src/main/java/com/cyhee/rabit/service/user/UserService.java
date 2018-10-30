@@ -49,6 +49,10 @@ public class UserService {
     	return userOpt.get();
 	}
 	
+	public Page<User> search(String keyword, List<UserStatus> statusList, Pageable pageable) {
+		return userRepository.search(keyword, statusList, pageable);
+	}
+	
 	public void updateUser(Long id, User userForm) {
 		User user = getUser(id);
 		

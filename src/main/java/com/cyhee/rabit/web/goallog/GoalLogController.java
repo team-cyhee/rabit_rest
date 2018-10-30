@@ -10,12 +10,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cyhee.rabit.model.cmm.ContentStatus;
+import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
 
 @RestController
@@ -55,4 +59,9 @@ public class GoalLogController {
         goallogStoreService.deleteGoalLog(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
+    
+    @GetMapping(value = "/search")
+	public ResponseEntity<Page<GoalLog>> search(@RequestParam String keyword, @PageableDefault Pageable pageable) {
+		return new ResponseEntity<Page<GoalLog>>(goalLogService.search(keyword, ContentStatus.visible(), pageable), HttpStatus.OK);
+	}
 }

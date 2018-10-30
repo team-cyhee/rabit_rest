@@ -45,7 +45,7 @@ public class User extends TimestampEntity{
 	private Date birth;
 	
 	@Column(nullable=false)
-	private UserStatus status = UserStatus.PENDING;
+	private UserStatus status = UserStatus.ACTIVE;
 
 	@ManyToMany
 	private List<FileInfo> photo;

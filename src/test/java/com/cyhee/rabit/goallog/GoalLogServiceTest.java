@@ -21,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cyhee.rabit.cmm.AuthTestUtil;
 import com.cyhee.rabit.cmm.CmmTestUtil;
+import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.service.goal.GoalService;
 import com.cyhee.rabit.model.goallog.GoalLog;
@@ -58,8 +59,8 @@ public class GoalLogServiceTest {
 		
 		gl1 = new GoalLog().setGoal(goal1).setContent("content1");
 		gl2 = new GoalLog().setGoal(goal2).setContent("content2");
-		gl3 = new GoalLog().setGoal(goal1).setContent("content3");
-		gl4 = new GoalLog().setGoal(goal2).setContent("content4");
+		gl3 = new GoalLog().setGoal(goal1).setContent("content-3");
+		gl4 = new GoalLog().setGoal(goal2).setContent("content-4");
 		
 		entityManager.persist(user1);
 		entityManager.persist(user2);
@@ -112,5 +113,17 @@ public class GoalLogServiceTest {
 			e.printStackTrace();
 			assert(false);
 		}
+	}
+	
+	@Test
+	public void search() {
+		goalLogService.addGoalLog(gl1);
+		goalLogService.addGoalLog(gl2);
+		goalLogService.addGoalLog(gl3);
+		goalLogService.addGoalLog(gl4);
+		Pageable pageable = PageRequest.of(0, 10);
+		assertThat(goalLogService.search("ent-", ContentStatus.all(), pageable))
+			.hasSize(2)
+			.contains(gl3,gl4);
 	}
 }

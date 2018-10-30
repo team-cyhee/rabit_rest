@@ -17,7 +17,7 @@ import com.cyhee.rabit.model.user.User;
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
 // CRUD refers Create, Read, Update, Delete
 
-public interface GoalLogRepository extends PagingAndSortingRepository<GoalLog, Long> {
+public interface GoalLogRepository extends PagingAndSortingRepository<GoalLog, Long>, GoalLogRepositoryCustom {
 	Page<GoalLog> findAllByStatusIn(List<ContentStatus> statusList, Pageable pageable);
 
 	@Query("From GoalLog n Where :author = n.goal.author")

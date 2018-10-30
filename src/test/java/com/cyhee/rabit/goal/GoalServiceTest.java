@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -105,5 +106,13 @@ public class GoalServiceTest {
 			e.printStackTrace();
 			assert(false);
 		}
+	}
+	
+	@Test
+	public void search() {
+		Pageable pageable = PageRequest.of(0, 10);
+		assertThat(goalService.search("tent1", ContentStatus.all(), pageable))
+			.hasSize(1)
+			.contains(goal1);
 	}
 }

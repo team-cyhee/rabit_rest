@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.cyhee.rabit.dao.goal.GoalRepository;
@@ -46,6 +47,10 @@ public class GoalService {
 		if(!goal.isPresent())
 			throw new NoSuchContentException(ContentType.GOAL, id);
 		return goal.get();
+	}
+	
+	public Page<Goal> search(String keyword, List<ContentStatus> statusList, Pageable pageable) {
+		return goalRepository.search(keyword, statusList, pageable);
 	}
 
 	public void updateGoal(long id, Goal goalForm) {

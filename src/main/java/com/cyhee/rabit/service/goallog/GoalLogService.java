@@ -54,6 +54,10 @@ public class GoalLogService {
 	public Page<GoalLog> getGoalLogsByGoalAndStatusIn(Goal goal, List<ContentStatus> statusList, Pageable pageable) {
 		return goalLogRepository.findAllByGoalAndStatusIn(goal, statusList, pageable);
 	}
+	
+	public Page<GoalLog> search(String keyword, List<ContentStatus> statusList, Pageable pageable) {
+		return goalLogRepository.search(keyword, statusList, pageable);
+	}
 
 	public void addGoalLog(GoalLog goalLog) {		
 		AuthHelper.isAuthorOrAdmin(goalLog);
