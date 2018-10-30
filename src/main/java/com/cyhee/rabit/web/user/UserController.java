@@ -1,5 +1,7 @@
 package com.cyhee.rabit.web.user;
 
+import java.util.Arrays;
+
 import javax.annotation.Resource;
 
 import org.springframework.data.domain.Page;
@@ -13,11 +15,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cyhee.rabit.exception.cmm.UnauthorizedException;
 import com.cyhee.rabit.exception.cmm.ValidationFailException;
 import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.model.user.UserStatus;
 import com.cyhee.rabit.service.user.UserService;
 import com.cyhee.rabit.service.user.UserStoreService;
 
@@ -55,4 +59,10 @@ public class UserController {
 		userStoreService.deleteUser(id);
 		return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
 	}
+	
+	@GetMapping(value = "/search")
+	public ResponseEntity<Page<User>> searchUsers(@RequestParam String keyword, @PageableDefault Pageable pageable) {
+		return new ResponseEntity<Page<User>>(userService.search(keyword, Arrays.asList(UserStatus.values()), pageable), HttpStatus.OK);
+	}
+
 }

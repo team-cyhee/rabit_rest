@@ -10,10 +10,9 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 
 /**
- * ºñ¹Ğ¹øÈ£¿¡ ´ëÇÑ validationÀ» ÁøÇàÇÏ±â À§ÇÑ annotation
+ * Password validation annotation
  * @{link #PasswordValidator}
  * @author chy
- *
  */
 @Documented
 @Constraint(validatedBy = PasswordValidator.class)
@@ -25,23 +24,23 @@ public @interface Password {
     Class<? extends Payload>[] payload() default {};
     
     /**
-     * Æ¯¼ö¹®ÀÚ°¡ Æ÷ÇÔµÇ¾î¾ß ÇÏ´ÂÁö ¼³Á¤
+     * íŠ¹ìˆ˜ ë¬¸ìê°€ í•„ìš”í•œì§€ default false
      */
     boolean needSpecial() default false;
     
     
     /**
-     * ´ë¹®ÀÚ°¡ Æ÷ÇÔµÇ¾î¾ß ÇÏ´ÂÁö ¼³Á¤
+     * ëŒ€ë¬¸ìê°€ í•„ìš”í•œì§€ default false
      */
     boolean needUpper() default false;
         
     /**
-     * ÃÖ¼Ò ±æÀÌ ¼³Á¤
+     * ìµœì†Œê¸¸ì´ default 8
      */
     int min() default 8;
     
     /**
-     * ÃÖ´ë ±æÀÌ ¼³Á¤
+     * ìµœëŒ€ê¸¸ì´ default 20
      */
     int max() default 20;
 }

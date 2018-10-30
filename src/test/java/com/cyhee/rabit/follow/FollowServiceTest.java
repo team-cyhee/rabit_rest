@@ -84,4 +84,13 @@ public class FollowServiceTest {
 			assert(false);
 		}
     }
+    
+    @Test
+    public void exists() {
+    	followService.addFollow(follow1);
+    	assertThat(followService.exists(user1, user2)).isTrue();    	
+    	assertThat(followService.exists(user2, user3)).isFalse();
+    	assertThat(followService.exists(user3, user1)).isFalse();
+    	assertThat(followService.exists(user2, user1)).isFalse();
+    }
 }

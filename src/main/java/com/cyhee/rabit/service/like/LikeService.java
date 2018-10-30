@@ -46,6 +46,10 @@ public class LikeService {
 			throw new NoSuchContentException(ContentType.LIKE, id);
 		return like.get();
 	}
+	
+	public boolean existsByContentAndAuthor(ContentType type, Long parentId, User author) {
+		return repository.existsByContentAndAuthor(type, parentId, author);
+	}
 
 	public void addLike(Like like) {
 		repository.save(like);
@@ -74,6 +78,14 @@ public class LikeService {
 		AuthHelper.isAuthorOrAdmin(like);
 		
 		delete(like);
+	}
+	
+	public void deleteLike(ContentType type, Long parentId, User liker) {
+		Optional<Like> like = repository.findByContentAndAuthor(type, parentId, liker);
+		
+		AuthHelper.isAuthorOrAdmin(like.get());
+		
+		delete(like.get());
 	}
 	
 	public void deleteByParent(BaseEntity parent) {

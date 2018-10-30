@@ -21,6 +21,7 @@ public class MainInfo {
     private Page<Comment> comments;
     private Date createDate;
     private Date lastUpdated;
+    private boolean liked;
 
     public static class DateSort implements Comparator<MainInfo> {
         @Override

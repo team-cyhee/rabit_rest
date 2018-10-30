@@ -27,5 +27,6 @@ public interface FollowRepository extends PagingAndSortingRepository<Follow, Lon
     @Query("Select count(f) From Follow f Where :followee = f.followee AND f.status In :statusList")
     Integer findNumByFolloweeAndStatusIn(@Param("followee") User followee, @Param("statusList") List<RadioStatus> statusList);
 
-
+    @Query("Select count(f) > 0 From Follow f Where :follower = f.follower AND :followee = f.followee AND f.status = com.cyhee.rabit.model.cmm.RadioStatus.ACTIVE")
+    boolean existsByFollowerAndFollowee(@Param("follower") User follower, @Param("followee") User followee);
 }

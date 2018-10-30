@@ -3,6 +3,7 @@ package com.cyhee.rabit.web.goal;
 import javax.annotation.Resource;
 
 import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.model.user.UserStatus;
 import com.cyhee.rabit.service.cmm.AuthHelper;
 import com.cyhee.rabit.service.goal.GoalService;
 import com.cyhee.rabit.service.goal.GoalStoreService;
@@ -14,8 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.goal.Goal;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -65,4 +68,9 @@ public class GoalController {
     	goalStoreService.deleteGoal(id);
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
     }
+    
+    @GetMapping(value = "/search")
+	public ResponseEntity<Page<Goal>> search(@RequestParam String keyword, @PageableDefault Pageable pageable) {
+		return new ResponseEntity<Page<Goal>>(goalService.search(keyword, ContentStatus.visible(), pageable), HttpStatus.OK);
+	}
 }
