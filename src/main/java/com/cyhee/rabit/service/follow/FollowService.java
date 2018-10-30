@@ -37,6 +37,10 @@ public class FollowService {
         }
         return follow.get();
     }
+    
+    public boolean exists(User follower, User followee) {
+    	return followRepository.existsByFollowerAndFollowee(follower, followee);
+    }
 
     public void updateFollow(long id, Follow followForm) {
         Follow follow = getFollow(id);
