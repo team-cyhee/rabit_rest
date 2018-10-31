@@ -30,6 +30,12 @@ public interface GoalLogRepository extends PagingAndSortingRepository<GoalLog, L
 
 	Page<GoalLog> findAllByGoalAndStatusIn(Goal goal, List<ContentStatus> statusList, Pageable pageable);
 
+//	@Query("From GoalLog gl Where gl.goal.id In :goals AND gl.status In :statusList")
+//	Page<GoalLog> findComByStatusIn(@Param("goals") List<Long> goals, @Param("statusList") List<ContentStatus> statusList, Pageable pageable);
+
+	@Query("From GoalLog gl Where gl.status In :statusList")
+	Page<GoalLog> findComByStatusIn(@Param("statusList") List<ContentStatus> statusList, Pageable pageable);
+
 	@Query("Select count(gl) From GoalLog gl Where :goal = gl.goal AND gl.status In :statusList")
 	Integer findNumByGoalAndStatusIn(@Param("goal")Goal goal, @Param("statusList")List<ContentStatus> statusList);
 }

@@ -2,6 +2,7 @@ package com.cyhee.rabit.web.page;
 
 import com.cyhee.rabit.model.page.GoalInfo;
 import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.cmm.AuthHelper;
 import com.cyhee.rabit.service.page.GoalInfoService;
 import com.cyhee.rabit.service.user.UserService;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,13 @@ public class GoalInfoController {
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
     public ResponseEntity<GoalInfo> getGoalInfo(@PathVariable long id) {
         return new ResponseEntity<>(goalInfoService.getGoalInfo(id), HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/user", method=RequestMethod.GET)
+    public ResponseEntity<List<GoalInfo>> getGoalInfoByUser(@PageableDefault Pageable pageable) {
+        User author = userService.getUserByUsername(AuthHelper.getUsername());
+
+        return new ResponseEntity<>(goalInfoService.getGoalInfosByUser(author, pageable), HttpStatus.OK);
     }
 
     @RequestMapping(value="/user/{username}", method=RequestMethod.GET)

@@ -3,6 +3,7 @@ package com.cyhee.rabit.service.page;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cyhee.rabit.service.goal.GoalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +25,9 @@ import com.cyhee.rabit.service.user.UserService;
 
 @Service("goalLogInfoService")
 public class GoalLogInfoService {
+    @Autowired
+    GoalService goalService;
+
     @Autowired
     GoalLogService goalLogService;
 
@@ -74,5 +78,17 @@ public class GoalLogInfoService {
         Page<Comment> comments = goalLogStoreService.getComments(goalLog, PageRequest.of(0, 2));
         boolean liked = likeService.existsByContentAndAuthor(ContentType.GOALLOG, goalLog.getId(), user);
         return new GoalLogInfo(goalLog, likeNum, commentNum, companionNum, comments, liked);
+    }
+
+    public List<GoalLogInfo> getComGoalLogInfo(Long id, Pageable pageable) {
+        List<GoalLogInfo> goalLogInfos = new ArrayList<>();
+
+        List<Long> goals = companionService.getCompanionGoalsId(goalService.getGoal(id));
+        Page<GoalLog> goalLogs = goalLogService.getComGoalLogByStatusIn(goals, ContentStatus.visible(), pageable);
+
+        for (GoalLog goalLog : goalLogs) {
+            goalLogInfos.add(goalLogToGoalLogInfo(goalLog));
+        }
+        return goalLogInfos;
     }
 }

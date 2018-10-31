@@ -27,4 +27,9 @@ public class GoalLogInfoController {
     public ResponseEntity<GoalLogInfo> getGoalLogInfo(@PathVariable long id) {
         return new ResponseEntity<>(goalLogInfoService.getGoalLogInfo(id), HttpStatus.OK);
     }
+
+    @RequestMapping(value="/com/{id}", method=RequestMethod.GET)
+    public ResponseEntity<List<GoalLogInfo>> getComGoalInfo(@PathVariable Long id, @PageableDefault Pageable pageable) {
+        return new ResponseEntity<>(goalLogInfoService.getComGoalLogInfo(id, pageable), HttpStatus.OK);
+    }
 }

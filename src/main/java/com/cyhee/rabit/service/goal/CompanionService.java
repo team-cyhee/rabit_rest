@@ -11,6 +11,8 @@ import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.user.User;
 
+import java.util.List;
+
 @Service
 public class CompanionService {
 	@Autowired
@@ -28,6 +30,12 @@ public class CompanionService {
 		Goal root = goal.getParent();
 		if (root == null) root = goal;
 		return companionGoalRepository.findAllByGoal(root, goal, ContentStatus.visible(), pageable);
+	}
+
+	public List<Long> getCompanionGoalsId(Goal goal) {
+		Goal root = goal.getParent();
+		if (root == null) root = goal;
+		return companionGoalRepository.findAllByGoal(root, goal, ContentStatus.visible());
 	}
 
 	public Integer getCompanionNum(Goal goal) {
