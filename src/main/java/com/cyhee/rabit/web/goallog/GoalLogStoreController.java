@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
-import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.model.like.Like;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.cmm.AuthHelper;
+import com.cyhee.rabit.service.cmm.ResponseHelper;
 import com.cyhee.rabit.service.comment.CommentService;
 import com.cyhee.rabit.service.goallog.GoalLogService;
 import com.cyhee.rabit.service.goallog.GoalLogStoreService;
@@ -59,7 +59,7 @@ public class GoalLogStoreController {
     	comment.setType(ContentType.GOALLOG);
     	
     	commentService.addComment(comment);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		return ResponseHelper.createdEntity(ContentType.COMMENT, comment.getId());
 	}
 
 	@GetMapping("/likes")
@@ -74,8 +74,8 @@ public class GoalLogStoreController {
 		
     	String username = AuthHelper.getUsername();
     	User liker = userService.getUserByUsername(username);
-    	likeService.addLike(goalLog, liker);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+    	Like like = likeService.addLike(goalLog, liker);
+        return ResponseHelper.createdEntity(ContentType.LIKE, like.getId());
 	}
     
     @DeleteMapping("/likes")

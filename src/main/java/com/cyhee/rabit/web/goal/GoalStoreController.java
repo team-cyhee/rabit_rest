@@ -1,7 +1,8 @@
 package com.cyhee.rabit.web.goal;
 
 
-import com.cyhee.rabit.model.page.GoalLogInfo;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,8 +22,11 @@ import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
+import com.cyhee.rabit.model.like.Like;
+import com.cyhee.rabit.model.page.GoalLogInfo;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.cmm.AuthHelper;
+import com.cyhee.rabit.service.cmm.ResponseHelper;
 import com.cyhee.rabit.service.comment.CommentService;
 import com.cyhee.rabit.service.goal.CompanionService;
 import com.cyhee.rabit.service.goal.GoalService;
@@ -30,8 +34,6 @@ import com.cyhee.rabit.service.goal.GoalStoreService;
 import com.cyhee.rabit.service.goallog.GoalLogService;
 import com.cyhee.rabit.service.like.LikeService;
 import com.cyhee.rabit.service.user.UserService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("rest/v1/goals/{id}")
@@ -72,7 +74,7 @@ public class GoalStoreController {
 		User author = userService.getUserByUsername(AuthHelper.getUsername());
 		companionGoal.setAuthor(author).setParent(root);
 		goalService.addGoal(companionGoal);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseHelper.createdEntity(ContentType.GOAL, companionGoal.getId());
 	}	
 	
 	@GetMapping("/goallogs")
@@ -88,7 +90,7 @@ public class GoalStoreController {
     	goalLog.setGoal(goal);
     	
     	goalLogService.addGoalLog(goalLog);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseHelper.createdEntity(ContentType.GOALLOG, goalLog.getId());
 	}
 
 	@GetMapping("/goallogs/info")
@@ -115,7 +117,7 @@ public class GoalStoreController {
     	comment.setType(ContentType.GOAL);
     	
     	commentService.addComment(comment);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		return ResponseHelper.createdEntity(ContentType.COMMENT, comment.getId());
 	}
 
     @GetMapping("/likes")
@@ -131,8 +133,8 @@ public class GoalStoreController {
     	String username = AuthHelper.getUsername();
     	User liker = userService.getUserByUsername(username);
     	
-    	likeService.addLike(goal, liker);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+    	Like like = likeService.addLike(goal, liker);
+        return ResponseHelper.createdEntity(ContentType.LIKE, like.getId());
 	}
     
     @DeleteMapping("/likes")

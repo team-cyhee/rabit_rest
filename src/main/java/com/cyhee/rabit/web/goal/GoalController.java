@@ -1,25 +1,31 @@
 package com.cyhee.rabit.web.goal;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
-import com.cyhee.rabit.model.user.User;
-import com.cyhee.rabit.model.user.UserStatus;
-import com.cyhee.rabit.service.cmm.AuthHelper;
-import com.cyhee.rabit.service.goal.GoalService;
-import com.cyhee.rabit.service.goal.GoalStoreService;
-import com.cyhee.rabit.service.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.cyhee.rabit.model.cmm.ContentStatus;
+import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.goal.Goal;
-
-import java.util.Arrays;
-import java.util.List;
+import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.cmm.AuthHelper;
+import com.cyhee.rabit.service.cmm.ResponseHelper;
+import com.cyhee.rabit.service.goal.GoalService;
+import com.cyhee.rabit.service.goal.GoalStoreService;
+import com.cyhee.rabit.service.user.UserService;
 
 @RestController
 @RequestMapping("rest/v1/goals")
@@ -49,7 +55,7 @@ public class GoalController {
         User author = userService.getUserByUsername(AuthHelper.getUsername());
         goal.setAuthor(author);
 	    goalService.addGoal(goal);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseHelper.createdEntity(ContentType.GOAL, goal.getId());
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.GET)

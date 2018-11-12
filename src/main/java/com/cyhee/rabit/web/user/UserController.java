@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cyhee.rabit.exception.cmm.UnauthorizedException;
 import com.cyhee.rabit.exception.cmm.ValidationFailException;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.model.user.UserStatus;

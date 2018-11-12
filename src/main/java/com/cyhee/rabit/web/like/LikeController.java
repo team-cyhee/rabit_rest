@@ -1,7 +1,9 @@
 
 package com.cyhee.rabit.web.like;
 
+import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.like.Like;
+import com.cyhee.rabit.service.cmm.ResponseHelper;
 import com.cyhee.rabit.service.like.LikeService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +29,7 @@ public class LikeController {
 	@RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<Void> addLike(@RequestBody Like like) {
         likeService.addLike(like);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseHelper.createdEntity(ContentType.LIKE, like.getId());
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.GET)

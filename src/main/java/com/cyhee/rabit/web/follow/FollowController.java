@@ -1,6 +1,8 @@
 package com.cyhee.rabit.web.follow;
 
+import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.follow.Follow;
+import com.cyhee.rabit.service.cmm.ResponseHelper;
 import com.cyhee.rabit.service.follow.FollowService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +27,7 @@ public class FollowController {
     @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<Void> addFollow(@RequestBody Follow follow) {
         followService.addFollow(follow);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseHelper.createdEntity(ContentType.FOLLOW, follow.getId());
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
