@@ -3,8 +3,6 @@ package com.cyhee.rabit.web.goallog;
 
 import javax.annotation.Resource;
 
-import com.cyhee.rabit.service.goallog.GoalLogService;
-import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -19,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cyhee.rabit.model.cmm.ContentStatus;
-import com.cyhee.rabit.model.goal.Goal;
+import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.goallog.GoalLog;
+import com.cyhee.rabit.service.cmm.ResponseHelper;
+import com.cyhee.rabit.service.goallog.GoalLogService;
+import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 
 @RestController
 @RequestMapping("rest/v1/goallogs")
@@ -40,7 +41,7 @@ public class GoalLogController {
     @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<Void> addGoalLog(@RequestBody GoalLog goallog) {
         goalLogService.addGoalLog(goallog);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseHelper.createdEntity(ContentType.GOALLOG, goallog.getId());
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.GET)

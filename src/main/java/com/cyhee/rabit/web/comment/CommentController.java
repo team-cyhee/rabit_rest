@@ -2,9 +2,9 @@
 package com.cyhee.rabit.web.comment;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
-import com.cyhee.rabit.service.comment.CommentService;
-import com.cyhee.rabit.service.comment.CommentStoreService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -16,16 +16,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
+import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.service.cmm.AuthHelper;
+import com.cyhee.rabit.service.cmm.ResponseHelper;
+import com.cyhee.rabit.service.comment.CommentService;
+import com.cyhee.rabit.service.comment.CommentStoreService;
+import com.cyhee.rabit.service.user.UserService;
 
 @RestController
-@RequestMapping("rest/v1/comments")
+@RequestMapping("/rest/v1/comments")
 public class CommentController {
 	@Resource(name="commentService")
 	private CommentService commentService;
 
 	@Resource(name="commentStoreService")
     private CommentStoreService commentStoreService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<Page<Comment>> getComments(@PageableDefault Pageable pageable) {
@@ -34,9 +44,11 @@ public class CommentController {
     }
 	
 	@RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity<Void> addComment(@RequestBody Comment comment) {
+    public ResponseEntity<Void> addComment(HttpServletRequest request, @RequestBody Comment comment) {
+		User author = userService.getUserByUsername(AuthHelper.getUsername());
+		comment.setAuthor(author);
     	commentService.addComment(comment);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    	return ResponseHelper.createdEntity(ContentType.GOAL, comment.getId());
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
