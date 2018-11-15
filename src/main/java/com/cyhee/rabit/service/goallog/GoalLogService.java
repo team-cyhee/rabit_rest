@@ -56,6 +56,7 @@ public class GoalLogService {
 	}
 
 	public Page<GoalLog> getComGoalLogByStatusIn(List<Long> goals, List<ContentStatus> statusList, Pageable pageable) {
+		// TODO
 		//return goalLogRepository.findComByStatusIn(goals, statusList, pageable);
 		return goalLogRepository.findComByStatusIn(statusList, pageable);
 	}
