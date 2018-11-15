@@ -75,9 +75,8 @@ public class GoalLogInfoService {
         Integer likeNum = goalLogStoreService.getLikeNum(goalLog);
         Integer commentNum = goalLogStoreService.getCommentNum(goalLog);
         Integer companionNum = companionService.getCompanionNum(goalLog.getGoal());
-        Page<Comment> comments = goalLogStoreService.getComments(goalLog, PageRequest.of(0, 2));
         boolean liked = likeService.existsByContentAndAuthor(ContentType.GOALLOG, goalLog.getId(), user);
-        return new GoalLogInfo(goalLog, likeNum, commentNum, companionNum, comments, liked);
+        return new GoalLogInfo(goalLog, likeNum, commentNum, companionNum, liked);
     }
 
     public List<GoalLogInfo> getComGoalLogInfo(Long id, Pageable pageable) {

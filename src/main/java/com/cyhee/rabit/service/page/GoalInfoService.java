@@ -72,8 +72,7 @@ public class GoalInfoService {
         Integer likeNum = goalStoreService.getLikeNum(goal);
         Integer commentNum = goalStoreService.getCommentNum(goal);
         Integer companionNum = companionService.getCompanionNum(goal);
-        Page<Comment> comments = goalStoreService.getComments(goal, PageRequest.of(0, 2));
         boolean liked = likeService.existsByContentAndAuthor(ContentType.GOAL, goal.getId(), user);
-        return new GoalInfo(goal, logNum, likeNum, commentNum, companionNum, comments, liked);
+        return new GoalInfo(goal, logNum, likeNum, commentNum, companionNum, liked);
     }
 }

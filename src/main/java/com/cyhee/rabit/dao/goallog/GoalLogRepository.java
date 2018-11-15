@@ -30,6 +30,7 @@ public interface GoalLogRepository extends PagingAndSortingRepository<GoalLog, L
 
 	Page<GoalLog> findAllByGoalAndStatusIn(Goal goal, List<ContentStatus> statusList, Pageable pageable);
 
+	// TODO: 여기 한용이는 되는데 나는 안되는곳... 여기하고 GoalLogService의 todo부분
 //	@Query("From GoalLog gl Where gl.goal.id In :goals AND gl.status In :statusList")
 //	Page<GoalLog> findComByStatusIn(@Param("goals") List<Long> goals, @Param("statusList") List<ContentStatus> statusList, Pageable pageable);
 
