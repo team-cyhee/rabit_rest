@@ -48,4 +48,10 @@ public class GlobalExceptionHandler {
 		logger.debug(e);
 		return new ResponseEntity<>(new ApiError(ApiErrorCode.INVALID_INPUT_TYPE, e), HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(value=Exception.class)
+	public ResponseEntity<ApiError> exception(Exception e) {
+		logger.debug(e);
+		return new ResponseEntity<>(new ApiError(ApiErrorCode.INVALID_INPUT_TYPE, e), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }

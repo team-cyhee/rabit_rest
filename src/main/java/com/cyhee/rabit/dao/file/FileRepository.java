@@ -19,7 +19,7 @@ public interface FileRepository extends PagingAndSortingRepository<FileInfo, Lon
 
     Page<FileInfo> findByStatusIn(List<FileStatus> statusList, Pageable pageable);
 
-    @Query("select count(f) as cnt from FileInfo f where f.name = :name and cnt > 0")
+    @Query("select count(f) > 0 from FileInfo f where f.name = :name")
     boolean existsName(@Param("name") String name);
 }
 

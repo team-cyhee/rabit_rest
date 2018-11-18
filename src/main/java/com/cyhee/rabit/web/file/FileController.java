@@ -6,34 +6,53 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
+import com.cyhee.rabit.exception.file.InvalidFileException;
+import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.file.FileInfo;
+import com.cyhee.rabit.service.cmm.ResponseHelper;
 import com.cyhee.rabit.service.file.FileService;
 
 
-@Controller
+@RestController
+@RequestMapping("/rest/v1/files")
 public class FileController {
 	@Autowired
 	FileService fileService;
 	
-	@RequestMapping(value="/rest/files/{id}", method=RequestMethod.GET)
-	@ResponseBody
+
+	@PostMapping
+	ResponseEntity<Void> uploadFile(MultipartRequest multiRequest) throws IOException {
+		Map<String, MultipartFile> files = multiRequest.getFileMap();
+		for(String key : files.keySet()) {
+			FileInfo createdFile = fileService.addFile(files.get(key));
+			return ResponseHelper.createdEntity(ContentType.FILE, createdFile.getId());
+		}
+		throw new InvalidFileException("It is empty!");
+	}
+	
+	@GetMapping(value="/{id}")
 	ResponseEntity<InputStreamResource> downloadFile(@PathVariable Integer id, HttpServletRequest request) throws IOException {
 		FileInfo file = fileService.getFile(id);
 		return fileResponse(file, request);
 	}
+	
 
 	/**
 	 * 브라우저 구분 얻기.
@@ -93,13 +112,17 @@ public class FileController {
 			//throw new RuntimeException("Not supported browser");
 			throw new IOException("Not supported browser");
 		}
-
 		Path filePath = Paths.get(file.getPath(), file.getName());
+	    InputStreamResource resource = new InputStreamResource(Files.newInputStream(filePath, StandardOpenOption.READ));
 
-		return ResponseEntity.ok()
+		ResponseEntity<InputStreamResource> response = ResponseEntity.ok()
 				.contentLength(Files.size(filePath))
 				.contentType(MediaType.APPLICATION_OCTET_STREAM)
-				.header("Content-Disposition", dispositionPrefix + encodedFilename)
-				.body(new InputStreamResource(Files.newInputStream(filePath, StandardOpenOption.READ)));
+				.header(HttpHeaders.CONTENT_DISPOSITION, dispositionPrefix + encodedFilename)
+				.body(resource);
+		
+		System.out.println(response.getHeaders().get(HttpHeaders.CONTENT_TYPE));
+		return response;
+		
 	}
 }

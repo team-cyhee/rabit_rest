@@ -22,12 +22,14 @@ import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
+import com.cyhee.rabit.model.goallog.GoalLogDTO;
 import com.cyhee.rabit.model.like.Like;
 import com.cyhee.rabit.model.page.GoalLogInfo;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.cmm.AuthHelper;
 import com.cyhee.rabit.service.cmm.ResponseHelper;
 import com.cyhee.rabit.service.comment.CommentService;
+import com.cyhee.rabit.service.file.FileService;
 import com.cyhee.rabit.service.goal.CompanionService;
 import com.cyhee.rabit.service.goal.GoalService;
 import com.cyhee.rabit.service.goal.GoalStoreService;
@@ -52,6 +54,8 @@ public class GoalStoreController {
 	private GoalLogService goalLogService;
 	@Autowired
 	private CompanionService companionService;
+	@Autowired
+	private FileService fileService;
 	
 	@GetMapping("/companions")
 	public ResponseEntity<Page<User>> getCompanions(@PathVariable Long id, @PageableDefault Pageable pageable) {
@@ -84,10 +88,13 @@ public class GoalStoreController {
     }
 	
 	@PostMapping("/goallogs")
-	public ResponseEntity<Void> addGoalLog(@PathVariable Long id, @RequestBody GoalLog goalLog) {
+	public ResponseEntity<Void> addGoalLog(@PathVariable Long id, @RequestBody GoalLogDTO.PostOneFile dto) {
 		Goal goal = goalService.getGoal(id);
     	
+		GoalLog goalLog = new GoalLog();
     	goalLog.setGoal(goal);
+    	goalLog.setContent(dto.getContent());
+    	if(dto.getFileId() != null) goalLog.getFile().add(fileService.getFile(dto.getFileId()));
     	
     	goalLogService.addGoalLog(goalLog);
         return ResponseHelper.createdEntity(ContentType.GOALLOG, goalLog.getId());
