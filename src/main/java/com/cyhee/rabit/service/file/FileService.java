@@ -31,7 +31,7 @@ public class FileService {
     );
 
     private static final String directory = System.getProperty("user.home")
-        + File.separator + "brt" + File.separator + "files";
+        + File.separator + "rabit" + File.separator + "files";
 
     @Autowired
     private FileRepository repository;
@@ -40,11 +40,11 @@ public class FileService {
         return repository.findByStatusIn(Arrays.asList(FileStatus.ACTIVE), pageable);
     }
 
-    public void addFile(MultipartFile file) throws IOException, InvalidFileException {
-        addFile(file, FileService.directory);
+    public FileInfo addFile(MultipartFile file) throws IOException, InvalidFileException {
+        return addFile(file, FileService.directory);
     }
 
-    public void addFile(MultipartFile file, String directory) throws IOException, InvalidFileException {
+    public FileInfo addFile(MultipartFile file, String directory) throws IOException, InvalidFileException {
         File dir = new File(directory);
         if (!dir.exists()) {
             dir.mkdirs();
@@ -58,7 +58,9 @@ public class FileService {
         if (!isValidExtension(extension)) {
             throw new InvalidFileException("Unsupported extension");
         }
-        repository.save(new FileInfo(directory, file.getSize(), uuid, file.getOriginalFilename(), extension, FileStatus.ACTIVE));
+        FileInfo createdFile = new FileInfo(directory, file.getSize(), uuid, file.getOriginalFilename(), extension, FileStatus.ACTIVE); 
+        repository.save(createdFile);
+        return createdFile;
     }
 
     public FileInfo getFile(long id) {

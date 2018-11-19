@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,10 @@ public class LikeService {
 		//if (ContentHelper.getOwner(content).equals(liker))
 		//	throw new RuntimeException();
 		ContentType contentType = ContentType.findByKey(content.getClass());
+		
+		if(existsByContentAndAuthor(contentType, content.getId(), liker))
+			throw new DataIntegrityViolationException("Already liked content");
+		
 		Like like = new Like().setAuthor(liker).setType(contentType).setParentId(content.getId());
 		addLike(like);
 		return like;
@@ -82,6 +87,8 @@ public class LikeService {
 	
 	public void deleteLike(ContentType type, Long parentId, User liker) {
 		Optional<Like> like = repository.findByContentAndAuthor(type, parentId, liker);
+		if(!like.isPresent())
+			throw new NoSuchContentException(ContentType.LIKE);
 		
 		AuthHelper.isAuthorOrAdmin(like.get());
 		

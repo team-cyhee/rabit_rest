@@ -3,6 +3,7 @@ package com.cyhee.rabit.model.file;
 import com.cyhee.rabit.model.cmm.TimestampEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
@@ -14,6 +15,7 @@ import javax.persistence.Table;
 @Data
 @EqualsAndHashCode(callSuper=false)
 @Accessors(chain=true)
+@NoArgsConstructor
 public class FileInfo extends TimestampEntity {
 
     private String path;

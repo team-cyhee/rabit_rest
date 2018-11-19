@@ -15,6 +15,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -36,5 +37,5 @@ public class GoalLog extends TimestampEntity {
 	private ContentStatus status = ContentStatus.ACTIVE;
 
 	@ManyToMany
-	private List<FileInfo> file;
+	private List<FileInfo> file = new ArrayList<>();
 }
