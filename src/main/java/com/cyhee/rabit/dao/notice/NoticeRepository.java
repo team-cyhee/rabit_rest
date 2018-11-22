@@ -14,9 +14,5 @@ import java.util.List;
 // CRUD refers Create, Read, Update, Delete
 
 public interface NoticeRepository extends PagingAndSortingRepository<Notice, Long> {
-
-	@Query("select n.title from Notice n where n.status in :statusList")
-	Page<Notice> findAllTitles(@Param("statusList") List<ContentStatus> statusList, Pageable pageable);
-
 	Page<Notice> findAllByStatusIn(List<ContentStatus> statusList, Pageable pageable);
 }

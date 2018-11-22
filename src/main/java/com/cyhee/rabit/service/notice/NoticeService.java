@@ -25,7 +25,13 @@ public class NoticeService {
 	}
 
 	public Page<Notice> getNoticeTitles(Pageable pageable) {
-		return noticeRepository.findAllTitles(ContentStatus.visible(), pageable);
+		Page<Notice> notices = noticeRepository.findAllByStatusIn(ContentStatus.visible(), pageable);
+
+		for (Notice notice : notices) {
+			notice.setContent("");
+		}
+
+		return notices;
 	}
 
 	public Notice getNotice(long id) {
