@@ -42,6 +42,12 @@ public class ResponseHelper {
 		String key = "/" + id;
 
 		switch (type) {
+		case NOTICE:
+			resource = "/notices";
+			break;
+		case QUESTION:
+			resource = "/questions";
+			break;
 		case COMMENT:
 			resource = "/comments";
 			break;
