@@ -54,7 +54,7 @@ public class GoalController {
     public ResponseEntity<Void> addGoal(@RequestBody Goal goal) {
         User author = userService.getUserByUsername(AuthHelper.getUsername());
         goal.setAuthor(author);
-	    goalService.addGoal(goal);
+	    goalService.addGoal(author, author, goal);
         return ResponseHelper.createdEntity(ContentType.GOAL, goal.getId());
     }
     

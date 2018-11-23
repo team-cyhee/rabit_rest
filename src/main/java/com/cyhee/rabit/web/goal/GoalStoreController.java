@@ -77,7 +77,7 @@ public class GoalStoreController {
 		
 		User author = userService.getUserByUsername(AuthHelper.getUsername());
 		companionGoal.setAuthor(author).setParent(root);
-		goalService.addGoal(companionGoal);
+		goalService.addGoal(goal.getAuthor(), author, companionGoal);
         return ResponseHelper.createdEntity(ContentType.GOAL, companionGoal.getId());
 	}	
 	
@@ -96,7 +96,7 @@ public class GoalStoreController {
     	goalLog.setContent(dto.getContent());
     	if(dto.getFileId() != null) goalLog.getFile().add(fileService.getFile(dto.getFileId()));
     	
-    	goalLogService.addGoalLog(goalLog);
+    	goalLogService.addGoalLog(goal.getAuthor(), goal.getAuthor(), goalLog);
         return ResponseHelper.createdEntity(ContentType.GOALLOG, goalLog.getId());
 	}
 
@@ -123,7 +123,7 @@ public class GoalStoreController {
     	comment.setParentId(goal.getId());
     	comment.setType(ContentType.GOAL);
     	
-    	commentService.addComment(comment);
+    	commentService.addComment(goal.getAuthor(), author, comment);
 		return ResponseHelper.createdEntity(ContentType.COMMENT, comment.getId());
 	}
 
@@ -140,7 +140,7 @@ public class GoalStoreController {
     	String username = AuthHelper.getUsername();
     	User liker = userService.getUserByUsername(username);
     	
-    	Like like = likeService.addLike(goal, liker);
+    	Like like = likeService.addLike(goal.getAuthor(), liker, goal, liker);
         return ResponseHelper.createdEntity(ContentType.LIKE, like.getId());
 	}
     

@@ -47,7 +47,7 @@ public class CommentStoreController {
     	String username = AuthHelper.getUsername();
     	User liker = userService.getUserByUsername(username);
     	
-		likeService.addLike(comment, liker);
+		likeService.addLike(comment.getAuthor(), liker, comment, liker);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 }

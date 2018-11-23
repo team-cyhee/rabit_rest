@@ -4,6 +4,7 @@ package com.cyhee.rabit.service.goallog;
 import java.util.List;
 import java.util.Optional;
 
+import com.cyhee.rabit.aop.alarm.AddAlarm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -65,9 +66,10 @@ public class GoalLogService {
 		return goalLogRepository.search(keyword, statusList, pageable);
 	}
 
-	public void addGoalLog(GoalLog goalLog) {		
+	@AddAlarm
+	public GoalLog addGoalLog(User owner, User author, GoalLog goalLog) {
 		AuthHelper.isAuthorOrAdmin(goalLog);
-		goalLogRepository.save(goalLog);
+		return goalLogRepository.save(goalLog);
 	}
 	public Integer getLogNumByGoalAndStatusIn(Goal goal, List<ContentStatus> statusList) {
 		return goalLogRepository.findNumByGoalAndStatusIn(goal, statusList);

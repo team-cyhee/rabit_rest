@@ -46,7 +46,7 @@ public class GoalLogStoreController {
 		GoalLog goalLog = goalLogService.getGoalLog(id);
         return new ResponseEntity<>(goalLogStoreService.getComments(goalLog, pageable), HttpStatus.OK);
     }
-	
+
 	@PostMapping("/comments")
 	public ResponseEntity<Void> addComment(@PathVariable Long id, @RequestBody Comment comment) {
 		GoalLog goalLog = goalLogService.getGoalLog(id);
@@ -57,8 +57,7 @@ public class GoalLogStoreController {
     	comment.setAuthor(author);
     	comment.setParentId(goalLog.getId());
     	comment.setType(ContentType.GOALLOG);
-    	
-    	commentService.addComment(comment);
+    	commentService.addComment(goalLog.getGoal().getAuthor(), author, comment);
 		return ResponseHelper.createdEntity(ContentType.COMMENT, comment.getId());
 	}
 
@@ -74,7 +73,7 @@ public class GoalLogStoreController {
 		
     	String username = AuthHelper.getUsername();
     	User liker = userService.getUserByUsername(username);
-    	Like like = likeService.addLike(goalLog, liker);
+    	Like like = likeService.addLike(goalLog.getGoal().getAuthor(), liker, goalLog, liker);
         return ResponseHelper.createdEntity(ContentType.LIKE, like.getId());
 	}
     

@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-// This will be AUTO IMPLEMENTED by Spring into a Bean called QuestionRepository
+// This will be AUTO IMPLEMENTED by Spring into a Bean called NoticeRepository
 // CRUD refers Create, Read, Update, Delete
 
 public interface NoticeRepository extends PagingAndSortingRepository<Notice, Long> {

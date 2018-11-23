@@ -3,6 +3,7 @@ package com.cyhee.rabit.model.cmm;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.cyhee.rabit.model.alarm.Alarm;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.cs.Question;
 import com.cyhee.rabit.model.file.FileInfo;
@@ -21,7 +22,8 @@ import com.cyhee.rabit.model.user.User;
 public enum ContentType {
 	USER(User.class), FOLLOW(Follow.class), GOAL(Goal.class),
 	GOALLOG(GoalLog.class), COMMENT(Comment.class), FILE(FileInfo.class),
-	LIKE(Like.class), NOTICE(Notice.class), QUESTION(Question.class);
+	LIKE(Like.class), NOTICE(Notice.class), QUESTION(Question.class),
+	ALARM(Alarm.class);
 	
 	private Class<?> clazz;
 	

@@ -4,6 +4,8 @@ package com.cyhee.rabit.service.comment;
 import java.util.List;
 import java.util.Optional;
 
+import com.cyhee.rabit.aop.alarm.AddAlarm;
+import com.cyhee.rabit.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,8 +43,9 @@ public class CommentService {
 		return comment.get();
 	}
 
-	public void addComment(Comment comment) {
-		repository.save(comment);
+	@AddAlarm
+	public Comment addComment(User owner, User author, Comment comment) {
+		return repository.save(comment);
 	}
 
 	public void updateComment(long id, Comment source) {

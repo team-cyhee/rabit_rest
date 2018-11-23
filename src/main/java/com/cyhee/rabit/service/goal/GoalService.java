@@ -3,10 +3,10 @@ package com.cyhee.rabit.service.goal;
 import java.util.List;
 import java.util.Optional;
 
+import com.cyhee.rabit.aop.alarm.AddAlarm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.cyhee.rabit.dao.goal.GoalRepository;
@@ -38,8 +38,9 @@ public class GoalService {
 		return goalRepository.findAllByAuthorAndStatusIn(author, statusList, pageable);
 	}
 
-	public void addGoal(Goal goal) {
-		goalRepository.save(goal);
+	@AddAlarm
+	public Goal addGoal(User author, User owner, Goal goal) {
+		return goalRepository.save(goal);
 	}
 
 	public Goal getGoal(long id) {
