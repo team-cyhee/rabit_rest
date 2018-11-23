@@ -6,6 +6,7 @@ import com.cyhee.rabit.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -18,6 +19,7 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper=false)
 @Accessors(chain=true)
 @AllArgsConstructor
+@NoArgsConstructor
 public class Alarm extends TimestampEntity {
 
 	@ManyToOne(optional=false)
@@ -29,6 +31,10 @@ public class Alarm extends TimestampEntity {
 	@JoinColumn(name="author_id", foreignKey = @ForeignKey(name = "FK_USER_OWNER"))
 	@OnDelete(action=OnDeleteAction.CASCADE)
 	private User author;
+
+	@Column
+	@Enumerated(EnumType.STRING)
+	private ContentType target;
 
 	@Column
 	@Enumerated(EnumType.STRING)

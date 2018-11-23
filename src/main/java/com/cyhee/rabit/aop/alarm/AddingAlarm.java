@@ -24,16 +24,13 @@ public class AddingAlarm {
 
 		User owner = (User)args[0];
 		User author = (User)args[1];
+		ContentType target = (ContentType)args[2];
 		ContentType action = ContentType.findByKey(ret.getClass());
 		Long actionId = ((BaseEntity)ret).getId();
 
-		Alarm alarmTarget = new Alarm(owner, author, action, actionId);
+		Alarm alarmTarget = new Alarm(owner, author, target, action, actionId);
 		alarmService.addAlarm(alarmTarget);
 
-		if (owner != author) {
-			Alarm alarmAuthor = new Alarm(author, author, action, actionId);
-			alarmService.addAlarm(alarmAuthor);
-		}
 		return ret;
 	}
 }

@@ -39,7 +39,7 @@ public class GoalService {
 	}
 
 	@AddAlarm
-	public Goal addGoal(User author, User owner, Goal goal) {
+	public Goal addGoal(User author, User owner, ContentType target, Goal goal) {
 		return goalRepository.save(goal);
 	}
 

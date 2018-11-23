@@ -37,7 +37,7 @@ public class QuestionService {
 	}
 
 	@AddAlarm
-	public Question addQuestion(User owner, User author, Question question) {
+	public Question addQuestion(User owner, User author, ContentType target, Question question) {
         return questionRepository.save(question);
 	}
 

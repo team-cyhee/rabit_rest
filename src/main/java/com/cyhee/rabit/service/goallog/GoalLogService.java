@@ -67,7 +67,7 @@ public class GoalLogService {
 	}
 
 	@AddAlarm
-	public GoalLog addGoalLog(User owner, User author, GoalLog goalLog) {
+	public GoalLog addGoalLog(User owner, User author, ContentType target, GoalLog goalLog) {
 		AuthHelper.isAuthorOrAdmin(goalLog);
 		return goalLogRepository.save(goalLog);
 	}

@@ -57,7 +57,7 @@ public class GoalLogStoreController {
     	comment.setAuthor(author);
     	comment.setParentId(goalLog.getId());
     	comment.setType(ContentType.GOALLOG);
-    	commentService.addComment(goalLog.getGoal().getAuthor(), author, comment);
+    	commentService.addComment(goalLog.getGoal().getAuthor(), author, ContentType.GOALLOG, comment);
 		return ResponseHelper.createdEntity(ContentType.COMMENT, comment.getId());
 	}
 
@@ -73,7 +73,7 @@ public class GoalLogStoreController {
 		
     	String username = AuthHelper.getUsername();
     	User liker = userService.getUserByUsername(username);
-    	Like like = likeService.addLike(goalLog.getGoal().getAuthor(), liker, goalLog, liker);
+    	Like like = likeService.addLike(goalLog.getGoal().getAuthor(), liker, ContentType.GOALLOG, goalLog, liker);
         return ResponseHelper.createdEntity(ContentType.LIKE, like.getId());
 	}
     

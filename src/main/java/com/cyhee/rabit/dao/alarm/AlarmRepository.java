@@ -1,11 +1,12 @@
 package com.cyhee.rabit.dao.alarm;
 
 import com.cyhee.rabit.model.alarm.Alarm;
-import com.cyhee.rabit.model.cmm.ContentStatus;
-import com.cyhee.rabit.model.notice.Notice;
+import com.cyhee.rabit.model.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -13,4 +14,8 @@ import java.util.List;
 // CRUD refers Create, Read, Update, Delete
 
 public interface AlarmRepository extends PagingAndSortingRepository<Alarm, Long> {
+
+    @Query("From Alarm a Where :user = a.author Or :user = a.owner")
+    Page<Alarm> findByOwnerOrAuthor(@Param("user")User user, Pageable pageable);
+
 }
