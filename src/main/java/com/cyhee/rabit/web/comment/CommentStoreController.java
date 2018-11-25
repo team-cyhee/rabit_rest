@@ -1,5 +1,6 @@
 package com.cyhee.rabit.web.comment;
 
+import com.cyhee.rabit.model.cmm.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,7 +48,7 @@ public class CommentStoreController {
     	String username = AuthHelper.getUsername();
     	User liker = userService.getUserByUsername(username);
     	
-		likeService.addLike(comment, liker);
+		likeService.addLike(comment.getAuthor(), liker, ContentType.COMMENT, comment, liker);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 }

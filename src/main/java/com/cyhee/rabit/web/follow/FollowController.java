@@ -24,11 +24,11 @@ public class FollowController {
         return new ResponseEntity<>(followService.getFollows(pageable), HttpStatus.OK);
     }
 
-    @RequestMapping(method=RequestMethod.POST)
+    /*@RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<Void> addFollow(@RequestBody Follow follow) {
         followService.addFollow(follow);
         return ResponseHelper.createdEntity(ContentType.FOLLOW, follow.getId());
-    }
+    }*/
 
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
     public ResponseEntity<Follow> getFollow(@PathVariable long id) {

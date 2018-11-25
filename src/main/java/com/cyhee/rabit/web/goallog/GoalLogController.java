@@ -38,11 +38,11 @@ public class GoalLogController {
         return new ResponseEntity<>(logPage, HttpStatus.OK);
     }
 
-    @RequestMapping(method=RequestMethod.POST)
+    /*@RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<Void> addGoalLog(@RequestBody GoalLog goallog) {
         goalLogService.addGoalLog(goallog);
         return ResponseHelper.createdEntity(ContentType.GOALLOG, goallog.getId());
-    }
+    }*/
 
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
     public ResponseEntity<GoalLog> getGoalLog(@PathVariable long id) {

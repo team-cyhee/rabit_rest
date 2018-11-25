@@ -43,13 +43,13 @@ public class CommentController {
         return new ResponseEntity<Page<Comment>>(commentPage, HttpStatus.OK);
     }
 	
-	@RequestMapping(method=RequestMethod.POST)
+/*	@RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<Void> addComment(HttpServletRequest request, @RequestBody Comment comment) {
 		User author = userService.getUserByUsername(AuthHelper.getUsername());
 		comment.setAuthor(author);
     	commentService.addComment(comment);
     	return ResponseHelper.createdEntity(ContentType.GOAL, comment.getId());
-    }
+    }*/
     
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
     public ResponseEntity<Comment> getComment(@PathVariable long id) {

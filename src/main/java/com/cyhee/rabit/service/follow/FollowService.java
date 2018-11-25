@@ -3,6 +3,7 @@ package com.cyhee.rabit.service.follow;
 import java.util.List;
 import java.util.Optional;
 
+import com.cyhee.rabit.aop.alarm.AddAlarm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,8 +27,9 @@ public class FollowService {
         return followRepository.findByStatusIn(RadioStatus.visible(), pageable);
     }
 
-    public void addFollow(Follow follow) {
-        followRepository.save(follow);
+    @AddAlarm
+    public Follow addFollow(User owner, User author, ContentType target, Follow follow) {
+        return followRepository.save(follow);
     }
 
     public Follow getFollow(long id) {

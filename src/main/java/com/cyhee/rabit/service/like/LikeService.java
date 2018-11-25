@@ -4,6 +4,7 @@ package com.cyhee.rabit.service.like;
 import java.util.List;
 import java.util.Optional;
 
+import com.cyhee.rabit.aop.alarm.AddAlarm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -54,8 +55,9 @@ public class LikeService {
 	public void addLike(Like like) {
 		repository.save(like);
 	}
-	
-	public Like addLike(BaseEntity content, User liker) {
+
+	@AddAlarm
+	public Like addLike(User owner, User author, ContentType target, BaseEntity content, User liker) {
 		//if (ContentHelper.getOwner(content).equals(liker))
 		//	throw new RuntimeException();
 		ContentType contentType = ContentType.findByKey(content.getClass());
