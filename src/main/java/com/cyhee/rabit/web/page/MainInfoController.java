@@ -5,6 +5,7 @@ import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.page.MainInfoService;
 import com.cyhee.rabit.service.user.UserService;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +24,13 @@ public class MainInfoController {
     private MainInfoService mainInfoService;
 
     @RequestMapping(method= RequestMethod.GET)
-    public ResponseEntity<List<MainInfo>> getMainInfos(@PageableDefault Pageable pageable) {
+    public ResponseEntity<List<MainInfo>> getMainInfos(@PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
         List<MainInfo> mainInfoList = mainInfoService.getMainInfos(pageable);
         return new ResponseEntity<>(mainInfoList, HttpStatus.OK);
     }
 
     @RequestMapping(value="/{username}", method=RequestMethod.GET)
-    public ResponseEntity<List<MainInfo>> getUserMainInfos(@PathVariable String username, @PageableDefault Pageable pageable) {
+    public ResponseEntity<List<MainInfo>> getUserMainInfos(@PathVariable String username, @PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
         User author = userService.getUserByUsername(username);
 
         List<MainInfo> mainInfoList = mainInfoService.getUserMainInfos(author, pageable);

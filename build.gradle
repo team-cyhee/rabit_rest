@@ -84,7 +84,7 @@ dependencies {
 	compile('com.querydsl:querydsl-apt:4.2.1')
 	compile('com.querydsl:querydsl-core:4.2.1')	
 	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-	compile('org.apache.commons:commons-lang3:3.7')	
+	compile('org.apache.commons:commons-lang3:3.7')
 	//compile('org.springframework.session:spring-session-jdbc')	
 	runtime('mysql:mysql-connector-java')
 	testCompile('org.springframework.boot:spring-boot-starter-test')

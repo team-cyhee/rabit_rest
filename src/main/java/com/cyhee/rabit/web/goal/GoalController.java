@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,7 @@ public class GoalController {
     private GoalStoreService goalStoreService;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<Page<Goal>> getGoals(@PageableDefault Pageable pageable) {
+	public ResponseEntity<Page<Goal>> getGoals(@PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
         return new ResponseEntity<>(goalService.getGoals(pageable), HttpStatus.OK);
     }
 
@@ -70,7 +71,7 @@ public class GoalController {
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteGoal(@PathVariable long id, @PageableDefault Pageable pageable) {
+    public ResponseEntity<Void> deleteGoal(@PathVariable long id) {
     	goalStoreService.deleteGoal(id);
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
     }

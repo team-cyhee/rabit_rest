@@ -12,6 +12,7 @@ import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.model.like.Like;
 import com.cyhee.rabit.model.notice.Notice;
+import com.cyhee.rabit.model.report.Report;
 import com.cyhee.rabit.model.user.User;
 
 /**
@@ -23,7 +24,7 @@ public enum ContentType {
 	USER(User.class), FOLLOW(Follow.class), GOAL(Goal.class),
 	GOALLOG(GoalLog.class), COMMENT(Comment.class), FILE(FileInfo.class),
 	LIKE(Like.class), NOTICE(Notice.class), QUESTION(Question.class),
-	ALARM(Alarm.class);
+	ALARM(Alarm.class), REPORT(Report.class);
 	
 	private Class<?> clazz;
 	

@@ -7,6 +7,7 @@ import com.cyhee.rabit.service.cmm.ResponseHelper;
 import com.cyhee.rabit.service.like.LikeService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class LikeController {
 	private LikeService likeService;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<Page<Like>> getLikes(@PageableDefault Pageable pageable) {
+	public ResponseEntity<Page<Like>> getLikes(@PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
 		Page<Like> likePage = likeService.getLikes(pageable);
         return new ResponseEntity<>(likePage, HttpStatus.OK);
     }

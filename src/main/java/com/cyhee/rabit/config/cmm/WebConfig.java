@@ -1,6 +1,7 @@
 package com.cyhee.rabit.config.cmm;
 
 import java.util.List;
+import java.util.Properties;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -60,5 +61,5 @@ public class WebConfig implements WebMvcConfigurer {
 		configurer
 			.favorPathExtension(false)
 			.ignoreAcceptHeader(false);
-	}
+	}	
 }

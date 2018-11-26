@@ -13,6 +13,7 @@ import com.cyhee.rabit.service.notice.NoticeService;
 import com.cyhee.rabit.service.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class NoticeController {
 	private NoticeService noticeService;
 
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<Page<Notice>> getNotices(@PageableDefault Pageable pageable) {
+	public ResponseEntity<Page<Notice>> getNotices(@PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
         return new ResponseEntity<>(noticeService.getNotices(pageable), HttpStatus.OK);
     }
 
@@ -39,7 +40,7 @@ public class NoticeController {
     }
 
     @RequestMapping(value="/titles", method=RequestMethod.GET)
-    public ResponseEntity<Page<Notice>> getNoticeTitles(@PageableDefault Pageable pageable) {
+    public ResponseEntity<Page<Notice>> getNoticeTitles(@PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
         return new ResponseEntity<>(noticeService.getNoticeTitles(pageable), HttpStatus.OK);
     }
     
@@ -49,7 +50,7 @@ public class NoticeController {
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteNotice(@PathVariable long id, @PageableDefault Pageable pageable) {
+    public ResponseEntity<Void> deleteNotice(@PathVariable long id, @PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
     	noticeService.deleteNotice(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }

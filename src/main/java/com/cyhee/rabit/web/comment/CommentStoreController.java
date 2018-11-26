@@ -4,6 +4,7 @@ import com.cyhee.rabit.model.cmm.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class CommentStoreController {
 	private LikeService likeService;
 	
 	@GetMapping("/likes")
-	public ResponseEntity<Page<Like>> getLikes(@PathVariable Long id, @PageableDefault Pageable pageable) {
+	public ResponseEntity<Page<Like>> getLikes(@PathVariable Long id, @PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
 		Comment comment = commentService.getComment(id);
         return new ResponseEntity<>(commentStoreService.getLikes(comment, pageable), HttpStatus.OK);
     }

@@ -9,6 +9,7 @@ import com.cyhee.rabit.service.cs.QuestionService;
 import com.cyhee.rabit.service.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class QuestionController {
 	private QuestionService questionService;
 
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<Page<Question>> getQuestions(@PageableDefault Pageable pageable) {
+	public ResponseEntity<Page<Question>> getQuestions(@PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
         return new ResponseEntity<>(questionService.getQuestions(pageable), HttpStatus.OK);
     }
 
@@ -44,7 +45,7 @@ public class QuestionController {
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteQuestion(@PathVariable long id, @PageableDefault Pageable pageable) {
+    public ResponseEntity<Void> deleteQuestion(@PathVariable long id, @PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
         questionService.deleteQuestion(id);
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
     }

@@ -6,6 +6,7 @@ import com.cyhee.rabit.service.cmm.ResponseHelper;
 import com.cyhee.rabit.service.follow.FollowService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class FollowController {
     private FollowService followService;
 
     @RequestMapping(method=RequestMethod.GET)
-    public ResponseEntity<Page<Follow>> getFollow(@PageableDefault Pageable pageable) {
+    public ResponseEntity<Page<Follow>> getFollow(@PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
         return new ResponseEntity<>(followService.getFollows(pageable), HttpStatus.OK);
     }
 

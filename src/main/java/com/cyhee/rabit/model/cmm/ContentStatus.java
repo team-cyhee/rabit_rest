@@ -19,7 +19,9 @@ public enum ContentStatus {
 	// 삭제됨
 	DELETED,
 	// 게시 보류중
-	PENDING;
+	PENDING,
+	// 신고됨
+	REPORTED;
 	
 	private static List<ContentStatus> list;
 	private static List<ContentStatus> visibleList;
