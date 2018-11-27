@@ -44,6 +44,7 @@ public class ReportController {
 	public ResponseEntity<Void> addReport(@RequestBody Report report) {
 		User reporter = userService.getUserByUsername(AuthHelper.getUsername());
 		report.setReporter(reporter);
+		reportService.addReport(report);
 		return ResponseHelper.createdEntity(ContentType.REPORT, report.getId());
 	}
 }
