@@ -3,6 +3,7 @@ package com.cyhee.rabit.web.goallog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class GoalLogStoreController {
 	private CommentService commentService;
 	
 	@GetMapping("/comments")
-	public ResponseEntity<Page<Comment>> getComments(@PathVariable Long id, @PageableDefault Pageable pageable) {
+	public ResponseEntity<Page<Comment>> getComments(@PathVariable Long id, @PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
 		GoalLog goalLog = goalLogService.getGoalLog(id);
         return new ResponseEntity<>(goalLogStoreService.getComments(goalLog, pageable), HttpStatus.OK);
     }
@@ -62,7 +63,7 @@ public class GoalLogStoreController {
 	}
 
 	@GetMapping("/likes")
-	public ResponseEntity<Page<User>> getLikes(@PathVariable Long id, @PageableDefault Pageable pageable) {
+	public ResponseEntity<Page<User>> getLikes(@PathVariable Long id, @PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
 		GoalLog goalLog = goalLogService.getGoalLog(id);
 		return new ResponseEntity<>(goalLogStoreService.getLikers(goalLog, pageable), HttpStatus.OK);
 	}

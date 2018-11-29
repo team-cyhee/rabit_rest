@@ -9,6 +9,7 @@ import com.cyhee.rabit.service.cmm.ResponseHelper;
 import com.cyhee.rabit.service.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class AlarmController {
     private UserService userService;
 
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<Page<Alarm>> getAlarms(@PageableDefault Pageable pageable) {
+	public ResponseEntity<Page<Alarm>> getAlarms(@PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
         return new ResponseEntity<>(alarmService.getAlarms(pageable), HttpStatus.OK);
     }
 
@@ -42,7 +43,7 @@ public class AlarmController {
     }
 
     @RequestMapping(value="/user", method=RequestMethod.GET)
-    public ResponseEntity<Page<Alarm>> getUserAlarms(@PageableDefault Pageable pageable) {
+    public ResponseEntity<Page<Alarm>> getUserAlarms(@PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
         User owner = userService.getUserByUsername(AuthHelper.getUsername());
         return new ResponseEntity<>(alarmService.getUserAlarms(owner, pageable), HttpStatus.OK);
     }

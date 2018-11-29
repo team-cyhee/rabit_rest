@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain=true)
 public class User extends TimestampEntity{
 	
-	@Column(nullable=false, unique=true, length=50, updatable=false)
+	@Column(unique=true, length=50)
 	@Email
 	@NotNull
 	private String email;

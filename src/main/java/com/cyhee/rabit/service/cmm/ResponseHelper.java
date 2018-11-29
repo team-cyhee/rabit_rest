@@ -72,6 +72,9 @@ public class ResponseHelper {
 		case USER:
 			resource = "/users";
 			break;
+		case REPORT:
+			resource = "/reports";
+			break;
 		default:
 			throw new UnsupportedContentException();
 		}

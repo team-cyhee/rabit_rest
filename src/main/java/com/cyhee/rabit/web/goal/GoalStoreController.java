@@ -76,7 +76,8 @@ public class GoalStoreController {
 		if(root == null) root = goal;
 		
 		User author = userService.getUserByUsername(AuthHelper.getUsername());
-		companionGoal.setAuthor(author).setParent(root);
+		companionGoal.setAuthor(author);
+		companionGoal.setParent(root);
 		goalService.addGoal(goal.getAuthor(), author, ContentType.GOAL, companionGoal);
         return ResponseHelper.createdEntity(ContentType.GOAL, companionGoal.getId());
 	}	

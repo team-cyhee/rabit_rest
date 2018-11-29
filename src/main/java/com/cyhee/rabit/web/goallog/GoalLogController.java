@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class GoalLogController {
     private GoalLogStoreService goallogStoreService;
 
     @RequestMapping(method=RequestMethod.GET)
-    public ResponseEntity<Page<GoalLog>> getGoalLogs(@PageableDefault Pageable pageable) {
+    public ResponseEntity<Page<GoalLog>> getGoalLogs(@PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
         Page<GoalLog> logPage = goalLogService.getGoalLogs(pageable);
         return new ResponseEntity<>(logPage, HttpStatus.OK);
     }
