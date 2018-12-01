@@ -73,7 +73,7 @@ public class GoalRepositoryImpl extends QuerydslRepositorySupport implements Goa
 			case WEEKLY:
 				return "floor("+"date_part('day', "+from+" - "+to+")"+"/7)";
 			case MONTHLY:
-				return "extract(year from age("+from+", "+to+"))*12" + "extract(month from age("+from+", "+to+"))";
+				return "extract(year from age("+from+", "+to+"))*12 + " + "extract(month from age("+from+", "+to+"))";
 			case YEARLY:
 				return "extract(year from age("+from+", "+to+"))";
 		}

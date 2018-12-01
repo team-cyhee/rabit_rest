@@ -4,8 +4,6 @@ import java.util.Arrays;
 
 import javax.annotation.Resource;
 
-import com.cyhee.rabit.model.user.UserDTO;
-import com.cyhee.rabit.service.file.FileService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cyhee.rabit.exception.cmm.ValidationFailException;
 import com.cyhee.rabit.model.user.User;
+import com.cyhee.rabit.model.user.UserDTO;
 import com.cyhee.rabit.model.user.UserStatus;
+import com.cyhee.rabit.service.file.FileService;
 import com.cyhee.rabit.service.user.UserService;
 import com.cyhee.rabit.service.user.UserStoreService;
 
