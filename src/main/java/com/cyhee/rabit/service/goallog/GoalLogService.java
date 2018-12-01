@@ -43,7 +43,9 @@ public class GoalLogService {
 	public List<GoalLog> getGoalLogsByAuthor(User author) {
 		return goalLogRepository.findAllByAuthor(author);
 	}
-		
+
+	public Integer getGoalLogNumByAuthorAndStatusIn(User author, List<ContentStatus> statusList) { return goalLogRepository.findNumByAuthorAndStatusIn(author, statusList); }
+
 	public Page<GoalLog> getGoalLogsByAuthorAndStatusIn(User author, List<ContentStatus> statusList, Pageable pageable) {
 		return goalLogRepository.findAllByAuthorAndStatusIn(author, statusList, pageable);
 	}
