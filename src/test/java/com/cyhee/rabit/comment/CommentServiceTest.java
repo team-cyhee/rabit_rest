@@ -19,6 +19,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cyhee.rabit.cmm.AuthTestUtil;
 import com.cyhee.rabit.cmm.CmmTestUtil;
+import com.cyhee.rabit.cmm.factory.CommentFactory;
+import com.cyhee.rabit.cmm.factory.GoalFactory;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
@@ -54,10 +56,10 @@ public class CommentServiceTest {
 		user1 = new User().setEmail("user@email.com").setUsername("username");		
 		user2 = new User().setEmail("email2@a").setUsername("testuser2");
 
-		goal1 = new Goal().setAuthor(user1).setContent("content1");
-		goal2 = new Goal().setAuthor(user2).setContent("content2");
-		goal3 = new Goal().setAuthor(user2).setContent("content3");
-		goal4 = new Goal().setAuthor(user2).setContent("content2").setParent(goal1);
+		goal1 = GoalFactory.base(user1, "content1");
+		goal2 = GoalFactory.base(user2, "content2");
+		goal3 = GoalFactory.base(user2, "content3");
+		goal4 = GoalFactory.withParent(user2, "content2", goal1);
 		
 		entityManger.persist(user1);
 		entityManger.persist(user2);
@@ -67,8 +69,7 @@ public class CommentServiceTest {
 		entityManger.persist(goal3);
 		entityManger.persist(goal4);
 		
-		comment1 = new Comment().setAuthor(user1)
-			.setType(ContentType.GOAL).setContent("comment").setParentId(goal1.getId());
+		comment1 = CommentFactory.base(user1, ContentType.GOAL, goal1.getId(), "comment");
 		
 		commentService.addComment(comment1);
 	}

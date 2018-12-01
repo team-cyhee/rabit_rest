@@ -83,6 +83,8 @@ dependencies {
 	compile('com.querydsl:querydsl-jpa:4.2.1')
 	compile('com.querydsl:querydsl-apt:4.2.1')
 	compile('com.querydsl:querydsl-core:4.2.1')	
+	// QLRM
+	compile('org.qlrm:qlrm:2.0.2')
 	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
 	compile('org.apache.commons:commons-lang3:3.7')
 	//compile('org.springframework.session:spring-session-jdbc')	

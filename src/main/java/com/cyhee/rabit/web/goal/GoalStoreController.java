@@ -155,4 +155,12 @@ public class GoalStoreController {
     	likeService.deleteLike(ContentType.GOAL, goal.getId(), liker);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 	}
+    
+    @GetMapping("/achievement")
+    public ResponseEntity<Double> achievement(@PathVariable Long id) {
+		Goal goal = goalService.getGoal(id);
+				
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(goalStoreService.achievementRate(goal));
+    }
 }

@@ -16,6 +16,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cyhee.rabit.cmm.AuthTestUtil;
+import com.cyhee.rabit.cmm.factory.ReportFactory;
 import com.cyhee.rabit.dao.report.ReportRepository;
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
@@ -100,12 +101,12 @@ public class ReportServiceTest {
 		entityManger.persist(goal);
 		entityManger.persist(goalLog);
 		
-		report1 = generate(ContentType.GOAL, goal.getId(), user1);
-		report2 = generate(ContentType.GOAL, goal.getId(), user2);
-		report3 = generate(ContentType.GOAL, goal.getId(), user3);
-		report4 = generate(ContentType.GOAL, goal.getId(), user4);
-		report5 = generate(ContentType.GOAL, goal.getId(), user5);
-		report6 = generate(ContentType.GOALLOG, goalLog.getId(), user5);
+		report1 = ReportFactory.generate(ContentType.GOAL, goal.getId(), user1);
+		report2 = ReportFactory.generate(ContentType.GOAL, goal.getId(), user2);
+		report3 = ReportFactory.generate(ContentType.GOAL, goal.getId(), user3);
+		report4 = ReportFactory.generate(ContentType.GOAL, goal.getId(), user4);
+		report5 = ReportFactory.generate(ContentType.GOAL, goal.getId(), user5);
+		report6 = ReportFactory.generate(ContentType.GOALLOG, goalLog.getId(), user5);
 	}
 	
 	@Test
@@ -144,16 +145,8 @@ public class ReportServiceTest {
 	@Test
 	public void alreadyReported() {
 		reportService.addReport(report1);
-		assertThatThrownBy(() -> reportService.addReport(generate(ContentType.GOAL, goal.getId(), user1)))
+		assertThatThrownBy(() -> reportService.addReport(ReportFactory.generate(ContentType.GOAL, goal.getId(), user1)))
 			.isInstanceOf(DataIntegrityViolationException.class)
 			.hasMessage("Already reported!");
-	}
-	
-	public static Report generate(ContentType type, Long id, User reporter) {
-		Report report = new Report();
-		report.setTargetType(type);
-		report.setTargetId(id);
-		report.setReporter(reporter);
-		return report;
 	}
 }
