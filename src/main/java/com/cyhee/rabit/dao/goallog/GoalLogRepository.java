@@ -22,7 +22,10 @@ public interface GoalLogRepository extends PagingAndSortingRepository<GoalLog, L
 
 	@Query("From GoalLog n Where :author = n.goal.author")
 	List<GoalLog> findAllByAuthor(@Param("author") User author);
-	
+
+	@Query("Select count(gl) From GoalLog gl Where :author = gl.goal.author AND gl.status In :statusList")
+	Integer findNumByAuthorAndStatusIn(@Param("author") User author, @Param("statusList") List<ContentStatus> statusList);
+
 	@Query("From GoalLog n Where :author = n.goal.author AND n.status In :statusList")
 	Page<GoalLog> findAllByAuthorAndStatusIn(@Param("author") User author, @Param("statusList") List<ContentStatus> statusList, Pageable pageable);
 

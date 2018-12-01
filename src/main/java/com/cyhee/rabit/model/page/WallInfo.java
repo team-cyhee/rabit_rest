@@ -14,7 +14,7 @@ public class WallInfo {
     private String username;
     private Integer followerNum;
     private Integer followeeNum;
-    private List<String> goalContents;
+    private Integer goalLogNum;
     private boolean following;
     private boolean self;
 }
