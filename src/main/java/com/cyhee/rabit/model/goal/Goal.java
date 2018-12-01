@@ -1,5 +1,6 @@
 package com.cyhee.rabit.model.goal;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -60,5 +61,5 @@ public class Goal extends TimestampEntity implements Content {
 	private Integer doTimes;
 
 	@ManyToMany
-	private List<FileInfo> files;
+	private List<FileInfo> files = new ArrayList<>();
 }

@@ -42,5 +42,5 @@ public class GoalLog extends TimestampEntity implements Content {
 	private ContentStatus status = ContentStatus.ACTIVE;
 
 	@ManyToMany
-	private List<FileInfo> file = new ArrayList<>();
+	private List<FileInfo> files = new ArrayList<>();
 }
