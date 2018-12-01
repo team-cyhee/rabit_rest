@@ -22,7 +22,7 @@ public class GoalLogInfo extends MainInfo {
 	// TODO: GOAL을 갖는게 나을지 GOALINFO를 갖는게 나을지..,
 	private Goal goal;
 	private String content;
-	private List<FileInfo> file;
+	private List<FileInfo> files;
 
 	public GoalLogInfo(GoalLog from, Integer likeNum, Integer commentNum, Integer companionNum, boolean liked) {
 		super(ContentType.GOALLOG, likeNum, commentNum, companionNum, from.getCreateDate(), from.getLastUpdated(), liked);
@@ -30,6 +30,6 @@ public class GoalLogInfo extends MainInfo {
 		this.author = from.getGoal().getAuthor();
 		this.goal = from.getGoal();
 		this.content = from.getContent();
-		this.file = from.getFile();
+		this.files = from.getFiles();
 	}
 }
