@@ -1,5 +1,6 @@
 package com.cyhee.rabit.dao.goal;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -10,4 +11,6 @@ import com.cyhee.rabit.model.goal.Goal;
 
 public interface GoalRepositoryCustom {
 	Page<Goal> search(String keyword, List<ContentStatus> statusList, Pageable pageable);
+	
+	Double achievementRate(Goal goal, Date current);
 }

@@ -1,16 +1,16 @@
 package com.cyhee.rabit.service.goal;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import com.cyhee.rabit.model.page.GoalLogInfo;
-import com.cyhee.rabit.service.page.GoalLogInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.cyhee.rabit.dao.comment.CommentRepository;
+import com.cyhee.rabit.dao.goal.GoalRepository;
 import com.cyhee.rabit.dao.like.LikeRepository;
 import com.cyhee.rabit.exception.cmm.UnsupportedContentException;
 import com.cyhee.rabit.model.cmm.BaseEntity;
@@ -21,17 +21,22 @@ import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.model.like.Like;
+import com.cyhee.rabit.model.page.GoalLogInfo;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.cmm.AuthHelper;
 import com.cyhee.rabit.service.comment.CommentStoreService;
 import com.cyhee.rabit.service.goallog.GoalLogService;
 import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 import com.cyhee.rabit.service.like.LikeService;
+import com.cyhee.rabit.service.page.GoalLogInfoService;
 
 @Service
 public class GoalStoreService {
 	@Autowired
 	GoalService goalService;
+	
+	@Autowired
+	GoalRepository goalRepository;
 
 	@Autowired
 	GoalLogService goalLogService;
@@ -138,6 +143,10 @@ public class GoalStoreService {
 			goalLogInfos.add(goalLogInfoService.goalLogToGoalLogInfo(goalLog));
 		}
 		return goalLogInfos;
+	}
+	
+	public Double achievementRate(Goal goal) {
+		return goalRepository.achievementRate(goal, new Date());
 	}
 
 	private void deleteAllGoalStore(Goal goal) {

@@ -3,21 +3,21 @@ package com.cyhee.rabit.service.page;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cyhee.rabit.service.goal.GoalService;
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
-import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goallog.GoalLog;
 import com.cyhee.rabit.model.page.GoalLogInfo;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.cmm.AuthHelper;
 import com.cyhee.rabit.service.goal.CompanionService;
+import com.cyhee.rabit.service.goal.GoalService;
 import com.cyhee.rabit.service.goallog.GoalLogService;
 import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 import com.cyhee.rabit.service.like.LikeService;
@@ -70,6 +70,7 @@ public class GoalLogInfoService {
         return goalLogToGoalLogInfo(goalLog);
     }
 
+    @Transactional
     public GoalLogInfo goalLogToGoalLogInfo(GoalLog goalLog) {
     	User user = userService.getUserByUsername(AuthHelper.getUsername());
         Integer likeNum = goalLogStoreService.getLikeNum(goalLog);
@@ -79,6 +80,7 @@ public class GoalLogInfoService {
         return new GoalLogInfo(goalLog, likeNum, commentNum, companionNum, liked);
     }
 
+    @Transactional
     public List<GoalLogInfo> getComGoalLogInfo(Long id, Pageable pageable) {
         List<GoalLogInfo> goalLogInfos = new ArrayList<>();
 

@@ -1,15 +1,17 @@
 
 package com.cyhee.rabit.service.goallog;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.cyhee.rabit.aop.alarm.AddAlarm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.cyhee.rabit.aop.alarm.AddAlarm;
 import com.cyhee.rabit.dao.goallog.GoalLogRepository;
 import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.model.cmm.ContentStatus;
@@ -59,9 +61,10 @@ public class GoalLogService {
 	}
 
 	public Page<GoalLog> getComGoalLogByStatusIn(List<Long> goals, List<ContentStatus> statusList, Pageable pageable) {
-		// TODO
-		//return goalLogRepository.findComByStatusIn(goals, statusList, pageable);
-		return goalLogRepository.findComByStatusIn(statusList, pageable);
+		if(goals.isEmpty()) {
+			return new PageImpl<>(Arrays.asList());
+		}
+		return goalLogRepository.findComByStatusIn(goals, statusList, pageable);
 	}
 
 	public Page<GoalLog> search(String keyword, List<ContentStatus> statusList, Pageable pageable) {

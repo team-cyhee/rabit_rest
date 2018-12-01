@@ -21,8 +21,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cyhee.rabit.cmm.AuthTestUtil;
 import com.cyhee.rabit.cmm.CmmTestUtil;
+import com.cyhee.rabit.cmm.factory.GoalFactory;
 import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.model.cmm.ContentStatus;
+import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.goal.GoalService;
@@ -57,8 +59,8 @@ public class GoalServiceTest {
 		entityManager.persist(user2);
 		entityManager.persist(user3);
 
-		goal1 = new Goal().setAuthor(user1).setContent("content1");
-		goal2 = new Goal().setAuthor(user2).setContent("content2");
+		goal1 = GoalFactory.base(user1, "content1");
+		goal2 = GoalFactory.base(user2, "content2");
 
 		entityManager.persist(goal1);
 		entityManager.persist(goal2);
@@ -66,8 +68,8 @@ public class GoalServiceTest {
 	
 	@Test
 	public void createAndGet() {		
-		Goal goal = new Goal().setAuthor(user1).setContent("content1");
-		goalService.addGoal(goal);
+		Goal goal = GoalFactory.base(user1, "content1");
+		goalService.addGoal(user1, goal.getAuthor(), ContentType.GOAL, goal);
 				
 		assertThat(goalService.getGoal(goal.getId()))
 			.isEqualTo(goal);
