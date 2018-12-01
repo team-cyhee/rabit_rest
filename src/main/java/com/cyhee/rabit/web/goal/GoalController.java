@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.cyhee.rabit.model.goal.GoalDTO;
+import com.cyhee.rabit.service.file.FileService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -39,7 +41,10 @@ public class GoalController {
 
 	@Resource(name="goalStoreService")
     private GoalStoreService goalStoreService;
-	
+
+	@Resource(name="fileService")
+    private FileService fileService;
+
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<Page<Goal>> getGoals(@PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
         return new ResponseEntity<>(goalService.getGoals(pageable), HttpStatus.OK);
@@ -52,10 +57,18 @@ public class GoalController {
     }
 
 	@RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity<Void> addGoal(@RequestBody Goal goal) {
+    public ResponseEntity<Void> addGoal(@RequestBody GoalDTO.PostOneFile dto) {
         User author = userService.getUserByUsername(AuthHelper.getUsername());
+        Goal goal = new Goal();
         goal.setAuthor(author);
-	    goalService.addGoal(author, author, null, goal);
+        goal.setContent(dto.getContent());
+        goal.setDoUnit(dto.getDoUnit());
+        goal.setDoTimes(dto.getDoTimes());
+        goal.setStartDate(dto.getStartDate());
+        goal.setEndDate(dto.getEndDate());
+        if (dto.getFileId() != null) goal.getFiles().add(fileService.getFile(dto.getFileId()));
+
+        goalService.addGoal(author, author, null, goal);
         return ResponseHelper.createdEntity(ContentType.GOAL, goal.getId());
     }
     

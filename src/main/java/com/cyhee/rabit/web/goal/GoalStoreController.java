@@ -95,7 +95,7 @@ public class GoalStoreController {
 		GoalLog goalLog = new GoalLog();
     	goalLog.setGoal(goal);
     	goalLog.setContent(dto.getContent());
-    	if(dto.getFileId() != null) goalLog.getFile().add(fileService.getFile(dto.getFileId()));
+    	if (dto.getFileId() != null) goalLog.getFiles().add(fileService.getFile(dto.getFileId()));
     	
     	goalLogService.addGoalLog(goal.getAuthor(), goal.getAuthor(), ContentType.GOAL, goalLog);
         return ResponseHelper.createdEntity(ContentType.GOALLOG, goalLog.getId());
