@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 import javax.annotation.Resource;
 
+import com.cyhee.rabit.model.user.UserDTO;
+import com.cyhee.rabit.service.file.FileService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -32,6 +34,9 @@ public class UserController {
 
 	@Resource(name = "userStoreService")
 	private UserStoreService userStoreService;
+
+	@Resource(name = "fileService")
+	private FileService fileService;
 	
 	@GetMapping
 	public ResponseEntity<Page<User>> getUsers(@PageableDefault Pageable pageable) {
@@ -42,6 +47,28 @@ public class UserController {
 	public ResponseEntity<User> getUser(@PathVariable long id) {		
 		User user = userService.getUser(id);
 		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/username/{username}")
+	public ResponseEntity<User> getUserByName(@PathVariable String username) {
+		User user = userService.getUserByUsername(username);
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/username/{username}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> updateUserByName(@PathVariable String username, @RequestBody UserDTO.PostOneFile dto, BindingResult bindingResult) {
+		if (bindingResult.hasErrors())
+			throw new ValidationFailException(bindingResult.getAllErrors());
+
+		User user = userService.getUserByUsername(username);
+		user.setName(dto.getName());
+		user.setBirth(dto.getBirth());
+		user.setIntroduction(dto.getIntroduction());
+
+		if (dto.getFileId() != null) user.getFiles().add(fileService.getFile(dto.getFileId()));
+
+		userService.updateUser(user.getId(), user);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)

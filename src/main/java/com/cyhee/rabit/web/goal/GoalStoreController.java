@@ -91,7 +91,7 @@ public class GoalStoreController {
 	@PostMapping("/goallogs")
 	public ResponseEntity<Void> addGoalLog(@PathVariable Long id, @RequestBody GoalLogDTO.PostOneFile dto) {
 		Goal goal = goalService.getGoal(id);
-    	
+
 		GoalLog goalLog = new GoalLog();
     	goalLog.setGoal(goal);
     	goalLog.setContent(dto.getContent());

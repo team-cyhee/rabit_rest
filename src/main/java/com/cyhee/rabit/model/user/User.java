@@ -48,5 +48,8 @@ public class User extends TimestampEntity{
 	private UserStatus status = UserStatus.ACTIVE;
 
 	@ManyToMany
-	private List<FileInfo> photo;
+	private List<FileInfo> files;
+
+	@Column(length=100)
+	private String introduction;
 }
