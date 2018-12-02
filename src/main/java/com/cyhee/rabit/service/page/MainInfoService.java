@@ -1,16 +1,22 @@
 package com.cyhee.rabit.service.page;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
-import com.cyhee.rabit.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.cyhee.rabit.dao.alarm.AlarmRepository;
+import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.page.GoalInfo;
 import com.cyhee.rabit.model.page.GoalLogInfo;
 import com.cyhee.rabit.model.page.MainInfo;
+import com.cyhee.rabit.model.page.MainInfoBase;
+import com.cyhee.rabit.model.user.User;
 
 @Service
 public class MainInfoService {
@@ -20,6 +26,9 @@ public class MainInfoService {
 
 	@Autowired
 	GoalLogInfoService goalLogInfoService;
+	
+	@Autowired
+	AlarmRepository alarmRepository;
 
 	public List<MainInfo> getMainInfos(Pageable pageable) {
 
@@ -46,5 +55,22 @@ public class MainInfoService {
 
 		mainInfo.sort(new MainInfo.DateSort());
 		return mainInfo.subList(0, mainInfo.size());
+	}
+	
+	public List<MainInfo> getMainInfos(List<Long> userIds, Date from, Long order) {
+		List<MainInfoBase> baseList = this.getMainInfoBaseList(userIds, from, order);
+		return baseList.stream().map(base -> {
+			MainInfo info = null;
+			if(base.getType() == ContentType.GOAL)
+				info = goalInfoService.getGoalInfo(base.getId());
+			else
+				info =goalLogInfoService.getGoalLogInfo(base.getId());
+			info.setOrder(base.getOrder());
+			return info;
+		}).collect(Collectors.toList());
+	}
+	
+	private List<MainInfoBase> getMainInfoBaseList(List<Long> userIds, Date from, Long order) {
+		return alarmRepository.mainBase(userIds, from, order);
 	}
 }

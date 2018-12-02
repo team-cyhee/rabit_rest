@@ -57,7 +57,7 @@ public class LikeService {
 	}
 
 	@AddAlarm
-	public Like addLike(User owner, User author, ContentType target, BaseEntity content, User liker) {
+	public Like addLike(BaseEntity content, User liker) {
 		//if (ContentHelper.getOwner(content).equals(liker))
 		//	throw new RuntimeException();
 		ContentType contentType = ContentType.findByKey(content.getClass());

@@ -1,9 +1,12 @@
 package com.cyhee.rabit.web.user;
 
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cyhee.rabit.dao.alarm.AlarmRepository;
 import com.cyhee.rabit.exception.cmm.ValidationFailException;
+import com.cyhee.rabit.model.page.MainInfoBase;
 import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.model.user.UserDTO;
 import com.cyhee.rabit.model.user.UserStatus;
@@ -37,6 +42,9 @@ public class UserController {
 
 	@Resource(name = "fileService")
 	private FileService fileService;
+	
+	@Autowired
+	private AlarmRepository repository;
 	
 	@GetMapping
 	public ResponseEntity<Page<User>> getUsers(@PageableDefault Pageable pageable) {
@@ -91,4 +99,8 @@ public class UserController {
 		return new ResponseEntity<Page<User>>(userService.search(keyword, Arrays.asList(UserStatus.values()), pageable), HttpStatus.OK);
 	}
 
+	@GetMapping(value = "/test")
+	public ResponseEntity<List<MainInfoBase>> searchUsers() {
+		return ResponseEntity.ok(repository.mainBase(Arrays.asList(2L,3L), new Date(1538409901000L), null));
+	}
 }

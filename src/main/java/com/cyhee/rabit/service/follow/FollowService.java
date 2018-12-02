@@ -28,7 +28,7 @@ public class FollowService {
     }
 
     @AddAlarm
-    public Follow addFollow(User owner, User author, ContentType target, Follow follow) {
+    public Follow addFollow(Follow follow) {
         return followRepository.save(follow);
     }
 

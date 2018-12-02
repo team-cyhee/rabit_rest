@@ -31,7 +31,7 @@ public class GoalInfo extends MainInfo {
 	private List<FileInfo> files;
 
 	public GoalInfo(Goal from, Integer logNum, Integer likeNum, Integer commentNum, Integer companionNum, boolean liked) {
-		super(ContentType.GOAL, likeNum, commentNum, companionNum, from.getCreateDate(), from.getLastUpdated(), liked);
+		super(null, ContentType.GOAL, likeNum, commentNum, companionNum, from.getCreateDate(), from.getLastUpdated(), liked);
 		this.id = from.getId();
 		this.author = from.getAuthor();
 		this.parent = from.getParent();

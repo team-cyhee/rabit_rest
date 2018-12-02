@@ -68,7 +68,7 @@ public class GoalController {
         goal.setEndDate(dto.getEndDate());
         if (dto.getFileId() != null) goal.getFiles().add(fileService.getFile(dto.getFileId()));
 
-        goalService.addGoal(author, author, null, goal);
+        goalService.addGoal(goal);
         return ResponseHelper.createdEntity(ContentType.GOAL, goal.getId());
     }
     

@@ -6,6 +6,13 @@ import org.springframework.stereotype.Service;
 import com.cyhee.rabit.exception.cmm.UnsupportedContentException;
 import com.cyhee.rabit.model.cmm.Content;
 import com.cyhee.rabit.model.cmm.ContentType;
+import com.cyhee.rabit.model.comment.Comment;
+import com.cyhee.rabit.model.cs.Question;
+import com.cyhee.rabit.model.follow.Follow;
+import com.cyhee.rabit.model.goal.Goal;
+import com.cyhee.rabit.model.goallog.GoalLog;
+import com.cyhee.rabit.model.like.Like;
+import com.cyhee.rabit.model.user.User;
 import com.cyhee.rabit.service.alarm.AlarmService;
 import com.cyhee.rabit.service.comment.CommentService;
 import com.cyhee.rabit.service.cs.QuestionService;
@@ -32,7 +39,7 @@ public class ContentService {
 	@Autowired AlarmService alarmService;
 	@Autowired ReportService reportService;
 	
-	private Object getObject(ContentType type, Long id) {
+	public Object getObject(ContentType type, Long id) {
 		return get(type, id);
 	}
 	
@@ -41,6 +48,37 @@ public class ContentService {
 		if(obj instanceof Content)
 			return (Content) obj;
 		throw new UnsupportedContentException("This is not instance of Content");
+	}
+	
+	public User getParentOwner(Object content) {
+		if(content instanceof Goal) {
+			Goal self = (Goal)content;
+			Goal parent = self.getParent();
+			if(parent == null) return self.getAuthor();
+			return parent.getAuthor();
+		}
+		if(content instanceof GoalLog)
+			return ((GoalLog)content).getGoal().getAuthor();
+		if(content instanceof Comment) {
+			Comment self = (Comment)content;
+			Object parent = get(self.getType(), self.getParentId());
+			return ContentHelper.getOwner(parent);
+		}
+		if(content instanceof Like) {
+			Like self = (Like)content;
+			Object parent = get(self.getType(), self.getParentId());
+			return ContentHelper.getOwner(parent);
+		}
+		if(content instanceof Question) {
+			Question self = (Question)content;
+			return self.getAuthor();			
+		}
+		if(content instanceof Follow) {
+			Follow self = (Follow)content;
+			return self.getFollowee();
+		}
+		
+		throw new UnsupportedContentException();
 	}
 	
 	private Object get(ContentType type, Long id) {
@@ -58,5 +96,5 @@ public class ContentService {
 			case USER: return userService.getUser(id);
 			default: throw new UnsupportedContentException();
 		}
-	}
+	} 
 }

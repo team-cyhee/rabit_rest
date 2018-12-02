@@ -35,7 +35,7 @@ public class QuestionController {
     public ResponseEntity<Void> addQuestion(@RequestBody Question question) {
         User author = userService.getUserByUsername(AuthHelper.getUsername());
         question.setAuthor(author);
-        questionService.addQuestion(author, author, null, question);
+        questionService.addQuestion(question);
         return ResponseHelper.createdEntity(ContentType.QUESTION, question.getId());
     }
     

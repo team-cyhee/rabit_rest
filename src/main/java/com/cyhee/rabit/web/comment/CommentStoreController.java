@@ -49,7 +49,7 @@ public class CommentStoreController {
     	String username = AuthHelper.getUsername();
     	User liker = userService.getUserByUsername(username);
     	
-		likeService.addLike(comment.getAuthor(), liker, ContentType.COMMENT, comment, liker);
+		likeService.addLike(comment, liker);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 }

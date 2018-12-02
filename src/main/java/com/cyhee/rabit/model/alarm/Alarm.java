@@ -35,6 +35,9 @@ public class Alarm extends TimestampEntity {
 	@Column
 	@Enumerated(EnumType.STRING)
 	private ContentType target;
+	
+	@Column
+	private Long targetId;
 
 	@Column
 	@Enumerated(EnumType.STRING)

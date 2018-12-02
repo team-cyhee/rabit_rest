@@ -29,8 +29,12 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath email = createString("email");
 
+    public final ListPath<com.cyhee.rabit.model.file.FileInfo, com.cyhee.rabit.model.file.QFileInfo> files = this.<com.cyhee.rabit.model.file.FileInfo, com.cyhee.rabit.model.file.QFileInfo>createList("files", com.cyhee.rabit.model.file.FileInfo.class, com.cyhee.rabit.model.file.QFileInfo.class, PathInits.DIRECT2);
+
     //inherited
     public final NumberPath<Long> id = _super.id;
+
+    public final StringPath introduction = createString("introduction");
 
     //inherited
     public final DateTimePath<java.util.Date> lastUpdated = _super.lastUpdated;
@@ -38,8 +42,6 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath name = createString("name");
 
     public final StringPath phone = createString("phone");
-
-    public final ListPath<com.cyhee.rabit.model.file.FileInfo, com.cyhee.rabit.model.file.QFileInfo> photo = this.<com.cyhee.rabit.model.file.FileInfo, com.cyhee.rabit.model.file.QFileInfo>createList("photo", com.cyhee.rabit.model.file.FileInfo.class, com.cyhee.rabit.model.file.QFileInfo.class, PathInits.DIRECT2);
 
     public final EnumPath<UserStatus> status = createEnum("status", UserStatus.class);
 

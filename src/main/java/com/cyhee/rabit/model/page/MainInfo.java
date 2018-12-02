@@ -14,6 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MainInfo {
+	private Long order;
     private ContentType type;
     private Integer likeNum;
     private Integer commentNum;

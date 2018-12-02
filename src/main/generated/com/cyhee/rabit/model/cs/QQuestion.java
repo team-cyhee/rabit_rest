@@ -1,4 +1,4 @@
-package com.cyhee.rabit.model.goallog;
+package com.cyhee.rabit.model.cs;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -11,27 +11,25 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QGoalLog is a Querydsl query type for GoalLog
+ * QQuestion is a Querydsl query type for Question
  */
 @Generated("com.querydsl.codegen.EntitySerializer")
-public class QGoalLog extends EntityPathBase<GoalLog> {
+public class QQuestion extends EntityPathBase<Question> {
 
-    private static final long serialVersionUID = -1831463690L;
+    private static final long serialVersionUID = 1767935046L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QGoalLog goalLog = new QGoalLog("goalLog");
+    public static final QQuestion question = new QQuestion("question");
 
     public final com.cyhee.rabit.model.cmm.QTimestampEntity _super = new com.cyhee.rabit.model.cmm.QTimestampEntity(this);
+
+    public final com.cyhee.rabit.model.user.QUser author;
 
     public final StringPath content = createString("content");
 
     //inherited
     public final DateTimePath<java.util.Date> createDate = _super.createDate;
-
-    public final ListPath<com.cyhee.rabit.model.file.FileInfo, com.cyhee.rabit.model.file.QFileInfo> files = this.<com.cyhee.rabit.model.file.FileInfo, com.cyhee.rabit.model.file.QFileInfo>createList("files", com.cyhee.rabit.model.file.FileInfo.class, com.cyhee.rabit.model.file.QFileInfo.class, PathInits.DIRECT2);
-
-    public final com.cyhee.rabit.model.goal.QGoal goal;
 
     //inherited
     public final NumberPath<Long> id = _super.id;
@@ -41,25 +39,25 @@ public class QGoalLog extends EntityPathBase<GoalLog> {
 
     public final EnumPath<com.cyhee.rabit.model.cmm.ContentStatus> status = createEnum("status", com.cyhee.rabit.model.cmm.ContentStatus.class);
 
-    public QGoalLog(String variable) {
-        this(GoalLog.class, forVariable(variable), INITS);
+    public QQuestion(String variable) {
+        this(Question.class, forVariable(variable), INITS);
     }
 
-    public QGoalLog(Path<? extends GoalLog> path) {
+    public QQuestion(Path<? extends Question> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QGoalLog(PathMetadata metadata) {
+    public QQuestion(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QGoalLog(PathMetadata metadata, PathInits inits) {
-        this(GoalLog.class, metadata, inits);
+    public QQuestion(PathMetadata metadata, PathInits inits) {
+        this(Question.class, metadata, inits);
     }
 
-    public QGoalLog(Class<? extends GoalLog> type, PathMetadata metadata, PathInits inits) {
+    public QQuestion(Class<? extends Question> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.goal = inits.isInitialized("goal") ? new com.cyhee.rabit.model.goal.QGoal(forProperty("goal"), inits.get("goal")) : null;
+        this.author = inits.isInitialized("author") ? new com.cyhee.rabit.model.user.QUser(forProperty("author")) : null;
     }
 
 }
