@@ -32,6 +32,11 @@ public class GoalInfoController {
         return new ResponseEntity<>(goalInfoService.getGoalInfo(id), HttpStatus.OK);
     }
 
+    @RequestMapping(value="full/{id}", method=RequestMethod.GET)
+    public ResponseEntity<GoalInfo> getGoalInfoWithRate(@PathVariable long id) {
+        return new ResponseEntity<>(goalInfoService.getGoalInfoWithRate(id), HttpStatus.OK);
+    }
+
     @RequestMapping(value="/user", method=RequestMethod.GET)
     public ResponseEntity<List<GoalInfo>> getGoalInfoByUser(@PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
         User author = userService.getUserByUsername(AuthHelper.getUsername());

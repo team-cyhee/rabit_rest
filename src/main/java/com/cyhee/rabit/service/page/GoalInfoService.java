@@ -66,6 +66,13 @@ public class GoalInfoService {
         return goalToGoalInfo(goal);
     }
 
+    public GoalInfo getGoalInfoWithRate(Long id) {
+        Goal goal = goalService.getGoal(id);
+        GoalInfo goalInfo = goalToGoalInfo(goal);
+        goalInfo.setAchievementRate(goalStoreService.achievementRate(goal));
+        return goalInfo;
+    }
+
     private GoalInfo goalToGoalInfo(Goal goal) {
     	User user = userService.getUserByUsername(AuthHelper.getUsername());
         Integer logNum = goalStoreService.getLogNum(goal);
@@ -73,6 +80,6 @@ public class GoalInfoService {
         Integer commentNum = goalStoreService.getCommentNum(goal);
         Integer companionNum = companionService.getCompanionNum(goal);
         boolean liked = likeService.existsByContentAndAuthor(ContentType.GOAL, goal.getId(), user);
-        return new GoalInfo(goal, logNum, likeNum, commentNum, companionNum, liked);
+        return new GoalInfo(goal, logNum, likeNum, commentNum, companionNum, liked, 0.0);
     }
 }

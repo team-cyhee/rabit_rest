@@ -29,8 +29,9 @@ public class GoalInfo extends MainInfo {
 	private Integer doTimes;
 	private Integer logNum;
 	private List<FileInfo> files;
+	private Double achievementRate;
 
-	public GoalInfo(Goal from, Integer logNum, Integer likeNum, Integer commentNum, Integer companionNum, boolean liked) {
+	public GoalInfo(Goal from, Integer logNum, Integer likeNum, Integer commentNum, Integer companionNum, boolean liked, Double achievementRate) {
 		super(ContentType.GOAL, likeNum, commentNum, companionNum, from.getCreateDate(), from.getLastUpdated(), liked);
 		this.id = from.getId();
 		this.author = from.getAuthor();
@@ -42,5 +43,6 @@ public class GoalInfo extends MainInfo {
 		this.doTimes = from.getDoTimes();
 		this.logNum = logNum;
 		this.files = from.getFiles();
+		this.achievementRate = achievementRate;
 	}
 }

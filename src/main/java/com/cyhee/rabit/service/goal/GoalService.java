@@ -84,5 +84,6 @@ public class GoalService {
 		target.setStatus(source.getStatus());
 		target.setDoUnit(source.getDoUnit());
 		target.setDoTimes(source.getDoTimes());
+		target.getFiles().addAll(source.getFiles());
 	}
 }
