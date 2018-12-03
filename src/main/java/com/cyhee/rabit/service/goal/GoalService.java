@@ -1,14 +1,15 @@
 package com.cyhee.rabit.service.goal;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import com.cyhee.rabit.aop.alarm.AddAlarm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.cyhee.rabit.aop.alarm.AddAlarm;
 import com.cyhee.rabit.dao.goal.GoalRepository;
 import com.cyhee.rabit.exception.cmm.NoSuchContentException;
 import com.cyhee.rabit.model.cmm.ContentStatus;
@@ -36,6 +37,10 @@ public class GoalService {
 	
 	public Page<Goal> getGoalsByAuthorStatusIn(User author, List<ContentStatus> statusList, Pageable pageable) {
 		return goalRepository.findAllByAuthorAndStatusIn(author, statusList, pageable);
+	}
+	
+	public Page<Goal> getGoalsByAuthorAndCreateDateLessThanAndStatusIn(User author, Date from, List<ContentStatus> statusList, Pageable pageable) {
+		return goalRepository.findAllByAuthorAndCreateDateLessThanAndStatusIn(author, from, statusList, pageable);
 	}
 
 	@AddAlarm

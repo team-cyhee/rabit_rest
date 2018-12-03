@@ -1,6 +1,7 @@
 package com.cyhee.rabit.service.page;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -54,10 +55,10 @@ public class GoalLogInfoService {
         return goalLogInfos;
     }
 
-    public List<GoalLogInfo> getGoalLogInfosByUser(User user, Pageable pageable) {
+    public List<GoalLogInfo> getGoalLogInfosByUser(User user, Date from, Pageable pageable) {
         List<GoalLogInfo> goalLogInfos = new ArrayList<>();
 
-        Page<GoalLog> goalLogs = goalLogService.getGoalLogsByAuthorAndStatusIn(user, ContentStatus.visible(), pageable);
+        Page<GoalLog> goalLogs = goalLogService.getGoalLogsByAuthorAndCreateDateLessThanAndStatusIn(user, from, ContentStatus.visible(), pageable);
 
         for (GoalLog goalLog : goalLogs) {
             goalLogInfos.add(goalLogToGoalLogInfo(goalLog));

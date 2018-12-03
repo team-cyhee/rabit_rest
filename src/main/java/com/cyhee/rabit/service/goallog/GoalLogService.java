@@ -2,6 +2,7 @@
 package com.cyhee.rabit.service.goallog;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +51,10 @@ public class GoalLogService {
 
 	public Page<GoalLog> getGoalLogsByAuthorAndStatusIn(User author, List<ContentStatus> statusList, Pageable pageable) {
 		return goalLogRepository.findAllByAuthorAndStatusIn(author, statusList, pageable);
+	}
+	
+	public Page<GoalLog> getGoalLogsByAuthorAndCreateDateLessThanAndStatusIn(User author, Date from, List<ContentStatus> statusList, Pageable pageable) {
+		return goalLogRepository.findAllByAuthorAndCreateDateLessThanAndStatusIn(author, from, statusList, pageable);
 	}
 
 	public List<GoalLog> getGoalLogsByGoal(Goal goal) {

@@ -1,5 +1,6 @@
 package com.cyhee.rabit.dao.goal;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -19,4 +20,6 @@ public interface GoalRepository extends PagingAndSortingRepository<Goal, Long>, 
 	List<Goal> findAllByAuthor(User author);
 
 	Page<Goal> findAllByAuthorAndStatusIn(User author, List<ContentStatus> statusList, Pageable pageable);
+	
+	Page<Goal> findAllByAuthorAndCreateDateLessThanAndStatusIn(User author, Date createDate, List<ContentStatus> statusList, Pageable pageable);
 }

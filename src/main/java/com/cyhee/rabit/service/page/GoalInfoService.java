@@ -1,17 +1,16 @@
 package com.cyhee.rabit.service.page;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
-import com.cyhee.rabit.model.comment.Comment;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.page.GoalInfo;
 import com.cyhee.rabit.model.user.User;
@@ -50,10 +49,10 @@ public class GoalInfoService {
         return goalInfos;
     }
 
-    public List<GoalInfo> getGoalInfosByUser(User user, Pageable pageable) {
+    public List<GoalInfo> getGoalInfosByUser(User user, Date from, Pageable pageable) {
         List<GoalInfo> goalInfos = new ArrayList<>();
 
-        Page<Goal> goals = goalService.getGoalsByAuthorStatusIn(user, ContentStatus.visible(), pageable);
+        Page<Goal> goals = goalService.getGoalsByAuthorAndCreateDateLessThanAndStatusIn(user, from, ContentStatus.visible(), pageable);
 
         for (Goal goal : goals) {
             goalInfos.add(goalToGoalInfo(goal));

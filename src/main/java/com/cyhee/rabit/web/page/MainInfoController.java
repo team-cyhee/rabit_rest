@@ -63,10 +63,13 @@ public class MainInfoController {
     }
 
     @RequestMapping(value="/{username}", method=RequestMethod.GET)
-    public ResponseEntity<List<MainInfo>> getUserMainInfos(@PathVariable String username, @PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
+    public ResponseEntity<List<MainInfo>> getUserMainInfos(@PathVariable String username, Long time, @PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
         User author = userService.getUserByUsername(username);
+        Date from;
+        if(time == null) from = new Date();
+        else from = new Date(time);
 
-        List<MainInfo> mainInfoList = mainInfoService.getUserMainInfos(author, pageable);
+        List<MainInfo> mainInfoList = mainInfoService.getUserMainInfos(author, from, pageable);
         return new ResponseEntity<>(mainInfoList, HttpStatus.OK);
     }
     

@@ -41,20 +41,20 @@ public class MainInfoService {
 		mainInfo.addAll(goalLogInfos);
 
 		mainInfo.sort(new MainInfo.DateSort());
-		return mainInfo.subList(0, mainInfo.size());
+		return mainInfo.subList(0, Math.min(pageable.getPageSize(), mainInfo.size()));
 	}
 
-	public List<MainInfo> getUserMainInfos(User user, Pageable pageable) {
+	public List<MainInfo> getUserMainInfos(User user, Date from, Pageable pageable) {
 		List<MainInfo> mainInfo = new ArrayList<>();
 
-		List<GoalInfo> goalInfos = goalInfoService.getGoalInfosByUser(user, pageable);
-		List<GoalLogInfo> goalLogInfos = goalLogInfoService.getGoalLogInfosByUser(user, pageable);
+		List<GoalInfo> goalInfos = goalInfoService.getGoalInfosByUser(user, from, pageable);
+		List<GoalLogInfo> goalLogInfos = goalLogInfoService.getGoalLogInfosByUser(user, from, pageable);
 
 		mainInfo.addAll(goalInfos);
 		mainInfo.addAll(goalLogInfos);
 
 		mainInfo.sort(new MainInfo.DateSort());
-		return mainInfo.subList(0, mainInfo.size());
+		return mainInfo.subList(0, Math.min(pageable.getPageSize(), mainInfo.size()));
 	}
 	
 	public List<MainInfo> getMainInfos(List<Long> userIds, Date from, Long order) {
@@ -64,7 +64,7 @@ public class MainInfoService {
 			if(base.getType() == ContentType.GOAL)
 				info = goalInfoService.getGoalInfo(base.getId());
 			else
-				info =goalLogInfoService.getGoalLogInfo(base.getId());
+				info = goalLogInfoService.getGoalLogInfo(base.getId());
 			info.setOrder(base.getOrder());
 			return info;
 		}).collect(Collectors.toList());

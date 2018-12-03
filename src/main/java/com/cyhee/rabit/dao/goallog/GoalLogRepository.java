@@ -1,6 +1,7 @@
 
 package com.cyhee.rabit.dao.goallog;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -28,6 +29,9 @@ public interface GoalLogRepository extends PagingAndSortingRepository<GoalLog, L
 
 	@Query("From GoalLog n Where :author = n.goal.author AND n.status In :statusList")
 	Page<GoalLog> findAllByAuthorAndStatusIn(@Param("author") User author, @Param("statusList") List<ContentStatus> statusList, Pageable pageable);
+	
+	@Query("From GoalLog n Where :author = n.goal.author AND n.createDate < :createDate AND n.status In :statusList")
+	Page<GoalLog> findAllByAuthorAndCreateDateLessThanAndStatusIn(@Param("author") User author, @Param("createDate") Date createDate, @Param("statusList") List<ContentStatus> statusList, Pageable pageable);
 
 	List<GoalLog> findAllByGoal(Goal goal);
 
