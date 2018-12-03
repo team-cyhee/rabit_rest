@@ -3,6 +3,8 @@ package com.cyhee.rabit.web.goallog;
 
 import javax.annotation.Resource;
 
+import com.cyhee.rabit.model.goallog.GoalLogDTO;
+import com.cyhee.rabit.service.file.FileService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -24,6 +26,9 @@ import com.cyhee.rabit.service.cmm.ResponseHelper;
 import com.cyhee.rabit.service.goallog.GoalLogService;
 import com.cyhee.rabit.service.goallog.GoalLogStoreService;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 @RestController
 @RequestMapping("rest/v1/goallogs")
 public class GoalLogController {
@@ -32,6 +37,9 @@ public class GoalLogController {
 
     @Resource(name="goalLogStoreService")
     private GoalLogStoreService goallogStoreService;
+
+    @Resource(name="fileService")
+    private FileService fileService;
 
     @RequestMapping(method=RequestMethod.GET)
     public ResponseEntity<Page<GoalLog>> getGoalLogs(@PageableDefault(sort={"createDate"}, direction=Direction.DESC) Pageable pageable) {
@@ -51,8 +59,12 @@ public class GoalLogController {
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
-    public ResponseEntity<Void> updateGoalLog(@PathVariable long id, @RequestBody GoalLog goallogForm) {
-        goalLogService.updateGoalLog(id, goallogForm);
+    public ResponseEntity<Void> updateGoalLog(@PathVariable long id, @RequestBody GoalLogDTO.PostOneFile dto) {
+        GoalLog goalLog = goalLogService.getGoalLog(id);
+        goalLog.setContent(dto.getContent());
+        if (dto.getFileId() != null) goalLog.setFiles(new ArrayList<>(Arrays.asList(fileService.getFile(dto.getFileId()))));
+
+        goalLogService.updateGoalLog(id, goalLog);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

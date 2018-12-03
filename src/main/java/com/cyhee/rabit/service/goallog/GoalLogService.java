@@ -110,5 +110,6 @@ public class GoalLogService {
 	
 	private void setGoalLogProps(GoalLog target, GoalLog source) {
 		target.setContent(source.getContent());
+		target.getFiles().addAll(source.getFiles());
 	}
 }

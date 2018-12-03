@@ -36,6 +36,10 @@ public class WallInfoService {
         boolean self = user.getUsername().equals(AuthHelper.getUsername());
         boolean following = followService.exists(userService.getUserByUsername(AuthHelper.getUsername()), user);
 
-        return new WallInfo(user.getId(), user.getUsername(), followerNum, followeeNum, goalLogNum, following, self);
+        if (!user.getFiles().isEmpty()) {
+            return new WallInfo(user.getId(), user.getUsername(), user.getIntroduction(), user.getFiles().get(user.getFiles().size()-1), followerNum, followeeNum, goalLogNum, following, self);
+        } else {
+            return new WallInfo(user.getId(), user.getUsername(), user.getIntroduction(), null, followerNum, followeeNum,goalLogNum, following, self);
+        }
     }
 }

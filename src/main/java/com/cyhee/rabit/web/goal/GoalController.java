@@ -1,5 +1,7 @@
 package com.cyhee.rabit.web.goal;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -78,8 +80,16 @@ public class GoalController {
     }
     
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
-    public ResponseEntity<Void> updateGoal(@PathVariable long id, @RequestBody Goal goalForm) {
-    	goalService.updateGoal(id, goalForm);
+    public ResponseEntity<Void> updateGoal(@PathVariable long id, @RequestBody GoalDTO.PostOneFile dto) {
+        Goal goal = new Goal();
+        goal.setContent(dto.getContent());
+        goal.setDoUnit(dto.getDoUnit());
+        goal.setDoTimes(dto.getDoTimes());
+        goal.setStartDate(dto.getStartDate());
+        goal.setEndDate(dto.getEndDate());
+        if (dto.getFileId() != null) goal.setFiles(new ArrayList<>(Arrays.asList(fileService.getFile(dto.getFileId()))));
+
+        goalService.updateGoal(id, goal);
         return new ResponseEntity<>(HttpStatus.OK); 
     }
     
