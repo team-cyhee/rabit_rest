@@ -14,6 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MainInfo {
+	private Long order;
     private ContentType type;
     private Integer likeNum;
     private Integer commentNum;
@@ -25,7 +26,7 @@ public class MainInfo {
     public static class DateSort implements Comparator<MainInfo> {
         @Override
         public int compare(MainInfo o1, MainInfo o2) {
-            return o2.getLastUpdated().compareTo(o1.getLastUpdated());
+            return o2.getCreateDate().compareTo(o1.getCreateDate());
         }
     }
 }

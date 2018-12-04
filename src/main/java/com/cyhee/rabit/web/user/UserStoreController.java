@@ -55,7 +55,7 @@ public class UserStoreController {
 	    
 	    Follow follow = new Follow();
 	    follow.setFollowee(followee).setFollower(follower);
-	    followService.addFollow(followee, follower, null, follow);
+	    followService.addFollow(follow);
 	    return ResponseHelper.createdEntity(ContentType.FOLLOW, follow.getId());
     }
 

@@ -45,7 +45,7 @@ public class GoalRepositoryImpl extends QuerydslRepositorySupport implements Goa
 	public Double achievementRate(Goal goal, Date current) {
 		JpaResultMapper jpaResultMapper = new JpaResultMapper();
 		Query q = em.createNativeQuery("" +
-				"SELECT kk/:times/("+dateDiff(goal.getDoUnit(), ":current", "A.start_date")+"+1) " + 
+				"SELECT COALESCE(kk/:times/("+dateDiff(goal.getDoUnit(), ":current", "A.start_date")+"+1),0) " + 
 				"FROM " + 
 				"	(SELECT * " + 
 				"	FROM goal " + 

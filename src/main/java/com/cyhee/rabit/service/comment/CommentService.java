@@ -43,7 +43,7 @@ public class CommentService {
 	}
 
 	@AddAlarm
-	public Comment addComment(User owner, User author, ContentType target, Comment comment) {
+	public Comment addComment(Comment comment) {
 		return repository.save(comment);
 	}
 

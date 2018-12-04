@@ -69,7 +69,7 @@ public class GoalServiceTest {
 	@Test
 	public void createAndGet() {		
 		Goal goal = GoalFactory.base(user1, "content1");
-		goalService.addGoal(user1, goal.getAuthor(), ContentType.GOAL, goal);
+		goalService.addGoal(goal);
 				
 		assertThat(goalService.getGoal(goal.getId()))
 			.isEqualTo(goal);

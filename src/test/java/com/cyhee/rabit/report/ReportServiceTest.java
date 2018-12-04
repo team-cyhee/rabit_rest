@@ -1,7 +1,7 @@
 package com.cyhee.rabit.report;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import java.util.Arrays;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,14 +11,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cyhee.rabit.cmm.AuthTestUtil;
 import com.cyhee.rabit.cmm.factory.ReportFactory;
+import com.cyhee.rabit.dao.alarm.AlarmRepository;
 import com.cyhee.rabit.dao.report.ReportRepository;
-import com.cyhee.rabit.model.cmm.ContentStatus;
 import com.cyhee.rabit.model.cmm.ContentType;
 import com.cyhee.rabit.model.goal.Goal;
 import com.cyhee.rabit.model.goallog.GoalLog;
@@ -52,6 +51,8 @@ public class ReportServiceTest {
 	private ReportService reportService;
 	@Autowired
 	private ReportRepository reportRepository;
+	@Autowired
+	private AlarmRepository repository;
 	
 	User user1;
 	User user2;
@@ -109,7 +110,7 @@ public class ReportServiceTest {
 		report6 = ReportFactory.generate(ContentType.GOALLOG, goalLog.getId(), user5);
 	}
 	
-	@Test
+	/*@Test
 	public void createAndGet() {
 		reportService.addReport(report1);
 		
@@ -148,5 +149,10 @@ public class ReportServiceTest {
 		assertThatThrownBy(() -> reportService.addReport(ReportFactory.generate(ContentType.GOAL, goal.getId(), user1)))
 			.isInstanceOf(DataIntegrityViolationException.class)
 			.hasMessage("Already reported!");
+	}*/
+	
+	@Test
+	public void test() {
+		repository.tt(Arrays.asList(user1.getId()), new Date(), new Date(), null);
 	}
 }
